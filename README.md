@@ -20,7 +20,7 @@ tio.onload = function() {
     console.log("Number of languages: " + tio.session.languages.length);
     tio.language("python3");
     tio.code("import sys\nprint(sys.argv)");
-    tio.args.append('-t');
+    tio.args.push('-t');
     tio.onsetoutput = function() {
         console.log("Server output: " + tio.output());
     }
