@@ -71,7 +71,17 @@ tio.alert(tio.output())
 ---
 ### `Session.options`
 
- > An array of string options for language to be sent to the TIO server.
+ > An array of string options for the language to be sent to the TIO server.
+ 
+---
+### `Session.cflags`
+
+ > An array of string cflags for the language to be sent to the TIO server.
+ 
+---
+### `Session.driver`
+
+ > An array of string drivers for the language to be sent to the TIO server.
  
 ---
 ### `Session.args`
