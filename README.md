@@ -34,8 +34,10 @@ tio.load();
 ```javascript
 tio.language("jelly")
 tio.code("“3ḅaė;œ»")
+tio.oncomplete = function() {
+    tio.alert(tio.output())
+}
 tio.run()
-tio.alert(tio.output())
 ```
 
 ---
