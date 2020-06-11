@@ -324,7 +324,6 @@ function Session() {
                 if (self.languageFileRequest.readyState != XMLHttpRequest.DONE)
                     return;
                 sha256(byteStringToByteArray(getRandomBits(128)), String);
-                completeLoad();
             } catch(error) {
                 console.error(error);
 
@@ -334,6 +333,7 @@ function Session() {
                     // Yes this is the same error message...
                     alert("Your browser seems to lack a required feature.\n\nCurrently, the only supported browsers are Chrome/Chromium, Firefox, and Safari (recent versions), Edge (all versions), and Internet Explorer 11.\n\nIf you are using one of those browsers, you are receiving this message in error. Please send an email to feedback@tryitonline.net and include the error log below. You should be able to copy the error message from your console.\n\n" + error);
             }
+            completeLoad();
         }
         self.languageFileRequest.open("GET", session.tioURL + session.langURL);
         self.languageFileRequest.send();
