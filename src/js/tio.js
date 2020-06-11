@@ -392,20 +392,20 @@ function Session() {
     //--------------------------------------------------------------------------------------------------------
     self.language = function(languageId) {
         if(languageId === undefined) { self.ongetlanguage(); return self.languageId }
-        self.languageId = self._languages ? session._languages[languageId].id : languageId;
+        self.languageId = session._languages ? session._languages[languageId].id : languageId;
         self.onsetlanguage();
     };
 
     //--------------------------------------------------------------------------------------------------------
     self.code = function(code) {
         if(code === undefined) { self.ongetcode(); return self._code }
-        var encoding = session._languages[self.languageId].encoding;
-
         if (session.rUnpairedSurrogates.test(code))
-            return "invalid Unicode: unpaired surrogates";
-
-        self.characterCount = countBytes(code, "SBCS");
-        self.byteCount = countBytes(code, encoding);
+            self.message("Error", "invalid Unicode: unpaired surrogates");
+        if(session._languages) {
+            var encoding = session._languages[self.languageId].encoding;
+            self._characterCount = countBytes(code, "SBCS");
+            self._byteCount = countBytes(code, encoding);
+        }
         self._code = code;
         self.onsetcode();
     }
