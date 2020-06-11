@@ -92,10 +92,10 @@ tio.run()
  > An array of string arguments for language to be sent to the TIO server.
 
 ---
-### `Session.load()`
+### `Session.load(?force)`
 
  > Loads the languages from the TIO servers and populates the `tio.session` data. The callbacks `onload` can be used to be indicated
- > when the data is brought.
+ > when the data is brought. If `force` is set to true, it will ensure another fetch is called to the TIO servers.
  
 ---
 ### `Session.message(title, message)`
@@ -116,6 +116,11 @@ tio.run()
 ### `Session.clear_results()`
 
  > Clears both `output` and `debug` triggering callbacks `onsetoutput` and `onsetdebug`.
+ 
+---
+### `Session.markdown()`
+
+ > Returns a markdown representation of the code.
 
 ---
 ### `Session.run(?arguments...)`
