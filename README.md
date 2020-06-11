@@ -47,6 +47,11 @@ tio.alert(tio.output())
 ### `tio.session.languages`
 
  > The list of language JSON objects pulled from the TIO servers.
+ 
+---
+### `tio.session.find_languages(name)`
+
+ > Takes in a name and attempts to find the closest matches to that while ignoring case. It then returns these as an array.
 
 ---
 ### `tio.session()`
