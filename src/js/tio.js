@@ -196,7 +196,7 @@ function Session() {
     self.settings = [];
     self.options = [];
     self.args = [];
-    self.input = "";
+    self._input = "";
 
     //--------------------------------------------------------------------------------------------------------
     function runRequestOnReadyState() {
@@ -280,12 +280,11 @@ function Session() {
         retval += "Vlang\0" + "1\0" + textToByteString(self.language()) + "\0";
 
         retval += "VTIO_OPTIONS\0" + self.options.length + "\0";
-        iterate(self.options, function(option) {
-            retval += textToByteString(option) + "\0"
-        });
+        iterate(self.options, function(option) { retval += textToByteString(option) + "\0" });
 
         retval += "F.code.tio\0" + self._real_code.length + "\0" + textToByteString(self._real_code) + "\0";
-        retval += "F.input.tio\0" + self.input.length + "\0" + textToByteString(self.input) + "\0";
+	var input = self.input();
+        retval += "F.input.tio\0" + input.length + "\0" + textToByteString(input) + "\0";
 
         retval += "Vargs\0" + self.args.length + "\0";
         iterate(self.args, function(arg) {
@@ -433,6 +432,13 @@ function Session() {
         if(debug === undefined) return self._debug;
         self._debug = debug;
         self.onsetdebug();
+    }
+
+    //--------------------------------------------------------------------------------------------------------
+    self.input = function(input) {
+        if(input === undefined) return self._input;
+        self._input = input;
+        self.onsetinput();
     }
 }
     
