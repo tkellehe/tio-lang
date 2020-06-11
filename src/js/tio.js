@@ -279,6 +279,12 @@ function Session() {
     }
 
     //--------------------------------------------------------------------------------------------------------
+    self.clear_results = function() {
+        self.output("");
+	self.debug("");
+    }
+
+    //--------------------------------------------------------------------------------------------------------
     self.state = function() {
         self.ongetstate();
         var retval = "";
@@ -353,6 +359,7 @@ function Session() {
             return;
         }
         self.clear_messages();
+	self.clear_results();
         self.token = getRandomBits(128);
         self.runRequest = new XMLHttpRequest;
         self.runRequest.open("POST", session.tioURL + session.runURL + getSettings(arguments) + self.token, true);
@@ -456,7 +463,7 @@ this.tio.session.find_languages = function(name) {
     var result = [];
     if(session._languages)
         iterate(session.languages, function(language) {
-            if(~language.name.indexOf(name))
+            if(~language.name.toLowerCase().indexOf(name))
                 result.push(language);
         });
     return result;
