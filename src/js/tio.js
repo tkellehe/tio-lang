@@ -277,7 +277,7 @@ function Session() {
         var retval = "";
         self._real_code = (self.header() && self.header() + "\n") + self.code() + (self.footer() && "\n" + self.footer());
 
-        retval += "Vlang\0" + "1" + textToByteString(self.language()) + "\0";
+        retval += "Vlang\0" + "1\0" + textToByteString(self.language()) + "\0";
 
         retval += "VTIO_OPTIONS\0" + self.options.length + "\0";
         iterate(self.options, function(option) {
