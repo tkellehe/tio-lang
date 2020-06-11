@@ -89,7 +89,7 @@ function countBytes(string, encoding) {
 	if (encoding == "nibbles")
 		return Math.ceil(string.match(session.rUnicodeCharacters).length / 2);
 	if (encoding == "xxd") {
-		var fields = string.match(rXxdLastLine);
+		var fields = string.match(session.rXxdLastLine);
 		if (!fields)
 			return 0;
 		return Number("0x" + fields[1]) + fields[2].match(/\S\S/g).length;
