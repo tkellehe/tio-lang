@@ -121,6 +121,11 @@ tio.run()
 ### `Session.markdown()`
 
  > Returns a markdown representation of the code.
+ 
+---
+### `Session.state()`
+
+ > Get the message that encodes the current state of the `Session` instance that will be sent to the TIO servers.
 
 ---
 ### `Session.run(?arguments...)`
