@@ -318,7 +318,7 @@ function Session() {
 
         if(self._real_code) {
             var code = textToByteString(self._real_code);
-            retval += "F.code.tio\0" + code.length + "\0" + textToByteString(code) + "\0";
+            retval += "F.code.tio\0" + code.length + "\0" + code + "\0";
         } else {
             retval += "F.code.tio\0" + "0\0";
         }
