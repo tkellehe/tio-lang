@@ -32,8 +32,8 @@ tio.load();
 ### Hello, World!
 
 ```javascript
-tio.language("python3")
-tio.code("print('Hello, World!')")
+tio.language("jelly")
+tio.code("“3ḅaė;œ»")
 tio.run()
 tio.alert(tio.output())
 ```
