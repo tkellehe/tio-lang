@@ -503,7 +503,7 @@ function Session() {
     
 this.tio = session();
 this.tio.session = session;
-this.tio.session.find_languages = function(name) {
+session.find_languages = function(name) {
     name = name.toLowerCase();
     var result = [];
     if(session._languages)
@@ -513,5 +513,8 @@ this.tio.session.find_languages = function(name) {
         });
     return result;
 };
+session.is_valid_id = function(languageId) {
+    return !!(session._languages && session._languages[languageId])
+}
 
 })();
