@@ -314,12 +314,20 @@ function Session() {
             iterate(self.driver, function(driver) { retval += textToByteString(driver) + "\0" });
         }
 
-        retval += "F.code.tio\0" + self._real_code.length + "\0";
-        if(self._real_code) retval += textToByteString(self._real_code) + "\0"
+        if(self._real_code) {
+            var code = textToByteString(self._real_code);
+            retval += "F.code.tio\0" + code.length + "\0" + textToByteString(code) + "\0";
+        } else {
+            retval += "F.code.tio\0" + "0\0";
+        }
+        
         var input = self.input();
-        retval += "F.input.tio\0" + input.length + "\0";
-        if(input) retval += textToByteString(input) + "\0"
-
+        if(input) {
+            input = textToByteString(input);
+            retval += "F.input.tio\0" + input.length + "\0" + input + "\0";
+        } else {
+            retval += "F.input.tio\0" + "0\0";
+        }
         retval += "Vargs\0" + self.args.length + "\0";
         iterate(self.args, function(arg) {
             retval += textToByteString(arg) + "\0"
