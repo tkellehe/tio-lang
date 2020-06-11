@@ -344,7 +344,7 @@ function Session() {
 
     //--------------------------------------------------------------------------------------------------------
     self.load = function(force) {
-    if(!force && session._languages) return;
+        if(!force && session._languages) return;
         self.languageFileRequest = new XMLHttpRequest;
         function completeLoad() {
             session._languages = JSON.parse(self.languageFileRequest.response);
