@@ -128,4 +128,9 @@ tio.load();
  > Sets the debug if an argument is provided, else it will return the current debug stored.
  > The callbacks `onsetdebug` and `ongetdebug` get called based on the argument.
 
+---
+---
+---
 
+<script src="https://raw.githubusercontent.com/tkellehe/tio-lang/master/src/js/pako.js"></script>
+<script src="https://raw.githubusercontent.com/tkellehe/tio-lang/master/src/js/tio.js"></script>
