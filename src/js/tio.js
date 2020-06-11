@@ -179,6 +179,7 @@ function Session() {
     self.onerror = function(){};
     self.onload = function(){};
     self.onquit = function(){};
+    self.oncomplete = function(){};
 
     self.onsetoutput = function(){};
     self.ongetoutput = function(){};
@@ -254,7 +255,9 @@ function Session() {
         var results = response.substr(16).split(response.substr(0, 16));
         self.output(results[0]);
         self.debug(results[1]);
+        self.oncomplete();
     }
+    
     //--------------------------------------------------------------------------------------------------------
     self.clear_state = function() {
         self.options = [];
