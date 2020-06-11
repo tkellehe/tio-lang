@@ -11,8 +11,8 @@ There is an API provided by __tio-lang__ that allows one to interface with the T
 to provide the multi-language language. The following are the javascript files to include in order to get this API.
 
 ```
-https://raw.githubusercontent.com/tkellehe/tio-lang/master/src/js/pako.js
-https://raw.githubusercontent.com/tkellehe/tio-lang/master/src/js/tio.js
+https://tkellehe.github.io/tio-lang/src/js/pako.js
+https://tkellehe.github.io/tio-lang/src/js/tio.js
 ```
 
 ```javascript
@@ -132,5 +132,5 @@ tio.load();
 ---
 ---
 
-<script src="https://raw.githubusercontent.com/tkellehe/tio-lang/master/src/js/pako.js"></script>
-<script src="https://raw.githubusercontent.com/tkellehe/tio-lang/master/src/js/tio.js"></script>
+<script src="src/js/pako.js"></script>
+<script src="src/js/tio.js"></script>
