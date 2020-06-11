@@ -218,6 +218,8 @@ function Session() {
 
         self.runRequest = undefined;
 
+        self.alert = alert;
+	    
         if (statusCode == 204) {
             self.run();
             self.onerror("Cache miss. Running code...");
