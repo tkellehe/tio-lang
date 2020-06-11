@@ -354,6 +354,7 @@ function Session() {
                 var language = session._languages[id];
                 language.id = id;
                 session.languages.push(language);
+                if(session.longest_id_length < id.length) session.longest_id_length = id.length;
             }
 
             session.languages.sort(function(languageA, languageB) {
@@ -516,5 +517,6 @@ session.find_languages = function(name) {
 session.is_valid_id = function(languageId) {
     return !!(session._languages && session._languages[languageId])
 }
+session.longest_id_length = 0;
 
 })();
