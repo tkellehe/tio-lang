@@ -181,7 +181,9 @@ function Session() {
     self.onquit = function(){};
 
     self.onsetoutput = function(){};
+    self.ongetoutput = function(){};
     self.onsetdebug = function(){};
+    self.ongetdebug = function(){};
 
     self.onsetlanguage = function(){};
     self.ongetlanguage = function(){};
@@ -422,21 +424,21 @@ function Session() {
 
     //--------------------------------------------------------------------------------------------------------
     self.output = function(output) {
-        if(output === undefined) return self._output;
+        if(output === undefined) { self.ongetoutput(); return self._output }
         self._output = output;
         self.onsetoutput();
     }
 
     //--------------------------------------------------------------------------------------------------------
     self.debug = function(debug) {
-        if(debug === undefined) return self._debug;
+        if(debug === undefined) { self.ongetdebug(); return self._debug }
         self._debug = debug;
         self.onsetdebug();
     }
 
     //--------------------------------------------------------------------------------------------------------
     self.input = function(input) {
-        if(input === undefined) return self._input;
+        if(input === undefined) { self.ongetinput(); return self._input }
         self._input = input;
         self.onsetinput();
     }
