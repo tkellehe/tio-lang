@@ -25,8 +25,8 @@ tio.onload = function() {
         console.log("Server output: " + tio.output());
     }
     tio.run();
-}
-tio.load()
+};
+tio.load();
 ```
 
 ---
