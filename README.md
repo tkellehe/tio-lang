@@ -79,6 +79,11 @@ tio.load();
 ### `Session.clear_messages()`
 
  > Clears all of the messages in the `Session.messages` array.
+ 
+---
+### `Session.clear_results()`
+
+ > Clears both `output` and `debug` triggering callbacks `onsetoutput` and `onsetdebug`.
 
 ---
 ### `Session.run(?arguments...)`
