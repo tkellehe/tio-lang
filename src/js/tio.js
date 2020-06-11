@@ -199,6 +199,8 @@ function Session() {
     self.options = [];
     self.args = [];
     self._input = "";
+    self.onsetinput = function(){};
+    self.ongetinput = function(){};
 
     //--------------------------------------------------------------------------------------------------------
     function runRequestOnReadyState() {
