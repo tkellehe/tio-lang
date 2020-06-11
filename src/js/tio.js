@@ -295,9 +295,11 @@ function Session() {
         retval += "VTIO_OPTIONS\0" + self.options.length + "\0";
         iterate(self.options, function(option) { retval += textToByteString(option) + "\0" });
 
-        retval += "F.code.tio\0" + self._real_code.length + "\0" + textToByteString(self._real_code) + "\0";
+        retval += "F.code.tio\0" + self._real_code.length + "\0";
+	if(self._real_code) retval += textToByteString(self._real_code) + "\0"
         var input = self.input();
-        retval += "F.input.tio\0" + input.length + "\0" + textToByteString(input) + "\0";
+        retval += "F.input.tio\0" + input.length + "\0";
+	if(input) retval += textToByteString(input) + "\0"
 
         retval += "Vargs\0" + self.args.length + "\0";
         iterate(self.args, function(arg) {
