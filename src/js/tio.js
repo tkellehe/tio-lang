@@ -197,9 +197,9 @@ function Session() {
     self.ongetstate = function(){};
 
     self.settings = [];
-    self.options = [];
-    self.cflags = [];
-    self.driver = [];
+    self.options = undefined;
+    self.cflags = undefined;
+    self.driver = undefined;
     self.args = [];
     self._input = "";
     self.onsetinput = function(){};
@@ -257,15 +257,6 @@ function Session() {
         self.debug(results[1]);
         self.oncomplete();
     }
-    
-    //--------------------------------------------------------------------------------------------------------
-    self.clear_state = function() {
-        self.options = [];
-        self.cflags = [];
-        self.driver = [];
-        self.args = [];
-        self.input = "";
-    }
 
     //--------------------------------------------------------------------------------------------------------
     function getSettings(arguments) {
@@ -292,6 +283,15 @@ function Session() {
         self.output("");
 	self.debug("");
     }
+    
+    //--------------------------------------------------------------------------------------------------------
+    self.clear_state = function() {
+        self.options = undefined;
+        self.cflags = undefined;
+        self.driver = undefined;
+        self.args = [];
+        self.input("");
+    }
 
     //--------------------------------------------------------------------------------------------------------
     self.state = function() {
@@ -304,17 +304,17 @@ function Session() {
 
         var language = session._languages && session._languages[languageId];
         
-        if(!language || (language && language.unmask && language.unmask.includes("options"))) {
+        if(self.options !== undefined && (!language || (language && language.unmask && language.unmask.includes("options")))) {
             retval += "VTIO_OPTIONS\0" + self.options.length + "\0";
             iterate(self.options, function(option) { retval += textToByteString(option) + "\0" });
         }
         
-        if(!language || (language && language.unmask && language.unmask.includes("cflags"))) {
+        if(self.cflags !== undefined && (!language || (language && language.unmask && language.unmask.includes("cflags")))) {
             retval += "VTIO_CFLAGS\0" + self.cflags.length + "\0";
             iterate(self.cflags, function(cflag) { retval += textToByteString(cflag) + "\0" });
         }
         
-        if(!language || (language && language.unmask && language.unmask.includes("driver"))) {
+        if(self.driver !== undefined && (!language || (language && language.unmask && language.unmask.includes("driver")))) {
             retval += "VTIO_DRIVER\0" + self.driver.length + "\0";
             iterate(self.driver, function(driver) { retval += textToByteString(driver) + "\0" });
         }
@@ -393,7 +393,7 @@ function Session() {
             return;
         }
         self.clear_messages();
-	self.clear_results();
+        self.clear_results();
         self.token = getRandomBits(128);
         self.runRequest = new XMLHttpRequest;
         self.runRequest.open("POST", session.tioURL + session.runURL + getSettings(arguments) + self.token, true);
@@ -436,7 +436,18 @@ function Session() {
     //--------------------------------------------------------------------------------------------------------
     self.language = function(languageId) {
         if(languageId === undefined) { self.ongetlanguage(); return self.languageId }
-        self.languageId = session._languages ? session._languages[languageId].id : languageId;
+        if(session._languages) {
+            var language = session._languages[languageId];
+            if(language.unmask) {
+                iterate(language.unmask, function(data){ self[data] = [] });
+            }
+            self.languageId = language.id;
+        } else {
+            self.options = undefined;
+            self.cflags = undefined;
+            self.driver = undefined;
+            self.languageId = languageId;
+        }
         self.onsetlanguage();
     };
 
