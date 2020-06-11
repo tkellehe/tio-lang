@@ -83,11 +83,11 @@ function countBytes(string, encoding) {
 	if (string === "")
 		return 0;
 	if (encoding == "SBCS")
-		return string.match(rUnicodeCharacters).length;
+		return string.match(session.rUnicodeCharacters).length;
 	if (encoding == "UTF-8")
 		return textToByteString(string).length;
 	if (encoding == "nibbles")
-		return Math.ceil(string.match(rUnicodeCharacters).length / 2);
+		return Math.ceil(string.match(session.rUnicodeCharacters).length / 2);
 	if (encoding == "xxd") {
 		var fields = string.match(rXxdLastLine);
 		if (!fields)
