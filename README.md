@@ -55,6 +55,11 @@ tio.run()
 ### `tio.session.find_languages(name)`
 
  > Takes in a name and attempts to find the closest matches to that while ignoring case. It then returns these as an array.
+ 
+---
+### `tio.session.is_valid_id(?language)`
+
+ > Checks if the language identifier is valid.
 
 ---
 ### `tio.session()`
