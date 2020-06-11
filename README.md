@@ -110,6 +110,11 @@ tio.run()
 ### `Session.clear_results()`
 
  > Clears both `output` and `debug` triggering callbacks `onsetoutput` and `onsetdebug`.
+ 
+---
+### `Session.clear_results()`
+
+ > Clears both `output` and `debug` triggering callbacks `onsetoutput` and `onsetdebug`.
 
 ---
 ### `Session.run(?arguments...)`
@@ -122,6 +127,8 @@ tio.run()
 
  > Sets the language if an argument is provided, else it will return the current language stored.
  > The callbacks `onsetlanguage` and `ongetlanguage` get called based on the argument.
+ > If the languages have been loaded, this will also add the properties
+ > `options`, `cflags`, and `driver` based off of the umask information from the TIO servers.
 
 ---
 ### `Session.header(?header)`
