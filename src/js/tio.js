@@ -206,6 +206,8 @@ function Session() {
 
     self._characterCount = 0;
     self._byteCount = 0;
+    
+    self.alert = alert;
 
     //--------------------------------------------------------------------------------------------------------
     function runRequestOnReadyState() {
@@ -217,8 +219,6 @@ function Session() {
         var statusText = self.runRequest.statusText;
 
         self.runRequest = undefined;
-
-        self.alert = alert;
 	    
         if (statusCode == 204) {
             self.run();
