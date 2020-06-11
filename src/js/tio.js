@@ -197,6 +197,8 @@ function Session() {
 
     self.settings = [];
     self.options = [];
+    self.cflags = [];
+    self.driver = [];
     self.args = [];
     self._input = "";
     self.onsetinput = function(){};
@@ -254,6 +256,8 @@ function Session() {
     //--------------------------------------------------------------------------------------------------------
     self.clear_state = function() {
         self.options = [];
+        self.cflags = [];
+        self.driver = [];
         self.args = [];
         self.input = "";
     }
@@ -290,16 +294,31 @@ function Session() {
         var retval = "";
         self._real_code = (self.header() && self.header() + "\n") + self.code() + (self.footer() && "\n" + self.footer());
 
-        retval += "Vlang\0" + "1\0" + textToByteString(self.language()) + "\0";
+        var languageId = self.language()
+        retval += "Vlang\0" + "1\0" + textToByteString(languageId) + "\0";
 
-        retval += "VTIO_OPTIONS\0" + self.options.length + "\0";
-        iterate(self.options, function(option) { retval += textToByteString(option) + "\0" });
+        var language = session._languages && session._languages[languageId];
+        
+        if(!language || (language && language.unmask && language.unmask.includes("options"))) {
+            retval += "VTIO_OPTIONS\0" + self.options.length + "\0";
+            iterate(self.options, function(option) { retval += textToByteString(option) + "\0" });
+        }
+        
+        if(!language || (language && language.unmask && language.unmask.includes("cflags"))) {
+            retval += "VTIO_CFLAGS\0" + self.cflags.length + "\0";
+            iterate(self.cflags, function(cflag) { retval += textToByteString(cflag) + "\0" });
+        }
+        
+        if(!language || (language && language.unmask && language.unmask.includes("driver"))) {
+            retval += "VTIO_DRIVER\0" + self.driver.length + "\0";
+            iterate(self.driver, function(driver) { retval += textToByteString(driver) + "\0" });
+        }
 
         retval += "F.code.tio\0" + self._real_code.length + "\0";
-	if(self._real_code) retval += textToByteString(self._real_code) + "\0"
+        if(self._real_code) retval += textToByteString(self._real_code) + "\0"
         var input = self.input();
         retval += "F.input.tio\0" + input.length + "\0";
-	if(input) retval += textToByteString(input) + "\0"
+        if(input) retval += textToByteString(input) + "\0"
 
         retval += "Vargs\0" + self.args.length + "\0";
         iterate(self.args, function(arg) {
