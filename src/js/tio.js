@@ -3,7 +3,7 @@
 // Note: This code is a derivative of Try It Online https://github.com/TryItOnline/tryitonline.
 
 session = function() { return new Session() };
-session.tioURl = "https://tio.run/"
+session.tioURL = "https://tio.run/"
 session.langURL = "/static/3fbdee7a34cd8d340fe2dbd19acd2391-languages.json";
 session.authKeyURL = "/cgi-bin/static/04cc47c57f016cbe971132df49bf9125-auth";
 session.cacheURL = "/cgi-bin/static/5f222455af4449f60c97222aa04d3510-cache";
@@ -171,7 +171,7 @@ function Session() {
     self._footer = "";
     self._output = "";
     self._debug = "";
-    
+
     self.onmessage = function(){};
     self.onoutput = function(){};
     self.ondebug = function(){};
@@ -179,10 +179,10 @@ function Session() {
     self.onerror = function(){};
     self.onload = function(){};
     self.onquit = function(){};
-    
+
     self.onsetoutput = function(){};
     self.onsetdebug = function(){};
-    
+
     self.onsetlanguage = function(){};
     self.ongetlanguage = function(){};
     self.onsetcode = function(){};
@@ -192,12 +192,12 @@ function Session() {
     self.onsetfooter = function(){};
     self.ongetfooter = function(){};
     self.ongetstate = function(){};
-    
+
     self.settings = [];
     self.options = [];
     self.args = [];
     self.input = "";
-    
+
     //--------------------------------------------------------------------------------------------------------
     function runRequestOnReadyState() {
         if (self.runRequest.readyState != XMLHttpRequest.DONE)
@@ -258,49 +258,49 @@ function Session() {
         iterate(self.settings, function(setting) { retval += (typeof setting === "string") ? setting + "/" : ""; })
         return retval;
     }
-    
+
     //--------------------------------------------------------------------------------------------------------
     self.message = function(title, message) {
         self.messages.push(new Message(title, message));
         self.onmessage();
     }
-    
+
     //--------------------------------------------------------------------------------------------------------
     self.clear_messages = function() {
         self.messages = [];
         self.onmessage();
     }
-    
+
     //--------------------------------------------------------------------------------------------------------
     self.state = function() {
         self.ongetstate();
         var retval = "";
         self._real_code = (self.header() && self.header() + "\n") + self.code() + (self.footer() && "\n" + self.footer());
-        
+
         retval += "Vlang\0" + "1" + textToByteString(self.language()) + "\0";
-        
+
         retval += "VTIO_OPTIONS\0" + self.options.length + "\0";
         iterate(self.options, function(option) {
             retval += textToByteString(option) + "\0"
         });
-        
+
         retval += "F.code.tio\0" + self._real_code.length + "\0" + textToByteString(self._real_code) + "\0";
         retval += "F.input.tio\0" + self.input.length + "\0" + textToByteString(self.input) + "\0";
-        
+
         retval += "Vargs\0" + self.args.length + "\0";
         iterate(self.args, function(arg) {
             retval += textToByteString(arg) + "\0"
         });
-        
+
         retval += "R"
         return retval;
     }
-    
+
     //--------------------------------------------------------------------------------------------------------
     self.load = function() {
-        var languageFileRequest = new XMLHttpRequest;
+        self.languageFileRequest = new XMLHttpRequest;
         function completeLoad() {
-            session._languages = JSON.parse(languageFileRequest.response);
+            session._languages = JSON.parse(self.languageFileRequest.response);
             session.languages = []
 
             for (var id in session.languages) {
@@ -312,16 +312,16 @@ function Session() {
             session.languages.sort(function(languageA, languageB) {
                 return 2 * (languageA.name.toLowerCase() > languageB.name.toLowerCase()) - 1;
             });
-            
+
             self.onload();
         }
-        
-        languageFileRequest.onreadystatechange = function() {
+
+        self.languageFileRequest.onreadystatechange = function() {
             try {
-                if (languageFileRequest.readyState != XMLHttpRequest.DONE)
+                if (self.languageFileRequest.readyState != XMLHttpRequest.DONE)
                     return;
                 sha256(byteStringToByteArray(getRandomBits(128)), String);
-                boot();
+                completeLoad();
             } catch(error) {
                 console.error(error);
 
@@ -332,50 +332,50 @@ function Session() {
                     alert("Your browser seems to lack a required feature.\n\nCurrently, the only supported browsers are Chrome/Chromium, Firefox, and Safari (recent versions), Edge (all versions), and Internet Explorer 11.\n\nIf you are using one of those browsers, you are receiving this message in error. Please send an email to feedback@tryitonline.net and include the error log below. You should be able to copy the error message from your console.\n\n" + error);
             }
         }
-        languageFileRequest.open("GET", session.tioURL + session.loadURL);
-        languageFileRequest.send();
+        self.languageFileRequest.open("GET", session.tioURL + session.langURL);
+        self.languageFileRequest.send();
     }
 
     //--------------------------------------------------------------------------------------------------------
-	self.run = function() {
-		if (self.runRequest) {
-			var quitRequest = new XMLHttpRequest;
-			quitRequest.open("GET", session.tioURL + session.quitURL + "/" + self.token);
+    self.run = function() {
+        if (self.runRequest) {
+            var quitRequest = new XMLHttpRequest;
+            quitRequest.open("GET", session.tioURL + session.quitURL + "/" + self.token);
             self.onquit(quitRequest);
-			quitRequest.send();
-			return;
-		}
-		self.clear_messages();
-		self.token = getRandomBits(128);
-		self.runRequest = new XMLHttpRequest;
-		self.runRequest.open("POST", session.tioURL + session.runURL + self.getSettings(arguments) + self.token, true);
-		self.runRequest.responseType = "arraybuffer";
-		self.runRequest.onreadystatechange = runRequestOnReadyState;
-		self.runRequest.send(deflate(self.state()));
+            quitRequest.send();
+            return;
+        }
+        self.clear_messages();
+        self.token = getRandomBits(128);
+        self.runRequest = new XMLHttpRequest;
+        self.runRequest.open("POST", session.tioURL + session.runURL + self.getSettings(arguments) + self.token, true);
+        self.runRequest.responseType = "arraybuffer";
+        self.runRequest.onreadystatechange = runRequestOnReadyState;
+        self.runRequest.send(deflate(self.state()));
         self.onrun();
-	}
+    }
 
     //--------------------------------------------------------------------------------------------------------
-    self.markdown = function() { return codeToMarkdown(self.code)); }
-    
+    self.markdown = function() { return codeToMarkdown(self.code()); }
+
     //--------------------------------------------------------------------------------------------------------
-	self._permalink = function() {
-		var code = self._code;
-		var language = session._languages[self.languageId];
-		var data = {
-			"bytes": pluralization(countBytes(code, language.encoding), "byte"),
-			"markdownCode": self.markdown(),
-			"prettifyHint": language.prettify ? "<!-- language-all: lang-" + language.prettify + " -->\n\n" : "",
-			"lang": language.name,
-			"link": language.link,
-			"n": "\n",
-			"nn": "\n\n",
-			"permalink": location.href,
-			"timestamp": Date.now().toString(36)
-		}
+    self._permalink = function() {
+        var code = self._code;
+        var language = session._languages[self.languageId];
+        var data = {
+            "bytes": pluralization(countBytes(code, language.encoding), "byte"),
+            "markdownCode": self.markdown(),
+            "prettifyHint": language.prettify ? "<!-- language-all: lang-" + language.prettify + " -->\n\n" : "",
+            "lang": language.name,
+            "link": language.link,
+            "n": "\n",
+            "nn": "\n\n",
+            "permalink": location.href,
+            "timestamp": Date.now().toString(36)
+        }
         return data;
-	};
-    
+    };
+
     //--------------------------------------------------------------------------------------------------------
     self._probe_output_cache = function() {
         self.runRequest = new XMLHttpRequest;
@@ -384,9 +384,9 @@ function Session() {
         self.runRequest.onreadystatechange = runRequestOnReadyState;
         sha256(deflate(stateToByteString()), self.runRequest.send.bind(self.runRequest));
     }
-    
+
     //--------------------------------------------------------------------------------------------------------
-	self.language = function(languageId) {
+    self.language = function(languageId) {
         if(languageId === undefined) { self.ongetlanguage(); return self.languageId }
         self.languageId = session._languages[languageId].id;
         history.pushState({}, "", session.tioURL + "/#" + self.languageId);
@@ -394,7 +394,7 @@ function Session() {
     };
 
     //--------------------------------------------------------------------------------------------------------
-	self.code = function(code) {
+    self.code = function(code) {
         if(code === undefined) { self.ongetcode(); return self._code }
         var encoding = session._languages[self.languageId].encoding;
 
@@ -408,28 +408,28 @@ function Session() {
     }
 
     //--------------------------------------------------------------------------------------------------------
-	self.header = function(header) {
+    self.header = function(header) {
         if(header === undefined) { self.ongetheader(); return self._header }
         self._header = header;
         self.onsetheader();
     }
 
     //--------------------------------------------------------------------------------------------------------
-	self.footer = function(footer) {
+    self.footer = function(footer) {
         if(footer === undefined) { self.ongetfooter(); return self._footer }
         self._footer = footer;
         self.onsetfooter();
     }
 
     //--------------------------------------------------------------------------------------------------------
-	self.output = function(output) {
+    self.output = function(output) {
         if(output === undefined) return self._output;
         self._output = output;
         self.onsetoutput();
     }
 
     //--------------------------------------------------------------------------------------------------------
-	self.debug = function(debug) {
+    self.debug = function(debug) {
         if(debug === undefined) return self._debug;
         self._debug = debug;
         self.onsetdebug();
