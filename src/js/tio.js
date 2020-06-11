@@ -202,6 +202,9 @@ function Session() {
     self.onsetinput = function(){};
     self.ongetinput = function(){};
 
+    self._characterCount = 0;
+    self._byteCount = 0;
+
     //--------------------------------------------------------------------------------------------------------
     function runRequestOnReadyState() {
         if (self.runRequest.readyState != XMLHttpRequest.DONE)
@@ -287,7 +290,7 @@ function Session() {
         iterate(self.options, function(option) { retval += textToByteString(option) + "\0" });
 
         retval += "F.code.tio\0" + self._real_code.length + "\0" + textToByteString(self._real_code) + "\0";
-	var input = self.input();
+        var input = self.input();
         retval += "F.input.tio\0" + input.length + "\0" + textToByteString(input) + "\0";
 
         retval += "Vargs\0" + self.args.length + "\0";
@@ -301,7 +304,7 @@ function Session() {
 
     //--------------------------------------------------------------------------------------------------------
     self.load = function(force) {
-	if(!force && session._languages) return;
+    if(!force && session._languages) return;
         self.languageFileRequest = new XMLHttpRequest;
         function completeLoad() {
             session._languages = JSON.parse(self.languageFileRequest.response);
