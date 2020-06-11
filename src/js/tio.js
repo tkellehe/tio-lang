@@ -449,7 +449,17 @@ function Session() {
     }
 }
     
-this.tio = session()
-this.tio.session = session
-    
+this.tio = session();
+this.tio.session = session;
+this.tio.session.find_languages = function(name) {
+    name = name.toLowerCase();
+    var result = [];
+    if(session._languages)
+        iterate(session.languages, function(language) {
+            if(~language.name.indexOf(name))
+                result.push(language);
+        });
+    return result;
+};
+
 })();
