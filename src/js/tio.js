@@ -390,7 +390,6 @@ function Session() {
     self.language = function(languageId) {
         if(languageId === undefined) { self.ongetlanguage(); return self.languageId }
         self.languageId = session._languages[languageId].id;
-        history.pushState({}, "", session.tioURL + "/#" + self.languageId);
         self.onsetlanguage();
     };
 
