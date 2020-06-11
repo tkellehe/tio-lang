@@ -303,7 +303,7 @@ function Session() {
             session._languages = JSON.parse(self.languageFileRequest.response);
             session.languages = []
 
-            for (var id in session.languages) {
+            for (var id in session._languages) {
                 var language = session._languages[id];
                 language.id = id;
                 session.languages.push(language);
@@ -348,7 +348,7 @@ function Session() {
         self.clear_messages();
         self.token = getRandomBits(128);
         self.runRequest = new XMLHttpRequest;
-        self.runRequest.open("POST", session.tioURL + session.runURL + self.getSettings(arguments) + self.token, true);
+        self.runRequest.open("POST", session.tioURL + session.runURL + getSettings(arguments) + self.token, true);
         self.runRequest.responseType = "arraybuffer";
         self.runRequest.onreadystatechange = runRequestOnReadyState;
         self.runRequest.send(deflate(self.state()));
