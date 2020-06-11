@@ -300,7 +300,8 @@ function Session() {
     }
 
     //--------------------------------------------------------------------------------------------------------
-    self.load = function() {
+    self.load = function(force) {
+	if(!force && session._languages) return;
         self.languageFileRequest = new XMLHttpRequest;
         function completeLoad() {
             session._languages = JSON.parse(self.languageFileRequest.response);
@@ -391,7 +392,7 @@ function Session() {
     //--------------------------------------------------------------------------------------------------------
     self.language = function(languageId) {
         if(languageId === undefined) { self.ongetlanguage(); return self.languageId }
-        self.languageId = session._languages[languageId].id;
+        self.languageId = self._languages ? session._languages[languageId].id : languageId;
         self.onsetlanguage();
     };
 
