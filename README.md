@@ -29,6 +29,15 @@ tio.onload = function() {
 tio.load();
 ```
 
+### Hello, World!
+
+```javascript
+tio.language("python3")
+tio.code("print('Hello, World!')")
+tio.run()
+tio.alert(tio.output())
+```
+
 ---
 ### `tio.session`
 
