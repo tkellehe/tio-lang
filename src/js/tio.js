@@ -208,7 +208,7 @@ function Session() {
     self._characterCount = 0;
     self._byteCount = 0;
     
-    self.alert = alert;
+    self.alert = function(message) { alert(message) };
 
     //--------------------------------------------------------------------------------------------------------
     function runRequestOnReadyState() {
