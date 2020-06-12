@@ -1,6 +1,6 @@
 (function(){
 
-var output_div_elements = document.getElementsByClassName("tio-output");
+var output_div_elements = document.getElementsByClassName(".tio-output");
 
 var nbs = String.fromCharCode(160),
     space = String.fromCharCode(32);
@@ -23,7 +23,7 @@ for(var i = output_div_elements.length; i--;) {
         output_element.style.height = "5em"
   // box-sizing: border-box;         /* For IE and modern versions of Chrome */
   // -moz-box-sizing: border-box;    /* For Firefox                          */
-  // -webkit-box-sizing: border-box; /* For Safari                           */
+  // -webkit-box-sizing: border-box; /* For Safari                           */     
         output_element.style.resize = "vertical";
         output_element.style.fontFamily = "monospace";
         output_element.style.outline = "none";
