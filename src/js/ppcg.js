@@ -46,14 +46,6 @@ function onload() {
     }
 }
 
-if(document.onload) {
-    var temp = document.onload;
-    document.onload = function() {
-        onload();
-        temp.apply(this, arguments)
-    }
-} else {
-    document.onload = onload;
-}
+document.addEventListener("load", onload);
 
 })()
