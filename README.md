@@ -3,6 +3,13 @@
 The __tio-lang__ is a language that calls to other programming languages that are available on [Try It Online](https://github.com/TryItOnline/tryitonline).
 
 ---
+```
+\x00c\x85p(a);brainfuck\x9A,.,.,.,.,.,.,.,.,.,.,.,.,.python\x84p(I)
+```
+<div class=".tio-output" code="\x00c\x85p(a);brainfuck\x9A,.,.,.,.,.,.,.,.,.,.,.,.,.python\x84p(I)" input="Hello, World!"></div>
+
+---
+
 ---
 
 ## tio.js
@@ -17,7 +24,7 @@ https://tkellehe.github.io/tio-lang/src/js/tio.js
 
 ```javascript
 tio.onload = function() {
-    console.log("Number of languages: " + tio.session.languages.length);
+    console.log("Number of languages: " + tio.utils.languages.length);
     tio.language("python3");
     tio.code("import sys\nprint(sys.argv)");
     tio.args.push('-t');
@@ -42,27 +49,27 @@ tio.run()
 ```
 
 ---
-### `tio.session`
+### `tio.utils`
 
- > A global set of information used throughout all sessions created.
+ > A global set of information used throughout all `Session` instances created.
 
 ---
-### `tio.session.languages`
+### `tio.utils.languages`
 
  > The list of language JSON objects pulled from the TIO servers.
  
 ---
-### `tio.session.find_languages(name)`
+### `tio.utils.find_languages(name)`
 
  > Takes in a name and attempts to find the closest matches to that while ignoring case. It then returns these as an array.
  
 ---
-### `tio.session.is_valid_id(?language)`
+### `tio.utils.is_valid_id(?language)`
 
  > Checks if the language identifier is valid.
 
 ---
-### `tio.session()`
+### `tio.utils.session()`
 
  > Create a new `Session` instance that can communicate and run code. Also, `tio` is a `Session` instance.
  
@@ -99,13 +106,18 @@ tio.run()
 ---
 ### `Session.load(?force)`
 
- > Loads the languages from the TIO servers and populates the `tio.session` data. The callbacks `onload` can be used to be indicated
+ > Loads the languages from the TIO servers and populates the `tio.utils` data. The callbacks `onload` can be used to be indicated
  > when the data is brought. If `force` is set to true, it will ensure another fetch is called to the TIO servers.
  
 ---
 ### `Session.message(title, message)`
 
  > Caches the message into the `Session.messages` array with a `Message` object.
+  
+---
+### `Session.clear()`
+
+ > Invoke all clear functions for `Session` instance.
  
 ---
 ### `Session.clear_messages()`
@@ -115,12 +127,12 @@ tio.run()
 ---
 ### `Session.clear_results()`
 
- > Clears both `output` and `debug` triggering callbacks `onsetoutput` and `onsetdebug`.
+ > Clears both `Session.output` and `Session.debug` triggering callbacks `onsetoutput` and `onsetdebug`.
  
 ---
-### `Session.clear_results()`
+### `Session.clear_state()`
 
- > Clears both `output` and `debug` triggering callbacks `onsetoutput` and `onsetdebug`.
+ > Clears all input related information which includes `Session.options`, `Session.args`, `Session.cflags`, `Session.driver`, and invokes callback `onsetinput`.
  
 ---
 ### `Session.markdown()`
@@ -136,7 +148,7 @@ tio.run()
 ### `Session.run(?arguments...)`
 
  > Packages up the code and options to be sent to the TIO servers.
- > The callbacks that can be used to access this: `onrun`, `onquit`, `on
+ > The callbacks that can be used to access this: `onrun`, `onquit`, `oncomplete`
  
 ---
 ### `Session.language(?language)`
@@ -188,3 +200,5 @@ tio.run()
 
 <script src="src/js/pako.js"></script>
 <script src="src/js/tio.js"></script>
+<script src="src/js/parser.js"></script>
+<script src="src/js/ppcg.js"></script>

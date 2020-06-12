@@ -2,33 +2,44 @@
 
 // Note: This code is a derivative of Try It Online https://github.com/TryItOnline/tryitonline.
 
-session = function() { return new Session() };
-session.tioURL = "https://tio.run/"
-session.langURL = "/static/3fbdee7a34cd8d340fe2dbd19acd2391-languages.json";
-session.authKeyURL = "/cgi-bin/static/04cc47c57f016cbe971132df49bf9125-auth";
-session.cacheURL = "/cgi-bin/static/5f222455af4449f60c97222aa04d3510-cache";
-session.quitURL = "/cgi-bin/static/c5ba5a3ddf5ce434ee4017d5cbc9f9f2-quit";
-session.runURL = "/cgi-bin/static/fb67788fd3d1ebf92e66b295525335af-run";
+utils = {};
+utils.session = function() { return new Session() };
+utils.tioURL = "https://tio.run/"
+utils.langURL = "/static/3fbdee7a34cd8d340fe2dbd19acd2391-languages.json";
+utils.authKeyURL = "/cgi-bin/static/04cc47c57f016cbe971132df49bf9125-auth";
+utils.cacheURL = "/cgi-bin/static/5f222455af4449f60c97222aa04d3510-cache";
+utils.quitURL = "/cgi-bin/static/c5ba5a3ddf5ce434ee4017d5cbc9f9f2-quit";
+utils.runURL = "/cgi-bin/static/fb67788fd3d1ebf92e66b295525335af-run";
 
-session.fieldSeparator = "\xff";
-session.greeted = "65a4609a"
-session.languages;
-session.ms = window.MSInputMethodContext !== undefined;
-session.rEmptyStateString = /^[^ÿ]+ÿ+$/;
-session.rExtraFieldStrings = /\xfe[\x00-\xf3\xff]+/g;
-session.rEscapees = /[\x00-\x09\x0b-\x1f\x7f-\x9f&<>]| $/gm;
-session.rFieldString = /^[\x00-\xf3\xff]+/;
-session.rNewLine = /^/gm;
-session.rLineOfSpaces = /^\s+$/m;
-session.rSettingString = /\xf5[\x20-\x7e]+/;
-session.rSurroundingLinefeed = /^\n|\n$/;
-session.rUnpairedSurrogates = /[\ud800-\udbff](?![\udc00-\udfff])|([^\ud800-\udbff]|^)[\udc00-\udfff]/;
-session.rUnicodeCharacters = /[^][\udc00-\udfff]?/g;
-session.rUnprintable = /[\x00-\x09\x0b-\x1f\x7f-\x9f]/;
-session.rXxdLastLine = /(\w+):(.*?)\s\s.*$/;
-session.startOfExtraFields = "\xfe";
-session.startOfSettings = "\xf5";
-session.touchDevice = navigator.MaxTouchPoints > 0 || window.ontouchstart !== undefined;
+utils.fieldSeparator = "\xff";
+utils.greeted = "65a4609a"
+utils.languages;
+utils.ms = window.MSInputMethodContext !== undefined;
+utils.rEmptyStateString = /^[^ÿ]+ÿ+$/;
+utils.rExtraFieldStrings = /\xfe[\x00-\xf3\xff]+/g;
+utils.rEscapees = /[\x00-\x09\x0b-\x1f\x7f-\x9f&<>]| $/gm;
+utils.rFieldString = /^[\x00-\xf3\xff]+/;
+utils.rNewLine = /^/gm;
+utils.rLineOfSpaces = /^\s+$/m;
+utils.rSettingString = /\xf5[\x20-\x7e]+/;
+utils.rSurroundingLinefeed = /^\n|\n$/;
+utils.rUnpairedSurrogates = /[\ud800-\udbff](?![\udc00-\udfff])|([^\ud800-\udbff]|^)[\udc00-\udfff]/;
+utils.rUnicodeCharacters = /[^][\udc00-\udfff]?/g;
+utils.rUnprintable = /[\x00-\x09\x0b-\x1f\x7f-\x9f]/;
+utils.rXxdLastLine = /(\w+):(.*?)\s\s.*$/;
+utils.startOfExtraFields = "\xfe";
+utils.startOfSettings = "\xf5";
+utils.touchDevice = navigator.MaxTouchPoints > 0 || window.ontouchstart !== undefined;
+
+function encode_utf8(s) {
+  return unescape(encodeURIComponent(s));
+}
+utils.encode_utf8 = encode_utf8;
+
+function decode_utf8(s) {
+  return decodeURIComponent(escape(s));
+}
+utils.decode_utf8 = decode_utf8;
 
 function pluralization(number, string) {
     return number + " " + string + (number == 1 ? "" : "s");
@@ -40,14 +51,17 @@ function iterate(iterable, monad) {
     for (var i = 0; i < iterable.length; i++)
         monad(iterable[i]);
 }
+utils.iterate = iterate;
 
 function deflate(byteString) {
     return pako.deflateRaw(byteStringToByteArray(byteString), {"level": 9});
 }
+utils.deflate = deflate;
 
 function inflate(byteString) {
     return byteArrayToByteString(pako.inflateRaw(byteString));
 }
+utils.inflate = inflate;
 
 function byteStringToByteArray(byteString) {
     var byteArray = new Uint8Array(byteString.length);
@@ -57,97 +71,90 @@ function byteStringToByteArray(byteString) {
     return byteArray;
 }
 
-function textToByteString(string) {
-	return unescape(encodeURIComponent(string));
-}
-
-function byteStringToText(byteString) {
-	return decodeURIComponent(escape(byteString));
-}
-
 function byteArrayToByteString(byteArray) {
-	var retval = "";
-	iterate(byteArray, function(byte) { retval += String.fromCharCode(byte); });
-	return retval;
+    var retval = "";
+    iterate(byteArray, function(byte) { retval += String.fromCharCode(byte); });
+    return retval;
 }
 
 function byteStringToBase64(byteString) {
-	return btoa(byteString).replace(/\+/g, "@").replace(/=+/, "");
+    return btoa(byteString).replace(/\+/g, "@").replace(/=+/, "");
 }
 
 function base64ToByteString(base64String) {
-	return atob(unescape(base64String).replace(/@|-/g, "+").replace(/_/g, "/"))
+    return atob(unescape(base64String).replace(/@|-/g, "+").replace(/_/g, "/"))
 }
 
-function countBytes(string, encoding) {
-	if (string === "")
-		return 0;
-	if (encoding == "SBCS")
-		return string.match(session.rUnicodeCharacters).length;
-	if (encoding == "UTF-8")
-		return textToByteString(string).length;
-	if (encoding == "nibbles")
-		return Math.ceil(string.match(session.rUnicodeCharacters).length / 2);
-	if (encoding == "xxd") {
-		var fields = string.match(session.rXxdLastLine);
-		if (!fields)
-			return 0;
-		return Number("0x" + fields[1]) + fields[2].match(/\S\S/g).length;
-	}
+function count_bytes(string, encoding) {
+    if (string === "")
+        return 0;
+    if (encoding == "SBCS")
+        return string.match(utils.rUnicodeCharacters).length;
+    if (encoding == "UTF-8")
+        return encode_utf8(string).length;
+    if (encoding == "nibbles")
+        return Math.ceil(string.match(utils.rUnicodeCharacters).length / 2);
+    if (encoding == "xxd") {
+        var fields = string.match(utils.rXxdLastLine);
+        if (!fields)
+            return 0;
+        return Number("0x" + fields[1]) + fields[2].match(/\S\S/g).length;
+    }
 }
+utils.count_bytes = count_bytes;
 
 function clone(queryString) {
-	return $(queryString).cloneNode(true)
+    return $(queryString).cloneNode(true)
 }
 
 function codeToMarkdown(code) {
-	if (code === "")
-		return "<pre><code></code></pre>";
-	if (session.rLineOfSpaces.test(code) || session.rSurroundingLinefeed.test(code) || session.rUnprintable.test(code))
-		return "<pre><code>" + code.replace(session.rEscapees, function(character) {
-			switch (character) {
-				case "\0": return "";
-				case "<":  return "&lt;";
-				case ">":  return "&gt;";
-				case "&":  return "&amp;";
-				default:   return "&#" + character.charCodeAt(0) + ";";
-			}
-		}) + "\n</code></pre>";
-	else
-		return code.replace(session.rNewLine, "    ");
+    if (code === "")
+        return "<pre><code></code></pre>";
+    if (utils.rLineOfSpaces.test(code) || utils.rSurroundingLinefeed.test(code) || utils.rUnprintable.test(code))
+        return "<pre><code>" + code.replace(utils.rEscapees, function(character) {
+            switch (character) {
+                case "\0": return "";
+                case "<":  return "&lt;";
+                case ">":  return "&gt;";
+                case "&":  return "&amp;";
+                default:   return "&#" + character.charCodeAt(0) + ";";
+            }
+        }) + "\n</code></pre>";
+    else
+        return code.replace(utils.rNewLine, "    ");
 }
 
 function bufferToHex(buffer) {
-	var dataView = new DataView(buffer);
-	var retval = "";
+    var dataView = new DataView(buffer);
+    var retval = "";
 
-	for (var i = 0; i < dataView.byteLength; i++)
-		retval += (256 | dataView.getUint8(i)).toString(16).slice(-2);
+    for (var i = 0; i < dataView.byteLength; i++)
+        retval += (256 | dataView.getUint8(i)).toString(16).slice(-2);
 
-	return retval;
+    return retval;
 }
 
 function getRandomBits(minBits) {
-	var crypto = window.crypto || window.msCrypto;
-	return bufferToHex(crypto.getRandomValues(new Uint8Array(minBits + 7 >> 3)).buffer);
+    var crypto = window.crypto || window.msCrypto;
+    return bufferToHex(crypto.getRandomValues(new Uint8Array(minBits + 7 >> 3)).buffer);
 }
 
 function sha256(byteArray, callback) {
-	if (window.crypto)
-		return (crypto.subtle || crypto.webkitSubtle).
-			digest("SHA-256", byteArray).
-			then(bufferToHex).
-			then(callback);
+    if (window.crypto)
+        return (crypto.subtle || crypto.webkitSubtle).
+            digest("SHA-256", byteArray).
+            then(bufferToHex).
+            then(callback);
 
-	if (byteArray.length == 0)
-		return callback('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855');
+    if (byteArray.length == 0)
+        return callback('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855');
 
-	var operation = session.msCrypto.subtle.digest("SHA-256");
-	operation.process(byteArray);
-	operation.oncomplete = function(event) {
-		callback(bufferToHex(event.target.result));
-	};
-	operation.finish();
+    var operation = utils.msCrypto.subtle.digest("SHA-256");
+    operation.process(byteArray);
+    operation.oncomplete = function(event) {
+        callback(bufferToHex(event.target.result));
+    };
+    operation.finish();
 }
 
 //************************************************************************************************************
@@ -155,22 +162,25 @@ function sha256(byteArray, callback) {
 //************************************************************************************************************
 //************************************************************************************************************
 
-function Message(title, message) {
+function Message(title, message, category) {
     this.title = title;
     this.message = message;
+    this.category = category;
 }
     
 function Session() {
     var self = this;
     self.runRequest = undefined;
     self.token = undefined;
-    self.languageId = undefined;
+    self._language = undefined;
     self.messages = [];
     self._code = "";
     self._header = "";
     self._footer = "";
     self._output = "";
     self._debug = "";
+
+    self.utils = utils;
 
     self.onmessage = function(){};
     self.onoutput = function(){};
@@ -197,6 +207,9 @@ function Session() {
     self.ongetstate = function(){};
 
     self.settings = [];
+    self._options = [];
+    self._cflags = [];
+    self._driver = [];
     self.options = undefined;
     self.cflags = undefined;
     self.driver = undefined;
@@ -220,7 +233,7 @@ function Session() {
         var statusText = self.runRequest.statusText;
 
         self.runRequest = undefined;
-	    
+        
         if (statusCode == 204) {
             self.run();
             self.onerror("Cache miss. Running code...");
@@ -242,7 +255,7 @@ function Session() {
         }
 
         try {
-            response = byteStringToText(rawOutput);
+            response = decode_utf8(rawOutput);
         } catch(error) {
             response = rawOutput;
         }
@@ -267,9 +280,16 @@ function Session() {
     }
 
     //--------------------------------------------------------------------------------------------------------
-    self.message = function(title, message) {
-        self.messages.push(new Message(title, message));
+    self.message = function(title, message, category) {
+        self.messages.push(new Message(title, message, category));
         self.onmessage();
+    }
+
+    //--------------------------------------------------------------------------------------------------------
+    self.clear = function() {
+        self.clear_messages();
+        self.clear_results();
+        self.clear_state();
     }
 
     //--------------------------------------------------------------------------------------------------------
@@ -281,11 +301,14 @@ function Session() {
     //--------------------------------------------------------------------------------------------------------
     self.clear_results = function() {
         self.output("");
-	self.debug("");
+        self.debug("");
     }
     
     //--------------------------------------------------------------------------------------------------------
     self.clear_state = function() {
+        self._options = self.options || [];
+        self._cflags = self.cflags || [];
+        self._driver = self.driver || [];
         self.options = undefined;
         self.cflags = undefined;
         self.driver = undefined;
@@ -295,32 +318,33 @@ function Session() {
 
     //--------------------------------------------------------------------------------------------------------
     self.state = function() {
+        self._unmask();
         self.ongetstate();
         var retval = "";
         self._real_code = (self.header() && self.header() + "\n") + self.code() + (self.footer() && "\n" + self.footer());
 
-        var languageId = self.language()
-        retval += "Vlang\0" + "1\0" + textToByteString(languageId) + "\0";
+        var id = self.language()
+        retval += "Vlang\0" + "1\0" + encode_utf8(id) + "\0";
 
-        var language = session._languages && session._languages[languageId];
+        var language = self.utils._languages && self.utils._languages[id];
         
         if(self.options !== undefined && (!language || (language && language.unmask && language.unmask.includes("options")))) {
             retval += "VTIO_OPTIONS\0" + self.options.length + "\0";
-            iterate(self.options, function(option) { retval += textToByteString(option) + "\0" });
+            iterate(self.options, function(option) { retval += encode_utf8(option) + "\0" });
         }
         
         if(self.cflags !== undefined && (!language || (language && language.unmask && language.unmask.includes("cflags")))) {
             retval += "VTIO_CFLAGS\0" + self.cflags.length + "\0";
-            iterate(self.cflags, function(cflag) { retval += textToByteString(cflag) + "\0" });
+            iterate(self.cflags, function(cflag) { retval += encode_utf8(cflag) + "\0" });
         }
         
         if(self.driver !== undefined && (!language || (language && language.unmask && language.unmask.includes("driver")))) {
             retval += "VTIO_DRIVER\0" + self.driver.length + "\0";
-            iterate(self.driver, function(driver) { retval += textToByteString(driver) + "\0" });
+            iterate(self.driver, function(driver) { retval += encode_utf8(driver) + "\0" });
         }
 
         if(self._real_code) {
-            var code = textToByteString(self._real_code);
+            var code = encode_utf8(self._real_code);
             retval += "F.code.tio\0" + code.length + "\0" + code + "\0";
         } else {
             retval += "F.code.tio\0" + "0\0";
@@ -328,14 +352,14 @@ function Session() {
         
         var input = self.input();
         if(input) {
-            input = textToByteString(input);
+            input = encode_utf8(input);
             retval += "F.input.tio\0" + input.length + "\0" + input + "\0";
         } else {
             retval += "F.input.tio\0" + "0\0";
         }
         retval += "Vargs\0" + self.args.length + "\0";
         iterate(self.args, function(arg) {
-            retval += textToByteString(arg) + "\0"
+            retval += encode_utf8(arg) + "\0"
         });
 
         retval += "R"
@@ -344,20 +368,20 @@ function Session() {
 
     //--------------------------------------------------------------------------------------------------------
     self.load = function(force) {
-        if(!force && session._languages) return;
+        if(!force && self.utils._languages) return;
         self.languageFileRequest = new XMLHttpRequest;
         function completeLoad() {
-            session._languages = JSON.parse(self.languageFileRequest.response);
-            session.languages = []
+            self.utils._languages = JSON.parse(self.languageFileRequest.response);
+            self.utils.languages = []
 
-            for (var id in session._languages) {
-                var language = session._languages[id];
+            for (var id in self.utils._languages) {
+                var language = self.utils._languages[id];
                 language.id = id;
-                session.languages.push(language);
-                if(session.longest_id_length < id.length) session.longest_id_length = id.length;
+                self.utils.languages.push(language);
+                if(self.utils.longest_id_length < id.length) self.utils.longest_id_length = id.length;
             }
 
-            session.languages.sort(function(languageA, languageB) {
+            self.utils.languages.sort(function(languageA, languageB) {
                 return 2 * (languageA.name.toLowerCase() > languageB.name.toLowerCase()) - 1;
             });
 
@@ -380,7 +404,7 @@ function Session() {
             }
             completeLoad();
         }
-        self.languageFileRequest.open("GET", session.tioURL + session.langURL);
+        self.languageFileRequest.open("GET", self.utils.tioURL + self.utils.langURL);
         self.languageFileRequest.send();
     }
 
@@ -388,16 +412,15 @@ function Session() {
     self.run = function() {
         if (self.runRequest) {
             var quitRequest = new XMLHttpRequest;
-            quitRequest.open("GET", session.tioURL + session.quitURL + "/" + self.token);
+            quitRequest.open("GET", self.utils.tioURL + self.utils.quitURL + "/" + self.token);
             self.onquit(quitRequest);
             quitRequest.send();
             return;
         }
-        self.clear_messages();
         self.clear_results();
         self.token = getRandomBits(128);
         self.runRequest = new XMLHttpRequest;
-        self.runRequest.open("POST", session.tioURL + session.runURL + getSettings(arguments) + self.token, true);
+        self.runRequest.open("POST", self.utils.tioURL + self.utils.runURL + getSettings(arguments) + self.token, true);
         self.runRequest.responseType = "arraybuffer";
         self.runRequest.onreadystatechange = runRequestOnReadyState;
         self.runRequest.send(deflate(self.state()));
@@ -410,9 +433,9 @@ function Session() {
     //--------------------------------------------------------------------------------------------------------
     self._permalink = function() {
         var code = self._code;
-        var language = session._languages[self.languageId];
+        var language = self.utils._languages[self._language];
         var data = {
-            "bytes": pluralization(countBytes(code, language.encoding), "byte"),
+            "bytes": pluralization(count_bytes(code, language.encoding), "byte"),
             "markdownCode": self.markdown(),
             "prettifyHint": language.prettify ? "<!-- language-all: lang-" + language.prettify + " -->\n\n" : "",
             "lang": language.name,
@@ -428,39 +451,49 @@ function Session() {
     //--------------------------------------------------------------------------------------------------------
     self._probe_output_cache = function() {
         self.runRequest = new XMLHttpRequest;
-        self.runRequest.open("POST", session.tioURL + session.cacheURL, true);
+        self.runRequest.open("POST", self.utils.tioURL + self.utils.cacheURL, true);
         self.runRequest.responseType = "arraybuffer";
         self.runRequest.onreadystatechange = runRequestOnReadyState;
         sha256(deflate(stateToByteString()), self.runRequest.send.bind(self.runRequest));
     }
 
     //--------------------------------------------------------------------------------------------------------
-    self.language = function(languageId) {
-        if(languageId === undefined) { self.ongetlanguage(); return self.languageId }
-        if(session._languages) {
-            var language = session._languages[languageId];
-            if(language.unmask) {
-                iterate(language.unmask, function(data){ self[data] = [] });
-            }
-            self.languageId = language.id;
-        } else {
+    self._unmask = function() {
+        self._options = self.options || self._options;
+        self._cflags = self.cflags || self._cflags;
+        self._driver = self.driver || self._driver;
+        if(self.utils._languages) {
+            var language = self.utils._languages[self._language];
             self.options = undefined;
             self.cflags = undefined;
             self.driver = undefined;
-            self.languageId = languageId;
+            if(language.unmask) {
+                iterate(language.unmask, function(data){ self[data] = self["_" + data] });
+            }
+        } else {
+            self.options = self._options;
+            self.cflags = self._cflags;
+            self.driver = self._driver;
         }
+    }
+
+    //--------------------------------------------------------------------------------------------------------
+    self.language = function(_language) {
+        if(_language === undefined) { self.ongetlanguage(); return self._language }
+        self._language = self.utils._languages ? self.utils._languages[_language].id : _language;
+        self._unmask();
         self.onsetlanguage();
-    };
+    }
 
     //--------------------------------------------------------------------------------------------------------
     self.code = function(code) {
         if(code === undefined) { self.ongetcode(); return self._code }
-        if (session.rUnpairedSurrogates.test(code))
+        if (self.utils.rUnpairedSurrogates.test(code))
             self.message("Error", "invalid Unicode: unpaired surrogates");
-        if(session._languages) {
-            var encoding = session._languages[self.languageId].encoding;
-            self._characterCount = countBytes(code, "SBCS");
-            self._byteCount = countBytes(code, encoding);
+        if(self.utils._languages) {
+            var encoding = self.utils._languages[self._language].encoding;
+            self._characterCount = count_bytes(code, "SBCS");
+            self._byteCount = count_bytes(code, encoding);
         }
         self._code = code;
         self.onsetcode();
@@ -501,22 +534,21 @@ function Session() {
         self.onsetinput();
     }
 }
-    
-this.tio = session();
-this.tio.session = session;
-session.find_languages = function(name) {
+
+this.tio = utils.session();
+utils.find_languages = function(name) {
     name = name.toLowerCase();
     var result = [];
-    if(session._languages)
-        iterate(session.languages, function(language) {
+    if(utils._languages)
+        iterate(utils.languages, function(language) {
             if(~language.name.toLowerCase().indexOf(name))
                 result.push(language);
         });
     return result;
 };
-session.is_valid_id = function(languageId) {
-    return !!(session._languages && session._languages[languageId])
+utils.is_valid_id = function(_language) {
+    return !!(utils._languages && utils._languages[_language])
 }
-session.longest_id_length = 0;
+utils.longest_id_length = 0;
 
 })();
