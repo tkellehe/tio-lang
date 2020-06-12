@@ -6,7 +6,7 @@ The __tio-lang__ is a language that calls to other programming languages that ar
 ```
 \x00c\x85p(a);brainfuck\x9A,.,.,.,.,.,.,.,.,.,.,.,.,.python\x84p(I)
 ```
-<div class=".tio-output" code="\x00c\x85p(a);brainfuck\x9A,.,.,.,.,.,.,.,.,.,.,.,.,.python\x84p(I)" input="Hello, World!"></div>
+<div class=".tio-output" tio-code="\x00c\x85p(a);brainfuck\x9A,.,.,.,.,.,.,.,.,.,.,.,.,.python\x84p(I)" tio-input="Hello, World!"></div>
 
 ---
 
