@@ -122,7 +122,7 @@ tio.run()
 ---
 ### `Session.load(?force)`
 
- > Loads the languages from the TIO servers and populates the `tio.utils` data. The callbacks `onload` can be used to be indicated
+ > Loads the languages from the TIO servers and populates the `tio.utils` data. The callback `onload` can be used to be indicated
  > when the data is brought. If `force` is set to true, it will ensure another fetch is called to the TIO servers.
  
 ---
