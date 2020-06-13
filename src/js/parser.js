@@ -68,7 +68,7 @@ function Parser(code, input) {
 
     //********************************************************************************************************
     function is_valid_id(id) {
-        return TIO.utils.is_valid_id(id) || tio_infos[id];
+        return TIO.utils.is_valid_id(id) || (tio_lang_self.use_shortcuts && tio_infos[id]);
     }
 
     //********************************************************************************************************
