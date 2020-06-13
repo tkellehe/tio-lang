@@ -8,7 +8,9 @@ The __tio-lang__ is a language that calls to other programming languages that ar
 ```
 input  :"Hello, World!"
 code   :\1c\x84p(a)brainfuck\x9A,.,.,.,.,.,.,.,.,.,.,.,.,.python\x84p(I)
-output :"Hello, World!"
+
+>>>
+"Hello, World!"
 ```
 <div class="tio-output" tio-code="\1c\x84p(a)brainfuck\x9A,.,.,.,.,.,.,.,.,.,.,.,.,.python\x84p(I)" tio-input="Hello, World!"/>
 
@@ -20,8 +22,9 @@ This is a simple JavaScript library that will execute code off to the TIO server
 and it will fill everything out.
 
 ```
-<div class="tio-output" tio-code='\2ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line ("Hello, World!");end Main;' tio-input=""/>
+<div class="tio-output" tio-code='\2ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line (\"Hello, World!\");end Main;' tio-input=""/>
 ```
+<div class="tio-output" tio-code='\2ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line (\"Hello, World!\");end Main;' tio-input=""/>
 
 ---
 
