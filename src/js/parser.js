@@ -14,6 +14,8 @@ function Parser(code, input) {
     tio_lang_self.debug = function() { return tio_lang_self.debug_result; }
     tio_lang_self._kill = false;
 
+    tio_lang_self.use_shortcuts = true;
+
     //********************************************************************************************************
     function tio_info_c(id, code, input) {
         TIO.language(id === "c" ? "c-gcc" : id);
@@ -70,6 +72,7 @@ function Parser(code, input) {
 
     //********************************************************************************************************
     function get_tio_info(id) {
+        if(!tio_lang_self.use_shortcuts) return default_tio_info;
         var tio_info = tio_infos[id];
         if(tio_info) return tio_info;
         if(TIO.utils.is_valid_id(id)) return default_tio_info;
@@ -128,8 +131,15 @@ function Parser(code, input) {
             var code = tio_lang_self.code || "";
             var input = tio_lang_self.input || "";
             tio_lang_self.sessions = [];
+
+            var first_byte = code.charCodeAt(0);
+
+            if(first_byte === 0) {
+                tio_lang_self.use_shortcuts = false;
+            }
+
             // Basic processing:
-            if(code.charCodeAt(0) === 0) {
+            if(first_byte === 0 || first_byte === 1) {
                 code = code.slice(1);
                 while(code.length && !tio_lang_self._kill) {
                     result = extract_language_id_basic(code);
