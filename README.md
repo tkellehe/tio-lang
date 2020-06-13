@@ -1,12 +1,14 @@
 # [tio-lang](https://tkellehe.github.io/tio-lang/)
 
+<div class="tio-favicon"/>
+
 The __tio-lang__ is a language that calls to other programming languages that are available on [Try It Online](https://github.com/TryItOnline/tryitonline).
 
 ---
 ```
 \0c\x84p(a)brainfuck\x9A,.,.,.,.,.,.,.,.,.,.,.,.,.python\x84p(I)
 ```
-<div class=".tio-output" tio-code="\0c\x84p(a)brainfuck\x9A,.,.,.,.,.,.,.,.,.,.,.,.,.python\x84p(I)" tio-input="Hello, World!"></div>
+<div class="tio-output" tio-code="\0c\x84p(a)brainfuck\x9A,.,.,.,.,.,.,.,.,.,.,.,.,.python\x84p(I)" tio-input="Hello, World!"/>
 
 ---
 

@@ -6,7 +6,19 @@ function ppcg_handle_attribute(text) {
 }
 
 function onload() {
-    var output_div_elements = document.getElementsByClassName(".tio-output");
+    var head = document.getElementsByTagName("head")[0];
+    var favicons = document.getElementsByClassName("tio-favicon");
+
+    tio.utils.iterate(favicons, function(favicon) {
+        var image = favicon.getAttribute("tio-image") || "tio.png";
+        var link = document.createElement('link');
+        link.rel = "icon";
+        link.type = "image/png";
+        link.href = image;
+        head.appendChild(link);
+    });
+
+    var output_div_elements = document.getElementsByClassName("tio-output");
 
     var nbs = String.fromCharCode(160),
         space = String.fromCharCode(32);
