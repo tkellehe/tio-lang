@@ -109,7 +109,7 @@ function Parser(code, input) {
         code = code.slice(last_valid_id.length);
 
         if(tio_lang_self.use_grab_till_end) {
-            var length = code.length - last_valid_id.length;
+            var length = code.length;
         } else {
             var byte = code.charCodeAt(0);
             TIO.message("Extract", "byte " + byte, "debug");
@@ -118,13 +118,13 @@ function Parser(code, input) {
             } else {
                 last_valid_id = "";
             }
+            code = code.slice(1)
         }
         TIO.message("Extract", "length " + length, "debug");
         if(!last_valid_id) {
             TIO.message("Extract", "Could not find language identifier!", "error");
             return;
         }
-        code = code.slice(1)
         var session_code = code.slice(0, length);
         TIO.message("Extract", "session code " + session_code, "debug");
         return {"code":code.slice(session_code.length), "id":last_valid_id, "session_code": session_code, "length":length}
