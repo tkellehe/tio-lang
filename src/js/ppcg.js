@@ -81,7 +81,7 @@ function onload() {
                 }
                 prgm.run()
             })(tio_lang(ppcg_handle_attribute(code), ppcg_handle_attribute(input)));
-        })(output_div_elements[i], output_div_elements[i].getAttribute("tio-input"), output_div_elements[i].getAttribute("tio-code"), ppcg_textarea());
+        })(output_div_elements[i], output_div_elements[i].getAttribute("tio-input"), output_div_elements[i].getAttribute("tio-code"), ppcg_textearea());
     }
 }
 

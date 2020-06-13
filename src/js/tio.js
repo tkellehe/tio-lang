@@ -478,9 +478,9 @@ function Session() {
     }
 
     //--------------------------------------------------------------------------------------------------------
-    self.language = function(_language) {
-        if(_language === undefined) { self.ongetlanguage(); return self._language }
-        self._language = self.utils._languages ? self.utils._languages[_language].id : _language;
+    self.language = function(id) {
+        if(id === undefined) { self.ongetlanguage(); return self._language }
+        self._language = self.utils._languages ? self.utils._languages[id].id : id;
         self._unmask();
         self.onsetlanguage();
     }
