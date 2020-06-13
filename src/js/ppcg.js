@@ -1,6 +1,5 @@
 (function(){
 
-
 function ppcg_handle_attribute(text) {
     return eval("(function(){ return \"" + text + "\";})()");
 }

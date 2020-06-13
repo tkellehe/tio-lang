@@ -14,7 +14,8 @@ function Parser(code, input) {
     tio_lang_self.debug = function() { return tio_lang_self.debug_result; }
     tio_lang_self._kill = false;
 
-    tio_lang_self.use_shortcuts = true;
+    tio_lang_self.use_shortcuts = false;
+    tio_lang_self.use_grab_till_end = false;
 
     //********************************************************************************************************
     function tio_info_c(id, code, input) {
@@ -106,12 +107,17 @@ function Parser(code, input) {
         }
         var temp = last_valid_id;
         code = code.slice(last_valid_id.length);
-        var byte = code.charCodeAt(0);
-        TIO.message("Extract", "byte " + byte, "debug");
-        if(byte & 0x80) {
-            var length = byte & 0x7F; 
+
+        if(tio_lang_self.use_grab_till_end) {
+            var length = code.length - last_valid_id.length;
         } else {
-            last_valid_id = "";
+            var byte = code.charCodeAt(0);
+            TIO.message("Extract", "byte " + byte, "debug");
+            if(byte & 0x80) {
+                var length = byte & 0x7F; 
+            } else {
+                last_valid_id = "";
+            }
         }
         TIO.message("Extract", "length " + length, "debug");
         if(!last_valid_id) {
@@ -136,10 +142,19 @@ function Parser(code, input) {
 
             if(first_byte === 0) {
                 tio_lang_self.use_shortcuts = false;
+                tio_lang_self.use_grab_till_end = false;
+            }
+            if(first_byte === 1) {
+                tio_lang_self.use_shortcuts = false;
+                tio_lang_self.use_grab_till_end = false;
+            }
+            if(first_byte === 2) {
+                tio_lang_self.use_shortcuts = false;
+                tio_lang_self.use_grab_till_end = true;
             }
 
             // Basic processing:
-            if(first_byte === 0 || first_byte === 1) {
+            if(first_byte === 0 || first_byte === 1 || first_byte == 2) {
                 code = code.slice(1);
                 while(code.length && !tio_lang_self._kill) {
                     result = extract_language_id_basic(code);

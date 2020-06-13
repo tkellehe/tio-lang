@@ -14,6 +14,15 @@ output :"Hello, World!"
 
 ---
 
+## ppcg.js
+
+This is a simple JavaScript library that will execute code off to the TIO servers using [_tio.js_](#tio.js). Merely place different tag names into a `<div>` tag
+and it will fill everything out.
+
+```
+<div class="tio-output" tio-code='\2ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line ("Hello, World!");end Main;' tio-input=""/>
+```
+
 ---
 
 ## tio.js
