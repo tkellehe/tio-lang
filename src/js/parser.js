@@ -142,7 +142,7 @@ function Parser(code, input) {
 
             if(first_byte === 0) {
                 tio_lang_self.use_shortcuts = false;
-                tio_lang_self.use_grab_till_end = false;
+                tio_lang_self.use_grab_till_end = true;
             }
             if(first_byte === 1) {
                 tio_lang_self.use_shortcuts = true;
@@ -150,7 +150,7 @@ function Parser(code, input) {
             }
             if(first_byte === 2) {
                 tio_lang_self.use_shortcuts = false;
-                tio_lang_self.use_grab_till_end = true;
+                tio_lang_self.use_grab_till_end = false;
             }
 
             // Basic processing:
