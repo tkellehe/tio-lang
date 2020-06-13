@@ -145,7 +145,7 @@ function Parser(code, input) {
                 tio_lang_self.use_grab_till_end = false;
             }
             if(first_byte === 1) {
-                tio_lang_self.use_shortcuts = false;
+                tio_lang_self.use_shortcuts = true;
                 tio_lang_self.use_grab_till_end = false;
             }
             if(first_byte === 2) {
