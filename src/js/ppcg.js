@@ -4,7 +4,28 @@ function ppcg_handle_attribute(text) {
     return eval("(function(){ return \"" + text + "\";})()");
 }
 
+function ppcg_textearea() {
+    var o = document.createElement("textarea");
+    o.style.width = "100%"
+    o.style.height = "5em"
+    o["box-sizing"] = "border-box";         /* For IE and modern versions of Chrome */
+    o["-moz-box-sizing"] = "border-box";    /* For Firefox                          */
+    o["-webkit-box-sizing"] = "border-box"; /* For Safari                           */     
+    o.style.resize = "vertical";
+    o.style.fontFamily = "monospace";
+    o.style.outline = "none";
+    o.style.color = "white";
+    o.style.backgroundColor = "black";
+    o.style.overflow = "auto";
+    return o;
+} 
+
 function onload() {
+    var errors = document.getElementsByClassName("tio-error");
+    tio.utils.iterate(errors, function(e) {
+
+    });
+
     var head = document.getElementsByTagName("head")[0];
     var favicons = document.getElementsByClassName("tio-favicon");
 
@@ -42,18 +63,6 @@ function onload() {
                 output_element.rows = rows;
             }
 
-            output_element.style.width = "100%"
-            output_element.style.height = "5em"
-            output_element["box-sizing"] = "border-box";         /* For IE and modern versions of Chrome */
-            output_element["-moz-box-sizing"] = "border-box";    /* For Firefox                          */
-            output_element["-webkit-box-sizing"] = "border-box"; /* For Safari                           */     
-            output_element.style.resize = "vertical";
-            output_element.style.fontFamily = "monospace";
-            output_element.style.outline = "none";
-            output_element.style.color = "white";
-            output_element.style.backgroundColor = "black";
-            output_element.style.overflow = "auto";
-
 
             html.appendChild(output_element);
 
@@ -72,7 +81,7 @@ function onload() {
                 }
                 prgm.run()
             })(tio_lang(ppcg_handle_attribute(code), ppcg_handle_attribute(input)));
-        })(output_div_elements[i], output_div_elements[i].getAttribute("tio-input"), output_div_elements[i].getAttribute("tio-code"), document.createElement("textarea"));
+        })(output_div_elements[i], output_div_elements[i].getAttribute("tio-input"), output_div_elements[i].getAttribute("tio-code"), ppcg_textarea());
     }
 }
 
