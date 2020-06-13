@@ -9,8 +9,10 @@ function Parser(code, input) {
     tio_lang_self.input = input || "";
     tio_lang_self.TIO = TIO;
     tio_lang_self.oncomplete = function() {}
+    tio_lang_self.onerror = function() {}
     tio_lang_self.output = function() { return TIO.output(); }
     tio_lang_self.debug = function() { return tio_lang_self.debug_result; }
+    tio_lang_self._kill = false;
 
     //********************************************************************************************************
     function tio_info_c(id, code, input) {
@@ -109,8 +111,10 @@ function Parser(code, input) {
             last_valid_id = "";
         }
         TIO.message("Extract", "length " + length, "debug");
-        if(!last_valid_id)
-            throw Error("Cound not find language identifier!");
+        if(!last_valid_id) {
+            TIO.message("Extract", "Could not find language identifier!", "error");
+            return;
+        }
         code = code.slice(1)
         var session_code = code.slice(0, length);
         TIO.message("Extract", "session code " + session_code, "debug");
@@ -125,12 +129,17 @@ function Parser(code, input) {
             var input = tio_lang_self.input || "";
             tio_lang_self.sessions = [];
             // Basic processing:
-            if(code[0] === "\0") {
+            if(code.charCodeAt(0) === 0) {
                 code = code.slice(1);
-                while(code.length) {
+                while(code.length && !tio_lang_self._kill) {
                     result = extract_language_id_basic(code);
-                    tio_lang_self.sessions.push(new Block(result.id, result.session_code, get_tio_info(result.id)));
-                    code = result.code;
+                    if(result !== undefined) {
+                        tio_lang_self.sessions.push(new Block(result.id, result.session_code, get_tio_info(result.id)));
+                        code = result.code;
+                    } else {
+                        tio_lang_self._kill = true;
+                        tio_lang_self.onerror();
+                    }
                 }
             }
             
@@ -138,10 +147,10 @@ function Parser(code, input) {
             var i = 0;
             tio_lang_self.debug_result = "";
 
-            if(tio_lang_self.sessions.length) {
+            if(tio_lang_self.sessions.length && !tio_lang_self._kill) {
                 function execute() {
                     if(input === undefined) input = TIO.output();
-                    if(i < tio_lang_self.sessions.length) {
+                    if(i < tio_lang_self.sessions.length && !tio_lang_self._kill) {
                         TIO.clear_state();
                         tio_lang_self.sessions[i].input = input;
                         tio_lang_self.sessions[i++].fill();
@@ -149,7 +158,7 @@ function Parser(code, input) {
                         input = undefined;
                         TIO.run();
                     } else {
-                        tio_lang_self.oncomplete();
+                        if(!tio_lang_self._kill) tio_lang_self.oncomplete();
                     }
                 }
                 TIO.oncomplete = execute;
@@ -159,7 +168,7 @@ function Parser(code, input) {
                 }
                 execute();
             } else {
-                tio_lang_self.oncomplete();
+                if(!tio_lang_self._kill) tio_lang_self.oncomplete();
             }
         }
         TIO.load(true);

@@ -1,5 +1,10 @@
 (function(){
 
+
+function ppcg_handle_attribute(text) {
+    return eval("(function(){ return \"" + text + "\";})()");
+}
+
 function onload() {
     var output_div_elements = document.getElementsByClassName(".tio-output");
 
@@ -17,14 +22,20 @@ function onload() {
             input = nbsRemove(input);
             code = nbsRemove(code);
         
-            // output_element.cols = html.getAttribute("cols") || 100;
-            // output_element.rows = html.getAttribute("rows") || 5;
+            var cols = html.getAttribute("tio-cols"),
+                rows = html.getAttribute("tio-rows");
+            if(cols) {
+                output_element.cols = cols;
+            }
+            if(rows) {
+                output_element.rows = rows;
+            }
 
             output_element.style.width = "100%"
             output_element.style.height = "5em"
-      // box-sizing: border-box;         /* For IE and modern versions of Chrome */
-      // -moz-box-sizing: border-box;    /* For Firefox                          */
-      // -webkit-box-sizing: border-box; /* For Safari                           */     
+            output_element["box-sizing"] = "border-box";         /* For IE and modern versions of Chrome */
+            output_element["-moz-box-sizing"] = "border-box";    /* For Firefox                          */
+            output_element["-webkit-box-sizing"] = "border-box"; /* For Safari                           */     
             output_element.style.resize = "vertical";
             output_element.style.fontFamily = "monospace";
             output_element.style.outline = "none";
@@ -40,12 +51,20 @@ function onload() {
                     output_element.value = prgm.output();
                     output_element.scrollTop = output_element.scrollHeight;
                 }
+                prgm.onerror = function() {
+                    var result = "";
+                    tio.utils.iterate(prgm.TIO.messages, function(message){
+                        result += message.title + "(" + message.category + ")\n" + message.message + "\n\n";
+                    });
+                    output_element.value = result;
+                    output_element.scrollTop = output_element.scrollHeight;
+                }
                 prgm.run()
-            })(tio_lang(code, input));
+            })(tio_lang(ppcg_handle_attribute(code), ppcg_handle_attribute(input)));
         })(output_div_elements[i], output_div_elements[i].getAttribute("tio-input"), output_div_elements[i].getAttribute("tio-code"), document.createElement("textarea"));
     }
 }
 
-document.addEventListener("load", onload);
+document.addEventListener("DOMContentLoaded", onload);
 
 })()
