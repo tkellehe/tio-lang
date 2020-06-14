@@ -19,8 +19,8 @@ code   :\1c\x84p(a)brainfuck\x9A,.,.,.,.,.,.,.,.,.,.,.,.,.python\x84p(I)
 
 ## ppcg.js
 
-This is a simple JavaScript library that will execute code off to the TIO servers using [_tio.js_](#tio.js). Merely place different tag names into a `<div>` tag
-and it will fill everything out.
+This is a simple JavaScript library that will execute code off to the TIO servers using [_tio.js_](#tio.js). Merely place different attribute names into a `<div>` tag
+and it will fill everything out. It will also automatically get rid of already existing child elements.
 
 ```
 <div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line (\"Hello, World!\");end Main;' tio-input="" tio-runable="Try It Here!"/>
