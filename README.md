@@ -5,6 +5,7 @@
 The __tio-lang__ is a language that calls to other programming languages that are available on [Try It Online](https://github.com/TryItOnline/tryitonline).
 
 ---
+<div class="tio-code" tio-code="\1c\x84p(a)brainfuck\x9A,.,.,.,.,.,.,.,.,.,.,.,.,.python\x84p(I)" tio-input="Hello, World!">
 ```
 input  :"Hello, World!"
 code   :\1c\x84p(a)brainfuck\x9A,.,.,.,.,.,.,.,.,.,.,.,.,.python\x84p(I)
@@ -12,7 +13,7 @@ code   :\1c\x84p(a)brainfuck\x9A,.,.,.,.,.,.,.,.,.,.,.,.,.python\x84p(I)
 >>>
 "Hello, World!"
 ```
-<div class="tio-output" tio-code="\1c\x84p(a)brainfuck\x9A,.,.,.,.,.,.,.,.,.,.,.,.,.python\x84p(I)" tio-input="Hello, World!"></div>
+</div>
 
 ---
 
@@ -22,9 +23,9 @@ This is a simple JavaScript library that will execute code off to the TIO server
 and it will fill everything out.
 
 ```
-<div class="tio-output" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line (\"Hello, World!\");end Main;' tio-input=""></div>
+<div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line (\"Hello, World!\");end Main;' tio-input="" tio-runable="Try It Here!"/>
 ```
-<div class="tio-output" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line (\"Hello, World!\");end Main;' tio-input=""></div>
+<div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line (\"Hello, World!\");end Main;' tio-input="" tio-runable="Try It Here!"/>
 
 ---
 
