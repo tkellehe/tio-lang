@@ -21,14 +21,18 @@ function ppcg_create_element(html) {
     var cols = html.getAttribute("tio-cols"),
         rows = html.getAttribute("tio-rows");
 
+    // Make it work with GitHub markdown.
+    html.className += " language-plaintext highlighter-rouge";
+    var o = document.createElement("div");
+    o.className = "highlight";
+    var p = document.createElement("pre");
+    p.className = "highlight";
+    var e = document.createElement(type);
+    p.appendChild(e);
+    o.appendChild(p);
+
+    // If it is runable, add a button to control when the output gets put in.
     if(is_runable) {
-        // Make it work with GitHub markdown.
-        html.className += " language-plaintext highlighter-rouge";
-        var o = document.createElement("div");
-        o.className = "highlight";
-        var p = document.createElement("pre");
-        p.className = "highlight";
-        var e = document.createElement(type);
         var b = document.createElement("button");
         b.style
         b.style.width = "100%"
@@ -39,8 +43,6 @@ function ppcg_create_element(html) {
 
         b.innerText = runable_text || "RUN"
 
-        p.appendChild(e);
-        o.appendChild(p);
         o.appendChild(b);
 
         b.onclick = function() {
@@ -50,8 +52,6 @@ function ppcg_create_element(html) {
 
         o.tio_ready = function(){}
     } else {
-        var o = document.createElement(type);
-        var e = o;
         o.tio_ready = function() {
             o.tio_reset();
             o.tio_run();
