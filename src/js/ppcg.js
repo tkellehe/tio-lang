@@ -131,7 +131,7 @@ function onload() {
             elem.tio_reset = function() {
                 elem.tio_val(
                     (elem.tio_input && ("input:\n" + elem.tio_input + "\n")) +
-                    "\ncode:\n" + elem.tio_code +
+                    "code:\n" + elem.tio_code +
                     "\n>>>\n"
                 );                
             }
