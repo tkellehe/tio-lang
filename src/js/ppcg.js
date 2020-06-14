@@ -22,7 +22,12 @@ function ppcg_create_element(html) {
         rows = html.getAttribute("tio-rows");
 
     if(is_runable) {
+        // Make it work with GitHub markdown.
+        html.className += " language-plaintext highlighter-rouge";
         var o = document.createElement("div");
+        o.className = "highlight";
+        var p = document.createElement("pre");
+        p.className = "highlight";
         var e = document.createElement(type);
         var b = document.createElement("button");
         b.style
@@ -34,7 +39,8 @@ function ppcg_create_element(html) {
 
         b.innerText = runable_text || "RUN"
 
-        o.appendChild(e);
+        p.appendChild(e);
+        o.appendChild(p);
         o.appendChild(b);
 
         b.onclick = function() {
