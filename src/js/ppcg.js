@@ -17,6 +17,7 @@ function ppcg_create_element(html) {
     var type = html.getAttribute("tio-type") || "code";
     var runable_text = html.getAttribute("tio-runable");
     var is_runable = html.getAttribute("tio-runable") !== null;
+    var is_animate = html.getAttribute("tio-animate") !== null;
     var has_debug = html.getAttribute("tio-debug") !== null;
     var cols = html.getAttribute("tio-cols"),
         rows = html.getAttribute("tio-rows");
@@ -70,13 +71,45 @@ function ppcg_create_element(html) {
             e.innerText = content;
         }
     }
-    
+
+    if(is_animate) {
+        var tio_animate_is_done = false;
+        var tio_animate_frame = 0;
+        var tio_animate_frames = ["/", "-", "\\", "|"]
+        var tio_animate_frame_pos = -1;
+        o.tio_start = function() {
+            (function animate() {
+                var current = o.tio_val();
+                if(tio_animate_frame_pos === -1) {
+                    tio_animate_frame_pos = current.length;
+                    o.tio_val(current + tio_animate_frames[tio_animate_frame]);
+                } else {
+                    tio_animate_frame = (tio_animate_frame + 1) & 3;
+                    o.tio_val(current.slice(0, tio_animate_frame_pos) + tio_animate_frames[tio_animate_frame] + current.slice(tio_animate_frame_pos+1));
+                }
+
+                if(tio_animate_is_done) {
+                    o.tio_val(current.slice(0, tio_animate_frame_pos) + current.slice(tio_animate_frame_pos+1));
+                } else {
+                    setTimeout(animate, 250);
+                }
+            })()
+        }
+        o.tio_done = function() {
+            tio_animate_is_done = true;
+        }
+    } else {
+        o.tio_start = function() {}
+        o.tio_done = function() {}
+    }
+
     o.tio_debug = function(output) {
         if(output === undefined) return ""
     }
 
     o.tio_type = type;
     o.tio_runable = !!is_runable;
+    o.tio_animate = !!is_animate;
 
     // Get the code and input then clean out any bad elements.
     o.tio_input = html.getAttribute("tio-input") || "";
@@ -141,6 +174,7 @@ function onload() {
                 prgm.oncomplete = function() {
                     elem.tio_val(elem.tio_val() + prgm.output());
                     elem.tio_debug(prgm.debug());
+                    elem.tio_done();
                 }
                 prgm.onerror = function() {
                     var result = "";
@@ -149,8 +183,10 @@ function onload() {
                     });
                     elem.tio_val(result);
                     elem.tio_debug(prgm.debug());
+                    elem.tio_done();
                 }
                 elem.tio_run = function() {
+                    elem.tio_start()
                     prgm.run()
                 }
                 elem.tio_ready();
