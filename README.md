@@ -5,11 +5,11 @@
 The __tio-lang__ is a language that calls to other programming languages that are available on [Try It Online](https://github.com/TryItOnline/tryitonline).
 
 ---
-<div class="tio-code" tio-code="\1brainfuck\x83,+.python\x9Fimport time;time.sleep(int(I))jelly\x88“3ḅaė;œ»c\x84p(a)" tio-input="1">
+<div class="tio-code" tio-code="\1brainfuck\x83,+.python\xA0import time;time.sleep(int(I))jelly\x88“3ḅaė;œ»c\x84p(a)" tio-input="1">
 
 ```
 input  :"1"
-code   :\1brainfuck\x83,+.python\x9Fimport time;time.sleep(int(I))jelly\x88“3ḅaė;œ»c\x84p(a)
+code   :\1brainfuck\x83,+.python\xA0import time;time.sleep(int(I))jelly\x88“3ḅaė;œ»c\x84p(a)
 
 >>>
 "Hello, World!"
