@@ -8,8 +8,8 @@ The __tio-lang__ is a language that calls to other programming languages that ar
 <div class="tio-code" tio-code="\1c\x84p(a)brainfuck\x9A,.,.,.,.,.,.,.,.,.,.,.,.,.python\x84p(I)" tio-input="Hello, World!">
 
 ```
-input  :"Hello, World!"
-code   :\1c\x84p(a)brainfuck\x9A,.,.,.,.,.,.,.,.,.,.,.,.,.python\x84p(I)
+input  :"1"
+code   :\1brainfuck\x83,+.python\x9Fimport time;time.sleep(int(I))jelly\x88“3ḅaė;œ»c\x84p(a)
 
 >>>
 "Hello, World!"
