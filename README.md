@@ -27,6 +27,8 @@ from the TIO servers. This list can be obtained through [_tio.js_](#tioutilslang
 
 Once the language identifiers have been paired with the code, it will execute the code. Each ones output feeds as the input into the next one.
 
+---
+
 ### `\0` zero byte
 
 The first is the null character `\0` which will take the longest possible language identifier immediately following that byte. Then the rest of the code is assumed
@@ -35,7 +37,10 @@ to go with that language identifier and runs it.
 <div class="tio-code" tio-code="\0valapublic static int main(string[]args){stdout.printf(\"Hello, World!\n\");return 0;}" tio-input="">
 
 ```
-\0valapublic static int main(string[]args){stdout.printf("Hello, World!\n");return 0;}
+code:
+\0valapublic static int main(string[]args){stdout.printf(\"Hello, World!\n\");return 0;}
+>>>
+Hello, World!
 ```
 
 </div>
