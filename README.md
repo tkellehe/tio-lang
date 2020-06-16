@@ -13,7 +13,7 @@ input:
 code:
 \2brainfuck\x83,+.python\x9Eimport time;time.sleep(int(I))jelly\x88“3ḅaė;œ»c\x84p(a)
 >>>
-"Hello, World!"
+Hello, World!
 ```
 
 </div>
