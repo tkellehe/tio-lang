@@ -34,7 +34,8 @@ Once the language identifiers have been paired with the code, it will execute th
 The first is the null character `\0` which will take the longest possible language identifier immediately following that byte. Then the rest of the code is assumed
 to go with that language identifier and runs it.
 
-< div class="tio-code" tio-code="\0valapublic static int main(string[]args){stdout.printf(\"Hello, World!\n\");return 0;}" tio-input="">
+---
+<div class='tio-code' tio-code="\0valapublic static int main(string[]args){stdout.printf(\"Hello, World!\n\");return 0;}" tio-input="">
 
 ```
 code:
@@ -45,7 +46,7 @@ Hello, World!
 
 </div>
 
-
+---
 ---
 
 ## ppcg.js
