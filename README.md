@@ -8,9 +8,10 @@ The __tio-lang__ is a language that calls to other programming languages that ar
 <div class="tio-code" tio-code="\1brainfuck\x83,+.python\x9Eimport time;time.sleep(int(I))jelly\x88“3ḅaė;œ»c\x84p(a)" tio-input="1">
 
 ```
-input  :"1"
-code   :\1brainfuck\x83,+.python\x9Eimport time;time.sleep(int(I))jelly\x88“3ḅaė;œ»c\x84p(a)
-
+input:
+1
+code:
+\1brainfuck\x83,+.python\x9Eimport time;time.sleep(int(I))jelly\x88“3ḅaė;œ»c\x84p(a)
 >>>
 "Hello, World!"
 ```
@@ -22,7 +23,7 @@ code   :\1brainfuck\x83,+.python\x9Eimport time;time.sleep(int(I))jelly\x88“3�
 ## ppcg.js
 
 This is a simple JavaScript library that will execute __tio-lang__ code using [_tio.js_](#tio.js) and _parser.js_. Merely place different attribute names into a `<div>` tag
-and it will fill everything out.
+and it will fill everything out as well as remove any child nodes.
 
 ```
 <div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line (\"Hello, World!\");end Main;' tio-input="" tio-runable="Try It Here!"></div>
