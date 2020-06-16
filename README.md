@@ -21,7 +21,7 @@ code   :\1brainfuck\x83,+.python\x9Eimport time;time.sleep(int(I))jelly\x88â€œ3á
 
 ## ppcg.js
 
-This is a simple JavaScript library that will execute code off to the TIO servers using [_tio.js_](#tio.js). Merely place different attribute names into a `<div>` tag
+This is a simple JavaScript library that will execute __tio-lang__ code using [_tio.js_](#tio.js) and _parser.js_. Merely place different attribute names into a `<div>` tag
 and it will fill everything out.
 
 ```
