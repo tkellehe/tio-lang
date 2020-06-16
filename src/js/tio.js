@@ -102,6 +102,7 @@ function count_bytes(string, encoding) {
     }
 }
 utils.count_bytes = count_bytes;
+utils.count_characters = function(code) { return count_bytes(code, "SBCS") };
 
 function clone(queryString) {
     return $(queryString).cloneNode(true)
@@ -486,15 +487,25 @@ function Session() {
     }
 
     //--------------------------------------------------------------------------------------------------------
+    self.byte_count = function() {
+        if(self.utils._languages) {
+            var encoding = self.utils._languages[self._language].encoding;
+            return count_bytes(self._code, encoding);
+        }
+    }
+
+    //--------------------------------------------------------------------------------------------------------
+    self.character_count = function() {
+        if(self.utils._languages) {
+            return count_characters(code, "SBCS");
+        }
+    }
+
+    //--------------------------------------------------------------------------------------------------------
     self.code = function(code) {
         if(code === undefined) { self.ongetcode(); return self._code }
         if (self.utils.rUnpairedSurrogates.test(code))
             self.message("Error", "invalid Unicode: unpaired surrogates");
-        if(self.utils._languages) {
-            var encoding = self.utils._languages[self._language].encoding;
-            self._characterCount = count_bytes(code, "SBCS");
-            self._byteCount = count_bytes(code, encoding);
-        }
         self._code = code;
         self.onsetcode();
     }
