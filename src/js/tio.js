@@ -496,9 +496,7 @@ function Session() {
 
     //--------------------------------------------------------------------------------------------------------
     self.character_count = function() {
-        if(self.utils._languages) {
-            return count_characters(code, "SBCS");
-        }
+        return count_characters(code, "SBCS");
     }
 
     //--------------------------------------------------------------------------------------------------------
