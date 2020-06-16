@@ -88,6 +88,38 @@ tio.run()
  > Checks if the language identifier is valid.
 
 ---
+### `tio.utils.encode_utf8(string)`
+
+ > Encodes a string into a byte string.
+
+---
+### `tio.utils.decode_utf8(byte_string)`
+
+ > Decodes a byte string into a string.
+
+---
+### `tio.utils.deflate(byte_string)`
+
+ > Compress byte string in order to send to the TIO servers.
+
+---
+### `tio.utils.inflate(byte_array)`
+
+ > Decompress byte array from TIO servers.
+
+---
+### `tio.utils.count_bytes(code, encoring)`
+
+ > Counts the bytes based on the encoding provided.
+ > The different options are: `SBCS`, `UTF-8`, `nibbles`, `xxd`
+
+---
+### `tio.utils.count_characters(code)`
+
+ > Count the number of characters in the code which is the same as
+ > `tio.utils.count_bytes(code, "SBCS")`.
+
+---
 ### `tio.utils.session()`
 
  > Create a new `Session` instance that can communicate and run code. Also, `tio` is a `Session` instance.
@@ -168,7 +200,17 @@ tio.run()
 
  > Packages up the code and options to be sent to the TIO servers.
  > The callbacks that can be used to access this: `onrun`, `onquit`, `oncomplete`
- 
+
+---
+### `Session.byte_count()`
+
+ > Counts the number of bytes in `Session.code()` based on the selected language.
+
+---
+### `Session.character_count()`
+
+ > Counts the number of characters in the `Session.code()`.
+
 ---
 ### `Session.language(?language)`
 
