@@ -20,9 +20,30 @@ code:
 
 ---
 
+# Basics
+
+The __tio-lang__ starts by first reading the initial byte to determine how to interpret the rest of the program. The main three utilize the language identifiers
+from the TIO servers. This list can be obtained through [_tio.js_](#tioutilslangauges). 
+
+Once the language identifiers have been paired with the code, it will execute the code. Each ones output feeds as the input into the next one.
+
+The first is the null character `\0` which will take the longest possible language identifier immediately following that byte. Then the rest of the code is assumed
+to go with that language identifier and runs it.
+
+<div class="tio-code" tio-code="\0valapublic static int main(string[]args){stdout.printf("Hello, World!\n");return 0;}" tio-input="">
+
+```
+\0valapublic static int main(string[]args){stdout.printf("Hello, World!\n");return 0;}
+```
+
+</div>
+
+
+---
+
 ## ppcg.js
 
-This is a simple JavaScript library that will execute __tio-lang__ code using [_tio.js_](#tio.js) and _parser.js_. Merely place different attribute names into a `<div>` tag
+This is a simple JavaScript library that will execute __tio-lang__ code using [_tio.js_](#tiojs) and _parser.js_. Merely place different attribute names into a `<div>` tag
 and it will fill everything out as well as remove any child nodes.
 
 ```
