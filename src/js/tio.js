@@ -69,6 +69,11 @@ function _add_onevent(onevent, eventHandler, eventType) {
     eventHandler[onevent].__events__ = [];
     eventHandler[onevent].__pers__ = [];
     
+    eventHandler[onevent].clear = function() {
+        eventHandler[onevent].__events__ = [];
+        eventHandler[onevent].__pers__ = [];
+    }
+    
     eventHandler[onevent].add = function(f, is_persistent) {
         is_persistent = is_persistent === undefined || is_persistent;
         if(is_func(f) && (onevent in eventHandler)
@@ -118,18 +123,7 @@ function _add_addEventListener(eventHandler) {
     eventHandler["addEventListener"] = function(event, f, is_persistent) {
         is_persistent = is_persistent === undefined || is_persistent;
         var onevent = "" + to_string(event);
-        if(is_func(f) && (onevent in eventHandler)
-            && is_func(eventHandler[onevent]) && ("__events__" in eventHandler[onevent]))
-        {
-            for(var i = 0, l = eventHandler[onevent].__events__.length; i < l; ++i)
-            {
-                if(eventHandler[onevent].__events__[i] === f)
-                    return f;
-            }
-            eventHandler[onevent].__events__.push(f);
-            eventHandler[onevent].__pers__.push(is_persistent);
-        }
-        return f;
+        return eventHandler[onevent].add(f, is_persistent);
     };
 }
 function _add_removeEventListener(eventHandler, onevent) {
@@ -146,20 +140,7 @@ function _add_removeEventListener(eventHandler, onevent) {
         }
     }
     eventHandler["removeEventListener"] = function(event, f) {
-        var onevent = "" + to_string(event);
-        if(is_func(f) && (onevent in eventHandler)
-            && is_func(eventHandler[onevent]) && ("__events__" in eventHandler[onevent]))
-        {
-            for(var i = 0, l = eventHandler[onevent].__events__.length; i < l; ++i)
-            {
-                if(eventHandler[onevent].__events__[i] === f) {
-                    eventHandler[onevent].__events__.splice(i, 1);
-                    eventHandler[onevent].__pers__.splice(i, 1);
-                    return f;
-                }
-            }
-        }
-        return f;
+        return eventHandler["" + to_string(event)].remove(f);
     };
 }
 
