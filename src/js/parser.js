@@ -8,8 +8,8 @@ function Parser(code, input) {
     tio_lang_self.code = code || "";
     tio_lang_self.input = input || "";
     tio_lang_self.TIO = TIO;
-    tio.utils.onlistener(tio_lang_self, "complete");
-    tio.utils.onlistener(tio_lang_self, "onerror");
+    tio.utils.onlistener(tio_lang_self, "oncomplete");
+    tio.utils.onlistener(tio_lang_self, "ononerror");
     tio_lang_self.output = function() { return TIO.output(); }
     tio_lang_self.debug = function() { return tio_lang_self.debug_result; }
     tio_lang_self._kill = false;
@@ -133,7 +133,7 @@ function Parser(code, input) {
     //********************************************************************************************************
     tio_lang_self.run = function() {
         TIO.clear();
-        TIO.addEventListener("load", function() {
+        TIO.onload.add(function() {
             var code = tio_lang_self.code || "";
             var input = tio_lang_self.input || "";
             tio_lang_self.sessions = [];
@@ -162,7 +162,6 @@ function Parser(code, input) {
                         tio_lang_self.sessions.push(new Block(result.id, result.session_code, get_tio_info(result.id)));
                         code = result.code;
                     } else {
-                        tio_lang_self._kill = true;
                         tio_lang_self.onerror();
                     }
                 }
@@ -186,8 +185,8 @@ function Parser(code, input) {
                         if(!tio_lang_self._kill) tio_lang_self.oncomplete();
                     }
                 }
-                TIO.addEventListener("complete", execute, false);
-                TIO.addEventListener("setdebug", function() {
+                TIO.oncomplete.add(execute, false);
+                TIO.onsetdebug.add(function() {
                     if(TIO.language() && TIO.debug())
                         tio_lang_self.debug_result += "--------------------------------\n" + TIO.language() + "\n--------------------------------\n" + TIO.debug() + "\n";
                 }, false);
