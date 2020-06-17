@@ -52,7 +52,7 @@ function _add_onevent(onevent, eventHandler, eventType) {
 
     eventHandler[onevent] = function(event_instance) {
         if(!(event_instance instanceof eventType)) {
-            var Type = Function.bind.apply(eventType, arguments);
+            var Type = Function.bind.apply(eventType, [null].concat(Array.prototype.slice.call(arguments)));
             event_instance = new Type;
         }
         for(var i = 0, l = eventHandler[onevent].__events__.length; i < l; ++i)
@@ -130,7 +130,7 @@ utils.onlistener = function(eventHandler, event, eventType) {
         // Makes own eventType object.
         if(onevent && !is_func(eventType)) {
             eventType = eval("(function(){return function " 
-                            + event + "Event(){this.args = [];for(var i = 0; i < arguments.length; ++i) this.args.push(arguments[i]);" 
+                            + event + "Event(){this.args = Array.prototype.slice.call(arguments);" 
                             + event + "Event.plugin.__plugin__(this);}})()");
             eventType.plugin = function(f) {
                 if(is_func(f))
