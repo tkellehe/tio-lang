@@ -31,6 +31,12 @@ function ppcg_create_element(html) {
     var e = document.createElement(type);
     p.appendChild(e);
     o.appendChild(p);
+    
+    tio.utils.onlistener(o, "tio_done");
+    tio.utils.onlistener(o, "tio_start");
+    tio.utils.onlistener(o, "tio_reset");
+    tio.utils.onlistener(o, "tio_run");
+    tio.utils.onlistener(o, "tio_ready");
 
     // If it is runable, add a button to control when the output gets put in.
     if(is_runable) {
@@ -50,13 +56,11 @@ function ppcg_create_element(html) {
             o.tio_reset();
             o.tio_run();
         }
-
-        o.tio_ready = function(){}
     } else {
-        o.tio_ready = function() {
+        o.tio_ready.add(function() {
             o.tio_reset();
             o.tio_run();
-        }
+        });
     }
 
     if(type === "textarea") {
@@ -77,7 +81,7 @@ function ppcg_create_element(html) {
         var tio_animate_frame = 0;
         var tio_animate_frames = ["/", "-", "\\", "|"]
         var tio_animate_frame_pos = -1;
-        o.tio_start = function() {
+        o.tio_start.add(function() {
             (function animate() {
                 var current = o.tio_val();
                 if(tio_animate_frame_pos === -1) {
@@ -94,13 +98,10 @@ function ppcg_create_element(html) {
                     setTimeout(animate, 250);
                 }
             })()
-        }
-        o.tio_done = function() {
+        });
+        o.tio_done.add(function() {
             tio_animate_is_done = true;
-        }
-    } else {
-        o.tio_start = function() {}
-        o.tio_done = function() {}
+        });
     }
 
     o.tio_debug = function(output) {
@@ -161,22 +162,22 @@ function onload() {
 
     for(var i = output_div_elements.length; i--;) {
         (function(html, elem){
-            elem.tio_reset = function() {
+            elem.tio_reset.add(function() {
                 elem.tio_val(
                     (elem.tio_input && ("input:\n" + elem.tio_input + "\n")) +
                     "code:\n" + elem.tio_code +
                     "\n>>>\n"
                 );                
-            }
+            })
             elem.tio_reset();
 
             (function(prgm) {
-                prgm.oncomplete = function() {
+                prgm.oncomplete.add(function() {
                     elem.tio_val(elem.tio_val() + prgm.output());
                     elem.tio_debug(prgm.debug());
                     elem.tio_done();
-                }
-                prgm.onerror = function() {
+                });
+                prgm.onerror.add(function() {
                     var result = "";
                     tio.utils.iterate(prgm.TIO.messages, function(message){
                         result += message.title + "(" + message.category + ")\n" + message.message + "\n\n";
@@ -184,11 +185,11 @@ function onload() {
                     elem.tio_val(result);
                     elem.tio_debug(prgm.debug());
                     elem.tio_done();
-                }
-                elem.tio_run = function() {
+                });
+                elem.tio_run.add(function() {
                     elem.tio_start()
                     prgm.run()
-                }
+                });
                 elem.tio_ready();
             })(tio_lang(ppcg_handle_attribute(elem.tio_code), ppcg_handle_attribute(elem.tio_input)));
 
