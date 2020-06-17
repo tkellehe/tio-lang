@@ -130,20 +130,7 @@ utils.onlistener = function(eventHandler, event, eventType) {
         // Makes own eventType object.
         if(onevent && !is_func(eventType)) {
             eventType = eval("(function(){return function " 
-                            + event + "Event(){this.args = Array.prototype.slice.call(arguments);" 
-                            + event + "Event.plugin.__plugin__(this);}})()");
-            eventType.plugin = function(f) {
-                if(is_func(f))
-                {
-                    eventType.plugin.__plugin__.plugins.push(f);
-                }
-                return eventType.plugin;
-            };
-            eventType.plugin.__plugin__ = function(instance){
-                for(var i = 0, l = eventType.plugin.__plugin__.plugins.length; i < l; ++i)
-                    eventType.plugin.__plugin__.plugins[i](instance);
-            };
-            eventType.plugin.__plugin__.plugins = [];
+                            + event + "Event(){this.args = Array.prototype.slice.call(arguments)}})()");
         }
 
         if(onevent) _add_onevent(onevent, eventHandler, eventType);
