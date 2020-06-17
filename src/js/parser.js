@@ -186,16 +186,16 @@ function Parser(code, input) {
                         if(!tio_lang_self._kill) tio_lang_self.oncomplete();
                     }
                 }
-                TIO.addEventListener("complete", execute);
+                TIO.addEventListener("complete", execute, false);
                 TIO.addEventListener("setdebug", function() {
                     if(TIO.language() && TIO.debug())
                         tio_lang_self.debug_result += "--------------------------------\n" + TIO.language() + "\n--------------------------------\n" + TIO.debug() + "\n";
-                });
+                }, false);
                 execute();
             } else {
                 if(!tio_lang_self._kill) tio_lang_self.oncomplete();
             }
-        });
+        }, false);
         TIO.load(true);
     }
 }
