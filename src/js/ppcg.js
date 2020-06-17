@@ -92,7 +92,7 @@ function ppcg_create_element(html) {
                     tio_animate_frame = (tio_animate_frame + 1) % tio_animate_frames.length;
                     tio_animate_frame_pos = current.length;
                     o.tio_val(current + tio_animate_frames[tio_animate_frame]);
-                    setTimeout(animate, 250);
+                    setTimeout(animate, 100);
                 }
             })()
         });
