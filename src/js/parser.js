@@ -133,6 +133,7 @@ function Parser(code, input) {
     //********************************************************************************************************
     tio_lang_self.run = function() {
         TIO.clear();
+        tio_lang_self._kill = false;
         TIO.onload.add(function() {
             var code = tio_lang_self.code || "";
             var input = tio_lang_self.input || "";
