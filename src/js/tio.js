@@ -55,12 +55,19 @@ function _add_onevent(onevent, eventHandler, eventType) {
             var Type = Function.bind.apply(eventType, [null].concat(Array.prototype.slice.call(arguments)));
             event_instance = new Type;
         }
+        var remove = [];
         for(var i = 0, l = eventHandler[onevent].__events__.length; i < l; ++i)
         {
+            if(!eventHandler[onevent].__pers__[i]) remove.push(i);
             eventHandler[onevent].__events__[i].apply(eventHandler, [event_instance]);
         }
+        for(var i = remove.length; i--;) {
+            eventHandler[onevent].__events__.splice(remove[i], 1);
+            eventHandler[onevent].__pers__.splice(remove[i], 1);
+        }
     };
-    eventHandler[onevent]["__events__"] = [];
+    eventHandler[onevent].__events__ = [];
+    eventHandler[onevent].__pers__ = [];
 }
 
 function _add_addEventListener(eventHandler) {
@@ -76,7 +83,8 @@ function _add_addEventListener(eventHandler) {
             return;
         }
     }
-    eventHandler["addEventListener"] = function(event, f) {
+    eventHandler["addEventListener"] = function(event, f, is_persistent) {
+        is_persistent = is_persistent === undefined || is_persistent;
         var onevent = "on" + to_string(event);
         if(is_func(f) && (onevent in eventHandler)
             && is_func(eventHandler[onevent]) && ("__events__" in eventHandler[onevent]))
@@ -86,7 +94,8 @@ function _add_addEventListener(eventHandler) {
                 if(eventHandler[onevent].__events__[i] === f)
                     return f;
             }
-            eventHandler[onevent].__events__.push(f);            
+            eventHandler[onevent].__events__.push(f);
+            eventHandler[onevent].__pers__.push(is_persistent);
         }
         return f;
     };
@@ -113,6 +122,7 @@ function _add_removeEventListener(eventHandler) {
             {
                 if(eventHandler[onevent].__events__[i] === f) {
                     eventHandler[onevent].__events__.splice(i, 1);
+                    eventHandler[onevent].__pers__.splice(i, 1);
                     return f;
                 }
             }
