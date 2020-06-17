@@ -79,22 +79,21 @@ function ppcg_create_element(html) {
     if(is_animate) {
         var tio_animate_is_done = false;
         var tio_animate_frame = 0;
-        var tio_animate_frames = ["/", "-", "\\", "|"]
+        var tio_animate_frames = ["", ".", "..", "..."]
         var tio_animate_frame_pos = -1;
         o.tio_start.add(function() {
             (function animate() {
                 var current = o.tio_val();
-                if(tio_animate_frame_pos === -1) {
-                    tio_animate_frame_pos = current.length;
-                    o.tio_val(current + tio_animate_frames[tio_animate_frame]);
-                } else {
-                    tio_animate_frame = (tio_animate_frame + 1) & 3;
-                    o.tio_val(current.slice(0, tio_animate_frame_pos) + tio_animate_frames[tio_animate_frame] + current.slice(tio_animate_frame_pos+1));
+                if(tio_animate_frame_pos !== -1) {
+                    current = tio.utils.string_splice(current, tio_animate_frame_pos, tio_animate_frames[tio_animate_frame].length, "");
                 }
 
                 if(tio_animate_is_done) {
                     o.tio_val(current.slice(0, tio_animate_frame_pos) + current.slice(tio_animate_frame_pos+1));
                 } else {
+                    tio_animate_frame = (tio_animate_frame + 1) & 3;
+                    tio_animate_frame_pos = current.length;
+                    o.tio_val(current + tio_animate_frames[tio_animate_frame]);
                     setTimeout(animate, 250);
                 }
             })()
