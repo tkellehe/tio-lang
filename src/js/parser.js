@@ -8,8 +8,8 @@ function Parser(code, input) {
     tio_lang_self.code = code || "";
     tio_lang_self.input = input || "";
     tio_lang_self.TIO = TIO;
-    tio_lang_self.oncomplete = function() {}
-    tio_lang_self.onerror = function() {}
+    tio.utils.onlistener(tio_lang_self, "complete");
+    tio.utils.onlistener(tio_lang_self, "onerror");
     tio_lang_self.output = function() { return TIO.output(); }
     tio_lang_self.debug = function() { return tio_lang_self.debug_result; }
     tio_lang_self._kill = false;
@@ -133,7 +133,7 @@ function Parser(code, input) {
     //********************************************************************************************************
     tio_lang_self.run = function() {
         TIO.clear();
-        TIO.onload = function() {
+        TIO.addEventListener("load", function() {
             var code = tio_lang_self.code || "";
             var input = tio_lang_self.input || "";
             tio_lang_self.sessions = [];
@@ -186,16 +186,16 @@ function Parser(code, input) {
                         if(!tio_lang_self._kill) tio_lang_self.oncomplete();
                     }
                 }
-                TIO.oncomplete = execute;
-                TIO.onsetdebug = function() {
+                TIO.addEventListener("complete", execute);
+                TIO.addEventListener("setdebug", function() {
                     if(TIO.language() && TIO.debug())
                         tio_lang_self.debug_result += "--------------------------------\n" + TIO.language() + "\n--------------------------------\n" + TIO.debug() + "\n";
-                }
+                });
                 execute();
             } else {
                 if(!tio_lang_self._kill) tio_lang_self.oncomplete();
             }
-        }
+        });
         TIO.load(true);
     }
 }
