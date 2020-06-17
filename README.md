@@ -68,8 +68,16 @@ to provide the multi-language language. The following are the javascript files t
 
 ```
 https://tkellehe.github.io/tio-lang/src/js/pako.js
+https://tkellehe.github.io/tio-lang/src/js/promise-polyfill.js
 https://tkellehe.github.io/tio-lang/src/js/tio.js
 ```
+
+For more info on these dependencies:
+
+ * https://github.com/nodeca/pako
+ * https://www.npmjs.com/package/promise-polyfill
+
+### Example
 
 ```javascript
 tio.onload = function() {
@@ -290,6 +298,7 @@ tio.run()
 ---
 
 <script src="src/js/pako.js"></script>
+<script src="src/js/promise-polyfill.js"></script>
 <script src="src/js/tio.js"></script>
 <script src="src/js/parser.js"></script>
 <script src="src/js/ppcg.js"></script>
