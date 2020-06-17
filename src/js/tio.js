@@ -51,7 +51,10 @@ function _add_onevent(onevent, eventHandler, eventType) {
     }
 
     eventHandler[onevent] = function(event_instance) {
-        if(!(event_instance instanceof eventType)) event_instance = new Function.bind.apply(eventType, arguments);
+        if(!(event_instance instanceof eventType)) {
+            var Type = Function.bind.apply(eventType, arguments);
+            event_instance = new Type;
+        }
         for(var i = 0, l = eventHandler[onevent].__events__.length; i < l; ++i)
         {
             eventHandler[onevent].__events__[i].apply(eventHandler, [event_instance]);
