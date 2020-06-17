@@ -182,16 +182,17 @@ function Parser(code, input) {
                         tio_lang_self.sessions[i++].fill();
                         TIO.message("Execute", "lang[" + (i-1) + "] " + TIO.language() + "(" + TIO.state() + ")", "debug")
                         input = undefined;
+                        TIO.oncomplete.add(execute, false);
                         TIO.run();
                     } else {
                         if(!tio_lang_self._kill) tio_lang_self.oncomplete();
                     }
                 }
-                TIO.oncomplete.add(execute, false);
+                TIO.onsetdebug.clear();
                 TIO.onsetdebug.add(function() {
                     if(TIO.language() && TIO.debug())
                         tio_lang_self.debug_result += "--------------------------------\n" + TIO.language() + "\n--------------------------------\n" + TIO.debug() + "\n";
-                }, false);
+                });
                 execute();
             } else {
                 if(!tio_lang_self._kill) tio_lang_self.oncomplete();
