@@ -296,7 +296,6 @@ tio.run()
 ---
 
 <script src="src/js/pako.js"></script>
-<script src="src/js/promise-polyfill.js"></script>
 <script src="src/js/tio.js"></script>
 <script src="src/js/parser.js"></script>
 <script src="src/js/ppcg.js"></script>
