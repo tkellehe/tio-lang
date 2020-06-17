@@ -68,6 +68,38 @@ function _add_onevent(onevent, eventHandler, eventType) {
     };
     eventHandler[onevent].__events__ = [];
     eventHandler[onevent].__pers__ = [];
+    
+    eventHandler[onevent].add = function(f, is_persistent) {
+        is_persistent = is_persistent === undefined || is_persistent;
+        if(is_func(f) && (onevent in eventHandler)
+            && is_func(eventHandler[onevent]) && ("__events__" in eventHandler[onevent]))
+        {
+            for(var i = 0, l = eventHandler[onevent].__events__.length; i < l; ++i)
+            {
+                if(eventHandler[onevent].__events__[i] === f)
+                    return f;
+            }
+            eventHandler[onevent].__events__.push(f);
+            eventHandler[onevent].__pers__.push(is_persistent);
+        }
+        return f;
+    };
+    
+    eventHandler[onevent].remove = function(f) {
+        if(is_func(f) && (onevent in eventHandler)
+            && is_func(eventHandler[onevent]) && ("__events__" in eventHandler[onevent]))
+        {
+            for(var i = 0, l = eventHandler[onevent].__events__.length; i < l; ++i)
+            {
+                if(eventHandler[onevent].__events__[i] === f) {
+                    eventHandler[onevent].__events__.splice(i, 1);
+                    eventHandler[onevent].__pers__.splice(i, 1);
+                    return f;
+                }
+            }
+        }
+        return f;
+    };
 }
 
 function _add_addEventListener(eventHandler) {
@@ -85,7 +117,7 @@ function _add_addEventListener(eventHandler) {
     }
     eventHandler["addEventListener"] = function(event, f, is_persistent) {
         is_persistent = is_persistent === undefined || is_persistent;
-        var onevent = "on" + to_string(event);
+        var onevent = "" + to_string(event);
         if(is_func(f) && (onevent in eventHandler)
             && is_func(eventHandler[onevent]) && ("__events__" in eventHandler[onevent]))
         {
@@ -100,7 +132,7 @@ function _add_addEventListener(eventHandler) {
         return f;
     };
 }
-function _add_removeEventListener(eventHandler) {
+function _add_removeEventListener(eventHandler, onevent) {
     if("removeEventListener" in eventHandler)
     {
         if(!is_func(eventHandler.removeEventListener))
@@ -113,8 +145,8 @@ function _add_removeEventListener(eventHandler) {
             return;
         }
     }
-    eventHandler["removeEventListener"] = function(onevent, f) {
-        var onevent = "on" + to_string(event);
+    eventHandler["removeEventListener"] = function(event, f) {
+        var onevent = "" + to_string(event);
         if(is_func(f) && (onevent in eventHandler)
             && is_func(eventHandler[onevent]) && ("__events__" in eventHandler[onevent]))
         {
@@ -135,7 +167,7 @@ utils.onlistener = function(eventHandler, event, eventType) {
     if(can_attach(eventHandler))
     {
         if(event !== undefined)
-            var onevent = "on" + (event = to_string(event));
+            var onevent = "" + (event = to_string(event));
 
         // Makes own eventType object.
         if(onevent && !is_func(eventType)) {
@@ -144,8 +176,8 @@ utils.onlistener = function(eventHandler, event, eventType) {
         }
 
         if(onevent) _add_onevent(onevent, eventHandler, eventType);
-        _add_addEventListener(eventHandler);
-        _add_removeEventListener(eventHandler);
+        _add_addEventListener(eventHandler, onevent);
+        _add_removeEventListener(eventHandler, onevent);
 
         var result = {};
         if(onevent)
@@ -316,29 +348,29 @@ function Session() {
 
     self.utils = utils;
 
-    utils.onlistener(self, "message");
-    utils.onlistener(self, "output");
-    utils.onlistener(self, "debug");
-    utils.onlistener(self, "run");
-    utils.onlistener(self, "error");
-    utils.onlistener(self, "load");
-    utils.onlistener(self, "quit");
-    utils.onlistener(self, "complete");
+    utils.onlistener(self, "onmessage");
+    utils.onlistener(self, "onoutput");
+    utils.onlistener(self, "ondebug");
+    utils.onlistener(self, "onrun");
+    utils.onlistener(self, "onerror");
+    utils.onlistener(self, "onload");
+    utils.onlistener(self, "onquit");
+    utils.onlistener(self, "oncomplete");
 
-    utils.onlistener(self, "setoutput");
-    utils.onlistener(self, "getoutput");
-    utils.onlistener(self, "setdebug");
-    utils.onlistener(self, "getdebug");
+    utils.onlistener(self, "onsetoutput");
+    utils.onlistener(self, "ongetoutput");
+    utils.onlistener(self, "onsetdebug");
+    utils.onlistener(self, "ongetdebug");
 
-    utils.onlistener(self, "setlanguage");
-    utils.onlistener(self, "getlanguage");
-    utils.onlistener(self, "setcode");
-    utils.onlistener(self, "getcode");
-    utils.onlistener(self, "setheader");
-    utils.onlistener(self, "getheader");
-    utils.onlistener(self, "setfooter");
-    utils.onlistener(self, "getfooter");
-    utils.onlistener(self, "getstate");
+    utils.onlistener(self, "onsetlanguage");
+    utils.onlistener(self, "ongetlanguage");
+    utils.onlistener(self, "onsetcode");
+    utils.onlistener(self, "ongetcode");
+    utils.onlistener(self, "onsetheader");
+    utils.onlistener(self, "ongetheader");
+    utils.onlistener(self, "onsetfooter");
+    utils.onlistener(self, "ongetfooter");
+    utils.onlistener(self, "ongetstate");
 
     self.settings = [];
     self._options = [];
@@ -349,8 +381,8 @@ function Session() {
     self.driver = undefined;
     self.args = [];
     self._input = "";
-    utils.onlistener(self, "setinput");
-    utils.onlistener(self, "getinput");
+    utils.onlistener(self, "onsetinput");
+    utils.onlistener(self, "ongetinput");
 
     self._characterCount = 0;
     self._byteCount = 0;
