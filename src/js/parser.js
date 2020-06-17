@@ -162,6 +162,7 @@ function Parser(code, input) {
                         tio_lang_self.sessions.push(new Block(result.id, result.session_code, get_tio_info(result.id)));
                         code = result.code;
                     } else {
+                        tio_lang_self._kill = true;
                         tio_lang_self.onerror();
                     }
                 }
