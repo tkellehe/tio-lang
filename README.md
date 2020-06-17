@@ -55,9 +55,9 @@ This is a simple JavaScript library that will execute __tio-lang__ code using [_
 and it will fill everything out as well as remove any child nodes.
 
 ```
-<div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line (\"Hello, World!\");end Main;' tio-input="" tio-runable="Try It Here!"></div>
+<div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line (\"Yeah!\");end Main;' tio-input="" tio-runable="I am a goofy goober!"></div>
 ```
-<div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line (\"Hello, World!\");end Main;' tio-input="" tio-runable="Try It Here!"></div>
+<div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line (\"Yeah!\");end Main;' tio-input="" tio-runable="I am a goofy goober!"></div>
 
 ---
 
