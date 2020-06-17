@@ -176,7 +176,12 @@ utils.onlistener = function(eventHandler, event, eventType) {
 
     return result;
 };
-  
+ 
+function string_splice(string, index, count, add) {
+    return string.slice(0, index) + add + string.slice(index + count);
+}
+utils.string_splice = string_splice;
+    
 function encode_utf8(s) {
   return unescape(encodeURIComponent(s));
 }
