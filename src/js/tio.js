@@ -31,6 +31,139 @@ utils.startOfExtraFields = "\xfe";
 utils.startOfSettings = "\xf5";
 utils.touchDevice = navigator.MaxTouchPoints > 0 || window.ontouchstart !== undefined;
 
+function is_func(obj) { return obj instanceof Function }
+function is_obj(obj) { return !is_func(obj) && obj instanceof Object }
+function can_attach(obj) { return obj instanceof Object }
+function to_string(obj) { return ((obj instanceof Object) ? obj.toString() : obj) + "" }
+
+function _add_onevent(onevent, eventHandler, eventType) {
+    if(onevent in eventHandler)
+    {
+        if(!is_func(eventHandler[onevent]))
+        {
+            try{ delete eventHandler[onevent] }
+            catch(e) { throw new Error("Cannot attach event: " + onevent) }
+        }
+        else
+        {
+            return;
+        }
+    }
+
+    eventHandler[onevent] = function(event_instance) {
+        if(!(event_instance instanceof eventType)) event_instance = new Function.bind.apply(eventType, arguments);
+        for(var i = 0, l = eventHandler[onevent].__events__.length; i < l; ++i)
+        {
+            eventHandler[onevent].__events__[i].apply(eventHandler, [event_instance]);
+        }
+    };
+    eventHandler[onevent]["__events__"] = [];
+}
+
+function _add_addEventListener(eventHandler) {
+    if("addEventListener" in eventHandler)
+    {
+        if(!is_func(eventHandler.addEventListener))
+        {
+            try{ delete eventHandler.addEventListener }
+            catch(e) { throw new Error("Cannot attach event addEventListener.") }
+        }
+        else
+        {
+            return;
+        }
+    }
+    eventHandler["addEventListener"] = function(event, f) {
+        var onevent = "on" + to_string(event);
+        if(is_func(f) && (onevent in eventHandler)
+            && is_func(eventHandler[onevent]) && ("__events__" in eventHandler[onevent]))
+        {
+            for(var i = 0, l = eventHandler[onevent].__events__.length; i < l; ++i)
+            {
+                if(eventHandler[onevent].__events__[i] === f)
+                    return f;
+            }
+            eventHandler[onevent].__events__.push(f);            
+        }
+        return f;
+    };
+}
+function _add_removeEventListener(eventHandler) {
+    if("removeEventListener" in eventHandler)
+    {
+        if(!is_func(eventHandler.removeEventListener))
+        {
+            try{ delete eventHandler.removeEventListener }
+            catch(e) { throw new Error("Cannot attach removeEventListener.") }
+        }
+        else
+        {
+            return;
+        }
+    }
+    eventHandler["removeEventListener"] = function(onevent, f) {
+        var onevent = "on" + to_string(event);
+        if(is_func(f) && (onevent in eventHandler)
+            && is_func(eventHandler[onevent]) && ("__events__" in eventHandler[onevent]))
+        {
+            for(var i = 0, l = eventHandler[onevent].__events__.length; i < l; ++i)
+            {
+                if(eventHandler[onevent].__events__[i] === f) {
+                    eventHandler[onevent].__events__.splice(i, 1);
+                    return f;
+                }
+            }
+        }
+        return f;
+    };
+}
+
+utils.onlistener = function(eventHandler, event, eventType) {
+    if(can_attach(eventHandler))
+    {
+        if(event !== undefined)
+            var onevent = "on" + (event = to_string(event));
+
+        // Makes own eventType object.
+        if(onevent && !is_func(eventType)) {
+            eventType = eval("(function(){return function " 
+                            + event + "Event(){this.args = arguments;" 
+                            + event + "Event.plugin.__plugin__(this);}})()");
+            eventType.plugin = function(f) {
+                if(is_func(f))
+                {
+                    eventType.plugin.__plugin__.plugins.push(f);
+                }
+                return eventType.plugin;
+            };
+            eventType.plugin.__plugin__ = function(instance){
+                for(var i = 0, l = eventType.plugin.__plugin__.plugins.length; i < l; ++i)
+                    eventType.plugin.__plugin__.plugins[i](instance);
+            };
+            eventType.plugin.__plugin__.plugins = [];
+        }
+
+        if(onevent) _add_onevent(onevent, eventHandler, eventType);
+        _add_addEventListener(eventHandler);
+        _add_removeEventListener(eventHandler);
+
+        var result = {};
+        if(onevent)
+        {
+            result.onevent = onevent;
+            result[onevent] = eventHandler[onevent];
+            result.eventType = eventType;
+            result.plugin = eventType.plugin;
+        }
+        
+        result.addEventListener = eventHandler.addEventListener;
+        result.removeEventListener = eventHandler.removeEventListener;
+        result.eventHandler = eventHandler;
+    }
+
+    return result;
+};
+  
 function encode_utf8(s) {
   return unescape(encodeURIComponent(s));
 }
@@ -183,29 +316,29 @@ function Session() {
 
     self.utils = utils;
 
-    self.onmessage = function(){};
-    self.onoutput = function(){};
-    self.ondebug = function(){};
-    self.onrun = function(){};
-    self.onerror = function(){};
-    self.onload = function(){};
-    self.onquit = function(){};
-    self.oncomplete = function(){};
+    utils.onlistener(self, "onmessage");
+    utils.onlistener(self, "onoutput");
+    utils.onlistener(self, "ondebug");
+    utils.onlistener(self, "onrun");
+    utils.onlistener(self, "onerror");
+    utils.onlistener(self, "onload");
+    utils.onlistener(self, "onquit");
+    utils.onlistener(self, "oncomplete");
 
-    self.onsetoutput = function(){};
-    self.ongetoutput = function(){};
-    self.onsetdebug = function(){};
-    self.ongetdebug = function(){};
+    utils.onlistener(self, "onsetoutput");
+    utils.onlistener(self, "ongetoutput");
+    utils.onlistener(self, "onsetdebug");
+    utils.onlistener(self, "ongetdebug");
 
-    self.onsetlanguage = function(){};
-    self.ongetlanguage = function(){};
-    self.onsetcode = function(){};
-    self.ongetcode = function(){};
-    self.onsetheader = function(){};
-    self.ongetheader = function(){};
-    self.onsetfooter = function(){};
-    self.ongetfooter = function(){};
-    self.ongetstate = function(){};
+    utils.onlistener(self, "onsetlanguage");
+    utils.onlistener(self, "ongetlanguage");
+    utils.onlistener(self, "onsetcode");
+    utils.onlistener(self, "ongetcode");
+    utils.onlistener(self, "onsetheader");
+    utils.onlistener(self, "ongetheader");
+    utils.onlistener(self, "onsetfooter");
+    utils.onlistener(self, "ongetfooter");
+    utils.onlistener(self, "ongetstate");
 
     self.settings = [];
     self._options = [];
@@ -216,8 +349,8 @@ function Session() {
     self.driver = undefined;
     self.args = [];
     self._input = "";
-    self.onsetinput = function(){};
-    self.ongetinput = function(){};
+    utils.onlistener(self, "onsetinput");
+    utils.onlistener(self, "ongetinput");
 
     self._characterCount = 0;
     self._byteCount = 0;
