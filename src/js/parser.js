@@ -9,7 +9,7 @@ function Parser(code, input) {
     tio_lang_self.input = input || "";
     tio_lang_self.TIO = TIO;
     tio.utils.onlistener(tio_lang_self, "oncomplete");
-    tio.utils.onlistener(tio_lang_self, "ononerror");
+    tio.utils.onlistener(tio_lang_self, "onerror");
     tio_lang_self.output = function() { return TIO.output(); }
     tio_lang_self.debug = function() { return tio_lang_self.debug_result; }
     tio_lang_self._kill = false;
