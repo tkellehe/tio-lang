@@ -130,7 +130,7 @@ utils.onlistener = function(eventHandler, event, eventType) {
         // Makes own eventType object.
         if(onevent && !is_func(eventType)) {
             eventType = eval("(function(){return function " 
-                            + event + "Event(){this.args = arguments;" 
+                            + event + "Event(){this.args = [];for(var i = 0; i < arguments.length; ++i) this.args.push(arguments[i]);" 
                             + event + "Event.plugin.__plugin__(this);}})()");
             eventType.plugin = function(f) {
                 if(is_func(f))
