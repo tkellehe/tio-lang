@@ -192,9 +192,17 @@ tio.run()
 ---
 ### `Session.load(?force)`
 
- > Loads the languages from the TIO servers and populates the `tio.utils` data. The callback `onload` can be used to be indicated
- > when the data is brought. If `force` is set to true, it will ensure another fetch is called to the TIO servers.
- 
+ > Loads the languages from the TIO servers and populates the `tio.utils` data. The callback `onload` can be used to be notified
+ > when the data is brought in. If `force` is set to true, it will call the callback if the data is there else it will behave normally.
+ > Rather that the `force` ensure another fetch is called to the TIO servers, this was done because that can become quite expensive.
+ > Therein, [`fetch`](#sessionfetch) was added to ensure another fetch to the TIO servers.
+
+---
+### `Session.fetch()`
+
+ > Forces a fetch to the TIO servers and populates the `tio.utils` data. The callback `onload` can be used to be notified
+ > when the data is brought in.
+
 ---
 ### `Session.message(title, message)`
 
