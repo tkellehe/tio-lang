@@ -1,7 +1,11 @@
 (function(){
 
-function editor_handle_attribute(text) {
+function editor_handle_string_attribute(text) {
     return eval("(function(){ return \"" + text + "\";})()");
+}
+    
+function editor_handle_attribute(text) {
+    return eval("(function(){ return " + text + ";})()");
 }
 
 var nbs = String.fromCharCode(160),
@@ -41,13 +45,14 @@ var BUTTON_RUN_CHAR = "\u27A4",
 function editor_create_element(html) {
     var type = html.getAttribute("tio-type") || "code";
     var runable_text = html.getAttribute("tio-runable");
-    var is_runable = runable_text !== null;
+    var is_runable = runable_text !== null,
+        is_tio_js = html.getAttribute("tio-js") !== null;
     var is_animate = html.getAttribute("tio-animate") !== null;
     var is_animate_button = html.getAttribute("tio-animate-button") !== null;
     var has_debug = html.getAttribute("tio-debug") !== null;
     var cols = html.getAttribute("tio-cols"),
         rows = html.getAttribute("tio-rows");
-
+    
     // Make it work with GitHub markdown.
     html.className += " language-plaintext highlighter-rouge";
     var o = document.createElement("div");
@@ -158,18 +163,24 @@ function editor_create_element(html) {
         if(output === undefined) return ""
     }
 
+    o.tio_js = !!is_tio_js;
     o.tio_type = type;
     o.tio_runable = !!is_runable;
     o.tio_animate = !!is_animate;
     o.tio_animate_button = !!is_animate_button;
 
     // Get the code and input then clean out any bad elements.
-    o.tio_input = html.getAttribute("tio-input") || "";
-    o.tio_code = html.getAttribute("tio-code") || "";
+    o.tio_input = nbsRemove(html.getAttribute("tio-input") || "");
+    o.tio_code = nbsRemove(html.getAttribute("tio-code") || "");
     o.tio_display_code = html.getAttribute("tio-display-code");
-    o.tio_display_code = o.tio_display_code ? editor_handle_attribute(o.tio_display_code) : o.tio_code;
-    o.tio_input = nbsRemove(o.tio_input);
-    o.tio_code = nbsRemove(o.tio_code);
+    o.tio_display_code = o.tio_display_code ? editor_handle_string_attribute(o.tio_display_code) : o.tio_code;
+    
+    o.tio_language = nbsRemove(html.getAttribute("tio-language") || "python3");
+    o.tio_header = nbsRemove(html.getAttribute("tio-header") || "");
+    o.tio_footer = nbsRemove(html.getAttribute("tio-footer") || "");
+    o.tio_options = nbsRemove(html.getAttribute("tio-options") || "[]");
+    o.tio_drivers = nbsRemove(html.getAttribute("tio-drivers") || "[]");
+    o.tio_args = nbsRemove(html.getAttribute("tio-args") || "[]");
 
     // Handle the columns and rows.
     if(cols) {
@@ -224,27 +235,57 @@ function onload() {
             })
             elem.tio_reset();
 
-            (function(prgm) {
-                prgm.oncomplete.add(function() {
-                    elem.tio_val(elem.tio_val() + prgm.output());
-                    elem.tio_debug(prgm.debug());
-                    elem.tio_done();
-                });
-                prgm.onerror.add(function() {
-                    var result = "";
-                    tio.utils.iterate(prgm.TIO.messages, function(message){
-                        result += message.title + "(" + message.category + ")\n" + message.message + "\n\n";
+            if(elem.tio_js) {
+                (function(session) {
+                    session.oncomplete.add(function() {
+                        elem.tio_val(elem.tio_val() + session.output());
+                        elem.tio_debug(session.debug());
+                        elem.tio_done();
                     });
-                    elem.tio_val(result);
-                    elem.tio_debug(prgm.debug());
-                    elem.tio_done();
-                });
-                elem.tio_run.add(function() {
-                    elem.tio_start()
-                    prgm.run()
-                });
-                elem.tio_ready();
-            })(tio_lang(editor_handle_attribute(elem.tio_code), editor_handle_attribute(elem.tio_input)));
+                    elem.tio_run.add(function() {
+                        session.onload.add(function() {
+                            session.language(elem.tio_language);
+                            session.input(editor_handle_string_attribute(elem.tio_input));
+                            session.header(editor_handle_string_attribute(elem.tio_header));
+                            session.code(editor_handle_string_attribute(elem.tio_code));
+                            session.footer(editor_handle_string_attribute(elem.tio_footer));
+                            if(elem.tio_options) session.options = editor_handle_attribute(elem.tio_options)
+                            if(elem.tio_drivers) session.drivers = editor_handle_attribute(elem.tio_drivers)
+                            if(elem.tio_args) session.args = editor_handle_attribute(elem.tio_args)
+                            
+                            session.run()
+                        });
+                        elem.tio_start()
+                        session.load(true);
+                    });
+                    elem.tio_ready();
+                })(tio.utils.session());
+            } else {
+                (function(prgm) {
+                    prgm.oncomplete.add(function() {
+                        elem.tio_val(elem.tio_val() + prgm.output());
+                        elem.tio_debug(prgm.debug());
+                        elem.tio_done();
+                    });
+                    prgm.onerror.add(function() {
+                        var result = "";
+                        tio.utils.iterate(prgm.TIO.messages, function(message){
+                            result += message.title + "(" + message.category + ")\n" + message.message + "\n\n";
+                        });
+                        elem.tio_val(result);
+                        elem.tio_debug(prgm.debug());
+                        elem.tio_done();
+                    });
+                    elem.tio_run.add(function() {
+                        prgm.code = editor_handle_string_attribute(elem.tio_code)
+                        prgm.input = editor_handle_string_attribute(elem.tio_input)
+                        
+                        elem.tio_start()
+                        prgm.run()
+                    });
+                    elem.tio_ready();
+                })(tio_lang());
+            }
 
             // Remove all children nodes and add the node containing the live code.
             html.innerHTML = "";
