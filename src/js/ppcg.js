@@ -32,6 +32,9 @@ function ppcg_create_element(html) {
     p.appendChild(e);
     o.appendChild(p);
     
+    // Prevent innerText reading issues.
+    e.style["white-space"] = "pre-wrap";
+    
     tio.utils.onlistener(o, "tio_done");
     tio.utils.onlistener(o, "tio_start");
     tio.utils.onlistener(o, "tio_reset");
