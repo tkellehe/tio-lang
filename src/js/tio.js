@@ -335,29 +335,29 @@ function Session() {
 
     self.utils = utils;
 
-    utils.onlistener(self, "onmessage");
-    utils.onlistener(self, "onoutput");
-    utils.onlistener(self, "ondebug");
-    utils.onlistener(self, "onrun");
-    utils.onlistener(self, "onerror");
-    utils.onlistener(self, "onload");
-    utils.onlistener(self, "onquit");
-    utils.onlistener(self, "oncomplete");
+    utils.onlistener(self, "message");
+    utils.onlistener(self, "output");
+    utils.onlistener(self, "debug");
+    utils.onlistener(self, "run");
+    utils.onlistener(self, "error");
+    utils.onlistener(self, "load");
+    utils.onlistener(self, "quit");
+    utils.onlistener(self, "complete");
 
-    utils.onlistener(self, "onsetoutput");
-    utils.onlistener(self, "ongetoutput");
-    utils.onlistener(self, "onsetdebug");
-    utils.onlistener(self, "ongetdebug");
+    utils.onlistener(self, "setoutput");
+    utils.onlistener(self, "getoutput");
+    utils.onlistener(self, "setdebug");
+    utils.onlistener(self, "getdebug");
 
-    utils.onlistener(self, "onsetlanguage");
-    utils.onlistener(self, "ongetlanguage");
-    utils.onlistener(self, "onsetcode");
-    utils.onlistener(self, "ongetcode");
-    utils.onlistener(self, "onsetheader");
-    utils.onlistener(self, "ongetheader");
-    utils.onlistener(self, "onsetfooter");
-    utils.onlistener(self, "ongetfooter");
-    utils.onlistener(self, "ongetstate");
+    utils.onlistener(self, "setlanguage");
+    utils.onlistener(self, "getlanguage");
+    utils.onlistener(self, "setcode");
+    utils.onlistener(self, "getcode");
+    utils.onlistener(self, "setheader");
+    utils.onlistener(self, "getheader");
+    utils.onlistener(self, "setfooter");
+    utils.onlistener(self, "getfooter");
+    utils.onlistener(self, "getstate");
 
     self.settings = [];
     self._options = [];
@@ -368,8 +368,8 @@ function Session() {
     self.driver = undefined;
     self.args = [];
     self._input = "";
-    utils.onlistener(self, "onsetinput");
-    utils.onlistener(self, "ongetinput");
+    utils.onlistener(self, "setinput");
+    utils.onlistener(self, "getinput");
 
     self._characterCount = 0;
     self._byteCount = 0;
