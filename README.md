@@ -80,7 +80,7 @@ and it will fill everything out as well as remove any child nodes. The class `ti
 
  > Adds a button to the HTML elements that will execute the code. If not provided, the code will begin executing immediately.
  > The text of button is set to the value provided where the default is `{RUN}`. If the value is `{RUN}` then it will generate
- > the button as a small circle that can be animated.
+ > the button as a small circle.
 
 ### `?tio-animate`
 
