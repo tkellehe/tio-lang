@@ -23,7 +23,7 @@ Hello, World!
 # Basics
 
 The __tio-lang__ starts by first reading the initial byte to determine how to interpret the rest of the program. The main three utilize the language identifiers
-from the TIO servers. This list can be obtained through [_tio.js_](#tioutilslangauges). 
+from the TIO servers. This list can be obtained through [_tio.js_](#tioutilslangauges) and if on the website [here](#more-info).
 
 Once the language identifiers have been paired with the code, it will execute the code. Each ones output feeds as the input into the next one.
 
@@ -299,6 +299,8 @@ tio.run()
 <script src="src/js/parser.js"></script>
 <script src="src/js/editor.js"></script>
 
+## More Info
+
 <div id="languages" class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Languages:</code></pre></div></div>
 <script>
     (function(){
@@ -307,9 +309,9 @@ tio.run()
         tio.onload.add(function(){
             var code = languages.childNodes[0].childNodes[0].childNodes[0];
             console.log(code);
-            var result = "";
+            var result = "Languages:";
             for(var i = 0; i < tio.utils.languages.length; ++i) {
-                result = result + "\n[" + i + "] " + tio.utils.languages[i].name + ":" + tio.utils.languages[i].id
+                result = result + "\n[" + i + "] " + tio.utils.languages[i].name + " -> " + tio.utils.languages[i].id
             };
             code.innerText = result;
             code.textContent = result;
