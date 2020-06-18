@@ -226,17 +226,20 @@ function onload() {
 
     for(var i = output_div_elements.length; i--;) {
         (function(html, elem){
-            elem.tio_reset.add(function() {
-                elem.tio_val(
-                    (elem.tio_input && ("input:\n" + elem.tio_input + "\n")) +
-                    "code:\n" + elem.tio_display_code +
-                    "\n>>>\n"
-                );                
-            })
-            elem.tio_reset();
-
             if(elem.tio_js) {
                 (function(session) {
+                    elem.tio_reset.add(function() {
+                        session.language(elem.tio_language);
+                        session.code(editor_handle_string_attribute(elem.tio_code));
+                        elem.tio_val(
+                            ("language: " + session.language() + "\n") +
+                            ("bytes: " + session.byte_count() + "\n") +
+                            (elem.tio_input && ("input:\n" + elem.tio_input + "\n")) +
+                            "code:\n" + elem.tio_display_code +
+                            "\n>>>\n"
+                        );                
+                    })
+                    elem.tio_reset();
                     session.oncomplete.add(function() {
                         elem.tio_val(elem.tio_val() + session.output());
                         elem.tio_debug(session.debug());
@@ -262,6 +265,14 @@ function onload() {
                 })(tio.utils.session());
             } else {
                 (function(prgm) {
+                    elem.tio_reset.add(function() {
+                        elem.tio_val(
+                            (elem.tio_input && ("input:\n" + elem.tio_input + "\n")) +
+                            "code:\n" + elem.tio_display_code +
+                            "\n>>>\n"
+                        );                
+                    })
+                    elem.tio_reset();
                     prgm.oncomplete.add(function() {
                         elem.tio_val(elem.tio_val() + prgm.output());
                         elem.tio_debug(prgm.debug());
