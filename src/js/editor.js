@@ -230,10 +230,15 @@ function onload() {
                 (function(session) {
                     elem.tio_reset.add(function() {
                         session.language(elem.tio_language);
+                        var language = session.language();
+                        if(session.utils._languages) {
+                            language = session.utils._languages[language];
+                            language = language ? language.name : session.language();
+                        }
                         session.code(editor_handle_string_attribute(elem.tio_code));
                         var bytes = session.byte_count();
                         elem.tio_val(
-                            ("language: " + session.language() + "\n") +
+                            ("language: " +  + "\n") +
                             (bytes === undefined ? "" : ("bytes: " + bytes + "\n")) +
                             (elem.tio_input && ("input:\n" + elem.tio_input + "\n")) +
                             "code:\n" + elem.tio_display_code +
