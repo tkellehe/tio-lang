@@ -231,9 +231,10 @@ function onload() {
                     elem.tio_reset.add(function() {
                         session.language(elem.tio_language);
                         session.code(editor_handle_string_attribute(elem.tio_code));
+                        var bytes = session.byte_count();
                         elem.tio_val(
                             ("language: " + session.language() + "\n") +
-                            ("bytes: " + session.byte_count() + "\n") +
+                            (bytes === undefined ? "" : ("bytes: " + bytes + "\n")) +
                             (elem.tio_input && ("input:\n" + elem.tio_input + "\n")) +
                             "code:\n" + elem.tio_display_code +
                             "\n>>>\n"
