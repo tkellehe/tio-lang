@@ -313,17 +313,14 @@ tio.run()
 <script>
     (function(){
         var languages = document.getElementById("languages");
-        console.log(languages);
         tio.onload.add(function(){
             var code = languages.childNodes[0].childNodes[0].childNodes[0];
-            console.log(code);
             var result = "Languages:";
             for(var i = 0; i < tio.utils.languages.length; ++i) {
                 result = result + "\n[" + i + "] " + tio.utils.languages[i].name + " -> " + tio.utils.languages[i].id
             };
             code.innerText = result;
             code.textContent = result;
-            console.log(result);
         });
         tio.load(true);
    })();
