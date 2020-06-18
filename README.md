@@ -5,7 +5,7 @@
 The __tio-lang__ is a language that calls to other programming languages that are available on [Try It Online](https://github.com/TryItOnline/tryitonline).
 
 ---
-<div class="tio-code" tio-code="\2brainfuck\x83,+.python\x9Eimport time;time.sleep(int(I))jelly\x88“3ḅaė;œ»c\x84p(a)" tio-input="1">
+<div class="tio-code" tio-code="\2brainfuck\x83,+.python\x9Eimport time;time.sleep(int(I))jelly\x88“3ḅaė;œ»c\x84p(a)" tio-input="1" tio-animate>
 
 ```
 input:
@@ -35,7 +35,7 @@ The first is the null character `\0` which will take the longest possible langua
 to go with that language identifier and runs it.
 
 ---
-<div class="tio-code" tio-code='\0valapublic static int main(string[]args){stdout.printf(\"Hello, World!\n\");return 0;}' tio-input="" tio-runable="Try It Here!">
+<div class="tio-code" tio-code='\0valapublic static int main(string[]args){stdout.printf(\"Hello, World!\n\");return 0;}' tio-input="" tio-runable="Try It Here!" tio-animate>
 
 ```
 code:
