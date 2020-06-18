@@ -19,6 +19,21 @@ function brRemove(string) {
     return string.replace(brRemoveRegex, lf);
 };
 
+function textContent(element, value) {
+    if(value !== undefined) {
+        element.innerText = value;element.textContent = value;
+    } else {
+        var text = "";
+        for(var i = nodes.length; i--;) {                        
+            switch(nodes[i].nodeName) {
+                case '#text'    : text = nodes[i].nodeValue + text;   break;
+                case 'BR'       : text = '\n' + text;                 break;
+            }
+        }
+        return text;
+    }
+}
+    
 function ppcg_create_element(html) {
     var type = html.getAttribute("tio-type") || "code";
     var runable_text = html.getAttribute("tio-runable");
@@ -77,8 +92,7 @@ function ppcg_create_element(html) {
         }
     } else if(type === "code") {
         o.tio_val = function(content) {
-            if(content === undefined) return brRemove(nbsRemove(e.innerText));
-            e.innerText = content;
+            return textContent(e, content);
         }
     }
 
