@@ -519,11 +519,7 @@ function Session() {
     }
 
     //--------------------------------------------------------------------------------------------------------
-    self.load = function(force) {
-        if(self.utils._languages) {
-            if(force) self.onload();
-            return;
-        }
+    self.fetch = function() {
         self.languageFileRequest = new XMLHttpRequest;
         function completeLoad() {
             self.utils._languages = JSON.parse(self.languageFileRequest.response);
@@ -550,17 +546,27 @@ function Session() {
                 sha256(byteStringToByteArray(getRandomBits(128)), String);
             } catch(error) {
                 console.error(error);
+                self.message("Error", error);
 
                 if (error instanceof ReferenceError)
                     self.message("Error", "Some resources could not be loaded. Please refresh the page and try again.");
                 else
                     // Yes this is the same error message...
-                    alert("Your browser seems to lack a required feature.\n\nCurrently, the only supported browsers are Chrome/Chromium, Firefox, and Safari (recent versions), Edge (all versions), and Internet Explorer 11.\n\nIf you are using one of those browsers, you are receiving this message in error. Please send an email to feedback@tryitonline.net and include the error log below. You should be able to copy the error message from your console.\n\n" + error);
+                    self.alert("Your browser seems to lack a required feature.\n\nCurrently, the only supported browsers are Chrome/Chromium, Firefox, and Safari (recent versions), Edge (all versions), and Internet Explorer 11.\n\nIf you are using one of those browsers, you are receiving this message in error. Please send an email to feedback@tryitonline.net and include the error log below. You should be able to copy the error message from your console.\n\n" + error);
             }
             completeLoad();
         }
         self.languageFileRequest.open("GET", self.utils.tioURL + self.utils.langURL);
         self.languageFileRequest.send();
+    }
+
+    //--------------------------------------------------------------------------------------------------------
+    self.load = function(force) {
+        if(self.utils._languages) {
+            if(force) self.onload();
+            return;
+        }
+        self.fetch();
     }
 
     //--------------------------------------------------------------------------------------------------------
