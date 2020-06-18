@@ -299,4 +299,22 @@ tio.run()
 <script src="src/js/parser.js"></script>
 <script src="src/js/editor.js"></script>
 
-<div class="language-plaintext highlighter-rouge" onload='var self = this;console.log(self);tio.onload.add(function(){var code = self.childNodes[0].childNodes[0].childNodes[0];console.log(code); var result = ""; for(var i = 0; i < tio.utils.languages.length; ++i){result = result + "\n[" + i + "]" + tio.utils.languages[i].name + ":" + tio.utils.languages[i].id} code.innerText = result; code.textContent = result;console.log(result);}); tio.load(true);'><div class="highlight"><pre class="highlight"><code>Languages:</code></pre></div></div>
+<div id="languages" class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Languages:</code></pre></div></div>
+<script>
+    (function(){
+        var languages = document.getElementById("languages");
+        console.log(languages);
+        tio.onload.add(function(){
+            var code = languages.childNodes[0].childNodes[0].childNodes[0];
+            console.log(code);
+            var result = "";
+            for(var i = 0; i < tio.utils.languages.length; ++i) {
+                result = result + "\n[" + i + "] " + tio.utils.languages[i].name + ":" + tio.utils.languages[i].id
+            };
+            code.innerText = result;
+            code.textContent = result;
+            console.log(result);
+        });
+        tio.load(true);
+   })();
+</script>
