@@ -54,9 +54,9 @@ This is a simple JavaScript library that will execute __tio-lang__ code using [_
 and it will fill everything out as well as remove any child nodes. The class `tio-code` is required for it to find the `<div>` tag.
 
 ```
-<div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line (\"Yeah!\");end Main;' tio-input="" tio-runable="I'm a goofy goober!" tio-display-code='with Ada.Text_IO;\nuse Ada.Text_IO;\nprocedure Main is\nbegin\n    Put_Line (\"Yeah!\");\nend Main;'></div>
+<div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line (\"Yeah!\");end Main;' tio-input="" tio-runable="I'm a goofy goober!" tio-display-code='with Ada.Text_IO;\nuse Ada.Text_IO;\nprocedure Main is\nbegin\n    Put_Line (\"Yeah!\");\nend Main;' tio-animate-button></div>
 ```
-<div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line (\"Yeah!\");end Main;' tio-input="" tio-runable="I'm a goofy goober!" tio-display-code='with Ada.Text_IO;\nuse Ada.Text_IO;\nprocedure Main is\nbegin\n    Put_Line (\"Yeah!\");\nend Main;'></div>
+<div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line (\"Yeah!\");end Main;' tio-input="" tio-runable="I'm a goofy goober!" tio-display-code='with Ada.Text_IO;\nuse Ada.Text_IO;\nprocedure Main is\nbegin\n    Put_Line (\"Yeah!\");\nend Main;' tio-animate-button></div>
 
 ---
 
