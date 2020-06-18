@@ -37,7 +37,7 @@ function textContent(element, value) {
     
 function editor_create_element(html) {
     var type = html.getAttribute("tio-type") || "code";
-    var runable_text = html.getAttribute("tio-runable") || "{RUN}";
+    var runable_text = html.getAttribute("tio-runable");
     var is_runable = runable_text !== null;
     var is_animate = html.getAttribute("tio-animate") !== null;
     var has_debug = html.getAttribute("tio-debug") !== null;
@@ -64,7 +64,7 @@ function editor_create_element(html) {
     if(is_runable) {
         var b = document.createElement("button");
         
-        if(runable_text === "{RUN}") {
+        if(runable_text === "{RUN}" || runable_text === "") {
             b.style.fontFamily = "monospace";
             b.style.backgroundColor = "white";
             b.style.color = "black";
@@ -73,7 +73,7 @@ function editor_create_element(html) {
             b.style.textAlign = "center";
             b.style.textDecoration = "none";
             b.style.display = "inline-block";
-            b.style.fontSize = "2em";
+            b.style.fontSize = "0.5em";
             b.style.margin = "4px 2px";
             b.style.borderRadius = "100%";
             
