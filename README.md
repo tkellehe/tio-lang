@@ -73,7 +73,7 @@ https://tkellehe.github.io/tio-lang/src/js/tio.js
 
 For more info on these dependencies:
 
- * https://github.com/nodeca/pako
+ * [https://github.com/nodeca/pako](https://github.com/nodeca/pako)
 
 ### Example
 
