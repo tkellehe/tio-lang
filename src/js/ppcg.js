@@ -100,8 +100,7 @@ function ppcg_create_element(html) {
     if(is_animate) {
         var tio_animate_is_done = false;
         var tio_animate_frame = 0;
-        //var tio_animate_frames = ["[    ...]", "[.    ..]", "[..    .]", "[...    ]", "[ ...   ]", "[  ...  ]", "[   ... ]"]
-        var tio_animate_frames = ["/", "-", "\\", "|"]
+        var tio_animate_frames = ["/", "/", "/", "/", "/", "-", "-", "-", "-", "-", "\\", "\\", "\\", "\\", "\\", "|", "|", "|", "|", "|"]
         var tio_animate_frame_pos = -1;
         o.tio_start.add(function() {
             tio_animate_is_done = false;
@@ -118,7 +117,7 @@ function ppcg_create_element(html) {
                     tio_animate_frame = (tio_animate_frame + 1) % tio_animate_frames.length;
                     tio_animate_frame_pos = current.length;
                     o.tio_val(current + tio_animate_frames[tio_animate_frame]);
-                    setTimeout(animate, 100);
+                    setTimeout(animate, 10);
                 }
             })()
         });
