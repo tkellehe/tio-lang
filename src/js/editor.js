@@ -137,7 +137,8 @@ function editor_create_element(html) {
     // Get the code and input then clean out any bad elements.
     o.tio_input = html.getAttribute("tio-input") || "";
     o.tio_code = html.getAttribute("tio-code") || "";
-    o.tio_display_code = html.getAttribute("tio-display-code") || o.tio_code;
+    o.tio_display_code = html.getAttribute("tio-display-code");
+    o.tio_display_code = o.tio_display_code ? editor_handle_attribute(o.tio_display_code) : o.tio_code;
     o.tio_input = nbsRemove(o.tio_input);
     o.tio_code = nbsRemove(o.tio_code);
 
