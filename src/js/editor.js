@@ -42,6 +42,7 @@ function editor_create_element(html) {
     var runable_text = html.getAttribute("tio-runable");
     var is_runable = runable_text !== null;
     var is_animate = html.getAttribute("tio-animate") !== null;
+    var is_animate_button = html.getAttribute("tio-animate-button") !== null;
     var has_debug = html.getAttribute("tio-debug") !== null;
     var cols = html.getAttribute("tio-cols"),
         rows = html.getAttribute("tio-rows");
@@ -116,7 +117,7 @@ function editor_create_element(html) {
         }
     }
 
-    if(is_animate) {
+    if(is_animate || is_animate_button) {
         var tio_animate_is_done = false;
         var tio_animate_frame = 0;
         var tio_animate_frames = ["/", "/", "/", "/", "/", "-", "-", "-", "-", "-", "\\", "\\", "\\", "\\", "\\", "|", "|", "|", "|", "|"]
@@ -126,18 +127,18 @@ function editor_create_element(html) {
             tio_animate_frame_pos = -1;
             (function animate() {
                 var current = o.tio_val();
-                if(tio_animate_frame_pos !== -1) {
+                if(tio_animate_frame_pos !== -1 && is_animate) {
                     current = tio.utils.string_splice(current, tio_animate_frame_pos, tio_animate_frames[tio_animate_frame].length, "");
                 }
 
                 if(tio_animate_is_done) {
-                    o.tio_val(current);
-                    b.innerText = BUTTON_CHAR;
+                    if(is_animate) o.tio_val(current);
+                    if(is_animate_button) b.innerText = BUTTON_CHAR;
                 } else {
                     tio_animate_frame = (tio_animate_frame + 1) % tio_animate_frames.length;
                     tio_animate_frame_pos = current.length;
-                    o.tio_val(current + tio_animate_frames[tio_animate_frame]);
-                    b.innerText = tio_animate_frames[tio_animate_frame];
+                    if(is_animate) o.tio_val(current + tio_animate_frames[tio_animate_frame]);
+                    if(is_animate_button) b.innerText = tio_animate_frames[tio_animate_frame];
                     setTimeout(animate, 10);
                 }
             })()
@@ -154,6 +155,7 @@ function editor_create_element(html) {
     o.tio_type = type;
     o.tio_runable = !!is_runable;
     o.tio_animate = !!is_animate;
+    o.tio_animate_button = !!is_animate_button;
 
     // Get the code and input then clean out any bad elements.
     o.tio_input = html.getAttribute("tio-input") || "";
