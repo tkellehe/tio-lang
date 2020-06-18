@@ -51,13 +51,41 @@ Hello, World!
 ## editor.js
 
 This is a simple JavaScript library that will execute __tio-lang__ code using [_tio.js_](#tiojs) and _parser.js_. Merely place different attribute names into a `<div>` tag
-and it will fill everything out as well as remove any child nodes.
+and it will fill everything out as well as remove any child nodes. The class `tio-code` is required for it to find the `<div>` tag.
 
 ```
 <div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line (\"Yeah!\");end Main;' tio-input="" tio-runable="I'm a goofy goober!" tio-display-code='with Ada.Text_IO;\nuse Ada.Text_IO;\nprocedure Main is\nbegin\n    Put_Line (\"Yeah!\");\nend Main;'></div>
 ```
 <div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line (\"Yeah!\");end Main;' tio-input="" tio-runable="I'm a goofy goober!" tio-display-code='with Ada.Text_IO;\nuse Ada.Text_IO;\nprocedure Main is\nbegin\n    Put_Line (\"Yeah!\");\nend Main;'></div>
 
+---
+
+### `tio-code`
+
+ > Sets the __tio-lang__ code to be executed.
+
+### `?tio-input`
+
+ > Sets the input into the __tio-lang__ program to be executed.
+
+### `?tio-display-code`
+
+ > Sets the code should be displayed into the HTML elements generated. The default is the `tio-code` attribute.
+
+### `?tio-type`
+
+ > Sets the type of HTML to be generated. The default is current "code" and the only type that has been tested.
+
+### `?tio-runable`
+
+ > Adds a button to the HTML elements that will execute the code. If not provided, the code will begin executing immediately.
+ > The text of button is set to the value provided where the default is `RUN`.
+
+### `?tio-animate`
+
+ > A small animation sequence will be added while the program is executing. If not set, there will be no animation.
+
+---
 ---
 
 ## tio.js
