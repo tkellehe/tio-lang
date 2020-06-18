@@ -77,7 +77,7 @@ function ppcg_create_element(html) {
         }
     } else if(type === "code") {
         o.tio_val = function(content) {
-            if(content === undefined) return brRemove(nbsRemove(e.innerHTML));
+            if(content === undefined) return brRemove(nbsRemove(e.innerText));
             e.innerText = content;
         }
     }
