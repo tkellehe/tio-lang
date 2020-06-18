@@ -104,6 +104,8 @@ function ppcg_create_element(html) {
         var tio_animate_frames = ["/", "-", "\\", "|"]
         var tio_animate_frame_pos = -1;
         o.tio_start.add(function() {
+            tio_animate_is_done = false;
+            tio_animate_frame_pos = -1;
             (function animate() {
                 var current = o.tio_val();
                 if(tio_animate_frame_pos !== -1) {
