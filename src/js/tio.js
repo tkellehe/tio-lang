@@ -520,7 +520,10 @@ function Session() {
 
     //--------------------------------------------------------------------------------------------------------
     self.load = function(force) {
-        if(!force && self.utils._languages) return;
+        if(self.utils._languages) {
+            if(force) self.onload();
+            return;
+        }
         self.languageFileRequest = new XMLHttpRequest;
         function completeLoad() {
             self.utils._languages = JSON.parse(self.languageFileRequest.response);
