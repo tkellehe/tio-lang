@@ -32,11 +32,11 @@ function ppcg_create_element(html) {
     p.appendChild(e);
     o.appendChild(p);
     
-    tio.utils.onlistener(o, "tio_done");
-    tio.utils.onlistener(o, "tio_start");
-    tio.utils.onlistener(o, "tio_reset");
-    tio.utils.onlistener(o, "tio_run");
-    tio.utils.onlistener(o, "tio_ready");
+    tio.utils.onlistener(o, "tio_done", undefined, false);
+    tio.utils.onlistener(o, "tio_start", undefined, false);
+    tio.utils.onlistener(o, "tio_reset", undefined, false);
+    tio.utils.onlistener(o, "tio_run", undefined, false);
+    tio.utils.onlistener(o, "tio_ready", undefined, false);
 
     // If it is runable, add a button to control when the output gets put in.
     if(is_runable) {
