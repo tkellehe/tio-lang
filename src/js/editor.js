@@ -119,7 +119,12 @@ function editor_create_element(html) {
     if(is_animate || is_animate_button) {
         var tio_animate_is_done = false;
         var tio_animate_frame = 0;
-        var tio_animate_frames = ["/", "/", "/", "/", "/", "-", "-", "-", "-", "-", "\\", "\\", "\\", "\\", "\\", "|", "|", "|", "|", "|"]
+        var tio_animate_frames = [
+            "/", "/", "/", "/", "/", "/", "/", "/", "/", "/",
+            "-", "-", "-", "-", "-", "-", "-", "-", "-", "-",
+            "\\", "\\", "\\", "\\", "\\", "\\", "\\", "\\", "\\", "\\",
+            "|", "|", "|", "|", "|", "|", "|", "|", "|", "|"
+        ]
         var tio_animate_frame_pos = -1;
         var tio_animate_button_cache = ""
         o.tio_start.add(function() {
