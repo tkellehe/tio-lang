@@ -38,7 +38,7 @@ function textContent(element, value) {
 function editor_create_element(html) {
     var type = html.getAttribute("tio-type") || "code";
     var runable_text = html.getAttribute("tio-runable");
-    var is_runable = html.getAttribute("tio-runable") !== null;
+    var is_runable = runable_text !== null;
     var is_animate = html.getAttribute("tio-animate") !== null;
     var has_debug = html.getAttribute("tio-debug") !== null;
     var cols = html.getAttribute("tio-cols"),
@@ -137,6 +137,7 @@ function editor_create_element(html) {
     // Get the code and input then clean out any bad elements.
     o.tio_input = html.getAttribute("tio-input") || "";
     o.tio_code = html.getAttribute("tio-code") || "";
+    o.tio_display_code = html.getAttribute("tio-display-code") || o.tio_code;
     o.tio_input = nbsRemove(o.tio_input);
     o.tio_code = nbsRemove(o.tio_code);
 
@@ -187,7 +188,7 @@ function onload() {
             elem.tio_reset.add(function() {
                 elem.tio_val(
                     (elem.tio_input && ("input:\n" + elem.tio_input + "\n")) +
-                    "code:\n" + elem.tio_code +
+                    "code:\n" + elem.tio_display_code +
                     "\n>>>\n"
                 );                
             })
