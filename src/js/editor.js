@@ -65,7 +65,7 @@ function editor_create_element(html) {
     tio.utils.onlistener(o, "tio_ready");
 
     // If it is runable, add a button to control when the output gets put in.
-    var b = {innerText:BUTTON_CHAR};
+    var b = {innerText:BUTTON_RUN_CHAR};
     if(is_runable) {
         var b = document.createElement("button");
         
