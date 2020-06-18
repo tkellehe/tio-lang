@@ -263,7 +263,7 @@ function onload() {
                             if(elem.tio_args) session.args = editor_handle_attribute(elem.tio_args)
                             
                             session.run()
-                        });
+                        }, false);
                         elem.tio_start()
                         session.load(true);
                     });
