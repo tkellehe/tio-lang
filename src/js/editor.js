@@ -1,6 +1,6 @@
 (function(){
 
-function ppcg_handle_attribute(text) {
+function editor_handle_attribute(text) {
     return eval("(function(){ return \"" + text + "\";})()");
 }
 
@@ -35,7 +35,7 @@ function textContent(element, value) {
     }
 }
     
-function ppcg_create_element(html) {
+function editor_create_element(html) {
     var type = html.getAttribute("tio-type") || "code";
     var runable_text = html.getAttribute("tio-runable");
     var is_runable = html.getAttribute("tio-runable") !== null;
@@ -213,12 +213,12 @@ function onload() {
                     prgm.run()
                 });
                 elem.tio_ready();
-            })(tio_lang(ppcg_handle_attribute(elem.tio_code), ppcg_handle_attribute(elem.tio_input)));
+            })(tio_lang(editor_handle_attribute(elem.tio_code), editor_handle_attribute(elem.tio_input)));
 
             // Remove all children nodes and add the node containing the live code.
             html.innerHTML = "";
             html.appendChild(elem);
-        })(output_div_elements[i], ppcg_create_element(output_div_elements[i]));
+        })(output_div_elements[i], editor_create_element(output_div_elements[i]));
     }
 }
 
