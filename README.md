@@ -79,11 +79,16 @@ and it will fill everything out as well as remove any child nodes. The class `ti
 ### `?tio-runable`
 
  > Adds a button to the HTML elements that will execute the code. If not provided, the code will begin executing immediately.
- > The text of button is set to the value provided where the default is `RUN`.
+ > The text of button is set to the value provided where the default is `{RUN}`. If the value is `{RUN}` then it will generate
+ > the button as a small circle that can be animated.
 
 ### `?tio-animate`
 
- > A small animation sequence will be added while the program is executing. If not set, there will be no animation.
+ > A small animation sequence will be added while the program is executing. If not set, there will be no animation added to the code.
+
+### `?tio-animate-button`
+
+ > A small animation sequence will be added while the program is running for the button. If not set, there will be no animation.
 
 ---
 ---
