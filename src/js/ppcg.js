@@ -24,7 +24,8 @@ function textContent(element, value) {
         element.innerText = value;element.textContent = value;
     } else {
         var text = "";
-        for(var i = nodes.length; i--;) {                        
+        var nodes = element.childNodes;
+        for(var i = nodes.length; i--;) {
             switch(nodes[i].nodeName) {
                 case '#text'    : text = nodes[i].nodeValue + text;   break;
                 case 'BR'       : text = '\n' + text;                 break;
