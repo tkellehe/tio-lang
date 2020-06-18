@@ -298,3 +298,5 @@ tio.run()
 <script src="src/js/tio.js"></script>
 <script src="src/js/parser.js"></script>
 <script src="src/js/editor.js"></script>
+
+<div class="language-plaintext highlighter-rouge" onload='var self = this;tio.onload.add(function(){var code = self.childNodes[0].childNodes[0].childNodes[0]; var result = ""; for(var i = 0; i < tio.utils.languages.length; ++i){result = result + "\n[" + i + "]" + tio.utils.languages[i].name + ":" + tio.utils.languages[i].id} code.innerText = result; code.textContent = result;}); tio.load(true);'><div class="highlight"><pre class="highlight"><code>Languages:</code></pre></div></div>
