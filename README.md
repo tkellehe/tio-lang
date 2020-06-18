@@ -49,7 +49,7 @@ Hello, World!
 ---
 ---
 
-## ppcg.js
+## editor.js
 
 This is a simple JavaScript library that will execute __tio-lang__ code using [_tio.js_](#tiojs) and _parser.js_. Merely place different attribute names into a `<div>` tag
 and it will fill everything out as well as remove any child nodes.
@@ -298,4 +298,4 @@ tio.run()
 <script src="src/js/pako.js"></script>
 <script src="src/js/tio.js"></script>
 <script src="src/js/parser.js"></script>
-<script src="src/js/ppcg.js"></script>
+<script src="src/js/editor.js"></script>
