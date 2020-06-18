@@ -238,7 +238,7 @@ function onload() {
                         session.code(editor_handle_string_attribute(elem.tio_code));
                         var bytes = session.byte_count();
                         elem.tio_val(
-                            ("language: " +  + "\n") +
+                            ("language: " + language + "\n") +
                             (bytes === undefined ? "" : ("bytes: " + bytes + "\n")) +
                             (elem.tio_input && ("input:\n" + elem.tio_input + "\n")) +
                             "code:\n" + elem.tio_display_code +
