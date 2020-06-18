@@ -72,13 +72,13 @@ function editor_create_element(html) {
             //b.style.textAlign = "center";
             b.style.textDecoration = "none";
             b.style.display = "inline-block";
-            b.style.fontSize = "1.1em";
+            b.style.fontSize = "0.9em";
             //b.style.borderRadius = "50%";
             b.style.border = "1px solid #000";
             b.style.width = "1.5em";
             b.style.height = "1.5em";
             
-            b.innerText = "R";
+            b.innerText = "\u27A4";
         } else {
             b.innerText = runable_text;
             b.style.width = "100%"
