@@ -68,15 +68,15 @@ function editor_create_element(html) {
             b.style.fontFamily = "monospace";
             b.style.backgroundColor = "white";
             b.style.color = "black";
-            b.style.padding = "5px";
-            b.style.textAlign = "center";
+            //b.style.padding = "5px";
+            //b.style.textAlign = "center";
             b.style.textDecoration = "none";
             b.style.display = "inline-block";
             b.style.fontSize = "1.1em";
-            b.style.borderRadius = "50%";
+            //b.style.borderRadius = "50%";
             b.style.border = "1px solid #000";
-            b.style.width = "1.3em";
-            b.style.height = "1.3em";
+            b.style.width = "1.5em";
+            b.style.height = "1.5em";
             
             b.innerText = "R";
         } else {
