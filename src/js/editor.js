@@ -73,9 +73,9 @@ function editor_create_element(html) {
             b.style.textAlign = "center";
             b.style.textDecoration = "none";
             b.style.display = "inline-block";
-            b.style.fontSize = "0.5em";
-            b.style.margin = "4px 2px";
-            b.style.borderRadius = "100%";
+            b.style.fontSize = "1.1em";
+            b.style.margin = "4px 4px";
+            b.style.borderRadius = "50%";
             
             b.innerText = "R";
         } else {
