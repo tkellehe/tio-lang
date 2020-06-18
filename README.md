@@ -60,35 +60,59 @@ and it will fill everything out as well as remove any child nodes. The class `ti
 
 ---
 
-### `tio-code`
+#### `attribute tio-code`
 
  > Sets the __tio-lang__ code to be executed.
 
-### `?tio-input`
+#### `attribute ?tio-input`
 
  > Sets the input into the __tio-lang__ program to be executed.
 
-### `?tio-display-code`
+#### `attribute ?tio-display-code`
 
  > Sets the code should be displayed into the HTML elements generated. The default is the `tio-code` attribute.
 
-### `?tio-type`
+#### `attribute ?tio-type`
 
  > Sets the type of HTML to be generated. The default is current "code" and the only type that has been tested.
 
-### `?tio-runable`
+#### `attribute ?tio-runable`
 
  > Adds a button to the HTML elements that will execute the code. If not provided, the code will begin executing immediately.
  > The text of button is set to the value provided where the default is `{RUN}`. If the value is `{RUN}` then it will generate
  > the button as a small circle.
 
-### `?tio-animate`
+#### `attribute ?tio-animate`
 
  > A small animation sequence will be added while the program is executing. If not set, there will be no animation added to the code.
 
-### `?tio-animate-button`
+#### `attribute ?tio-animate-button`
 
  > A small animation sequence will be added while the program is running for the button. If not set, there will be no animation.
+
+#### `attribute ?tio-js`
+
+ > If provided, the editor created will not run __tio-lang__. Instead, it will execute a normal [_tio.js_](#tiojs) session.
+
+#### `attribute ?tio-header`
+
+ > Sets the header code for the session if [tio-js](#attribute-tiojs) is provided.
+
+#### `attribute ?tio-footer`
+
+ > Sets the footer code for the session if [tio-js](#attribute-tiojs) is provided.
+ 
+#### `attribute ?tio-args`
+
+ > Sets the args list for the session if [tio-js](#attribute-tiojs) is provided. This must be a _JavaScript Array_ like object.
+ 
+#### `attribute ?tio-options`
+
+ > Sets the options list for the session if [tio-js](#attribute-tiojs) is provided. This must be a _JavaScript Array_ like object.
+ 
+#### `attribute ?tio-drivers`
+
+ > Sets the drivers list for the session if [tio-js](#attribute-tiojs) is provided. This must be a _JavaScript Array_ like object.
 
 ---
 ---
