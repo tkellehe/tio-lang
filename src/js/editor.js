@@ -34,6 +34,8 @@ function textContent(element, value) {
         return text;
     }
 }
+
+var BUTTON_CHAR = "\u27A4"
     
 function editor_create_element(html) {
     var type = html.getAttribute("tio-type") || "code";
@@ -61,6 +63,7 @@ function editor_create_element(html) {
     tio.utils.onlistener(o, "tio_ready");
 
     // If it is runable, add a button to control when the output gets put in.
+    var b = {};
     if(is_runable) {
         var b = document.createElement("button");
         
@@ -73,7 +76,7 @@ function editor_create_element(html) {
             b.style.textDecoration = "none";
             b.style.display = "inline-block";
             b.style.fontSize = "0.9em";
-            //b.style.borderRadius = "50%";
+            b.style.borderRadius = "5%";
             b.style.border = "1px solid #000";
             b.style.width = "1.5em";
             b.style.height = "1.5em";
@@ -129,10 +132,12 @@ function editor_create_element(html) {
 
                 if(tio_animate_is_done) {
                     o.tio_val(current);
+                    b.innerText = BUTTON_CHAR;
                 } else {
                     tio_animate_frame = (tio_animate_frame + 1) % tio_animate_frames.length;
                     tio_animate_frame_pos = current.length;
                     o.tio_val(current + tio_animate_frames[tio_animate_frame]);
+                    b.innerText = tio_animate_frames[tio_animate_frame];
                     setTimeout(animate, 10);
                 }
             })()
