@@ -68,7 +68,6 @@ function editor_create_element(html) {
             b.style.fontFamily = "monospace";
             b.style.backgroundColor = "white";
             b.style.color = "black";
-            b.style.border = "none";
             b.style.padding = "5px";
             b.style.textAlign = "center";
             b.style.textDecoration = "none";
