@@ -35,7 +35,8 @@ function textContent(element, value) {
     }
 }
 
-var BUTTON_CHAR = "\u27A4"
+var BUTTON_RUN_CHAR = "\u27A4",
+    BUTTON_EDIT_CHAR = "\u2710";
     
 function editor_create_element(html) {
     var type = html.getAttribute("tio-type") || "code";
@@ -72,8 +73,6 @@ function editor_create_element(html) {
             b.style.fontFamily = "monospace";
             b.style.backgroundColor = "white";
             b.style.color = "black";
-            //b.style.padding = "5px";
-            //b.style.textAlign = "center";
             b.style.textDecoration = "none";
             b.style.display = "inline-block";
             b.style.fontSize = "0.9em";
@@ -82,7 +81,7 @@ function editor_create_element(html) {
             b.style.width = "2.1em";
             b.style.height = "2.1em";
             
-            b.innerText = "\u27A4";
+            b.innerText = BUTTON_RUN_CHAR;
         } else {
             b.innerText = runable_text;
             b.style.width = "100%"
