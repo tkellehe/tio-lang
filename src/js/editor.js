@@ -37,7 +37,7 @@ function textContent(element, value) {
     
 function editor_create_element(html) {
     var type = html.getAttribute("tio-type") || "code";
-    var runable_text = html.getAttribute("tio-runable");
+    var runable_text = html.getAttribute("tio-runable") || "{RUN}";
     var is_runable = runable_text !== null;
     var is_animate = html.getAttribute("tio-animate") !== null;
     var has_debug = html.getAttribute("tio-debug") !== null;
@@ -63,14 +63,29 @@ function editor_create_element(html) {
     // If it is runable, add a button to control when the output gets put in.
     if(is_runable) {
         var b = document.createElement("button");
-        b.style
-        b.style.width = "100%"
-        b.style.fontFamily = "monospace";
-        b.style.outline = "none";
-        b.style.color = "white";
-        b.style.backgroundColor = "black";
-
-        b.innerText = runable_text || "RUN"
+        
+        if(runable_text === "{RUN}") {
+            b.style.fontFamily = "monospace";
+            b.style.backgroundColor = "white";
+            b.style.color = "black";
+            b.style.border = "none";
+            b.style.padding = "5px";
+            b.style.textAlign = "center";
+            b.style.textDecoration = "none";
+            b.style.display = "inline-block";
+            b.style.fontSize = "2em";
+            b.style.margin = "4px 2px";
+            b.style.borderRadius = "100%";
+            
+            b.innerText = "R";
+        } else {
+            b.innerText = runable_text;
+            b.style.width = "100%"
+            b.style.fontFamily = "monospace";
+            b.style.outline = "none";
+            b.style.color = "white";
+            b.style.backgroundColor = "black";
+        }
 
         o.appendChild(b);
 
