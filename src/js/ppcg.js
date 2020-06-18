@@ -88,7 +88,9 @@ function ppcg_create_element(html) {
                     current = tio.utils.string_splice(current, tio_animate_frame_pos, tio_animate_frames[tio_animate_frame].length, "");
                 }
 
-                if(!tio_animate_is_done) {
+                if(tio_animate_is_done) {
+                    o.tio_val(current);
+                } else {
                     tio_animate_frame = (tio_animate_frame + 1) % tio_animate_frames.length;
                     tio_animate_frame_pos = current.length;
                     o.tio_val(current + tio_animate_frames[tio_animate_frame]);
