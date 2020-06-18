@@ -6,11 +6,17 @@ function ppcg_handle_attribute(text) {
 
 var nbs = String.fromCharCode(160),
     space = String.fromCharCode(32);
-    
 var nbsRemoveRegex = new RegExp(nbs,"g");
 function nbsRemove(string) {
     if(!string) return "";
     return string.replace(nbsRemoveRegex, space);
+};
+var br = "<br>",
+    lf = String.fromCharCode(10);
+var brRemoveRegex = new RegExp(br,"g");
+function brRemove(string) {
+    if(!string) return "";
+    return string.replace(brRemoveRegex, lf);
 };
 
 function ppcg_create_element(html) {
@@ -31,9 +37,6 @@ function ppcg_create_element(html) {
     var e = document.createElement(type);
     p.appendChild(e);
     o.appendChild(p);
-    
-    // Prevent innerText reading issues.
-    e.style["white-space"] = "pre-wrap";
     
     tio.utils.onlistener(o, "tio_done");
     tio.utils.onlistener(o, "tio_start");
@@ -74,7 +77,7 @@ function ppcg_create_element(html) {
         }
     } else if(type === "code") {
         o.tio_val = function(content) {
-            if(content === undefined) return e.innerText;
+            if(content === undefined) return brRemove(nbsRemove(e.innerHTML));
             e.innerText = content;
         }
     }
