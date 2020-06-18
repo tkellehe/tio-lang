@@ -78,8 +78,8 @@ function editor_create_element(html) {
             b.style.fontSize = "0.9em";
             b.style.borderRadius = "5%";
             b.style.border = "1px solid #000";
-            b.style.width = "1.5em";
-            b.style.height = "1.5em";
+            b.style.width = "2.0em";
+            b.style.height = "2.0em";
             
             b.innerText = "\u27A4";
         } else {
