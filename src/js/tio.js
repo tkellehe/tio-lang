@@ -122,11 +122,11 @@ function _add_addEventListener(eventHandler) {
     }
     eventHandler["addEventListener"] = function(event, f, is_persistent) {
         is_persistent = is_persistent === undefined || is_persistent;
-        var onevent = "" + to_string(event);
+        var onevent = "on" + to_string(event);
         return eventHandler[onevent].add(f, is_persistent);
     };
 }
-function _add_removeEventListener(eventHandler, onevent) {
+function _add_removeEventListener(eventHandler) {
     if("removeEventListener" in eventHandler)
     {
         if(!is_func(eventHandler.removeEventListener))
@@ -140,15 +140,16 @@ function _add_removeEventListener(eventHandler, onevent) {
         }
     }
     eventHandler["removeEventListener"] = function(event, f) {
-        return eventHandler["" + to_string(event)].remove(f);
+        return eventHandler["on" + to_string(event)].remove(f);
     };
 }
 
-utils.onlistener = function(eventHandler, event, eventType) {
+utils.onlistener = function(eventHandler, event, eventType, addOnPrefix) {
     if(can_attach(eventHandler))
     {
+        addOnPrefix = addOnPrefix !== false;
         if(event !== undefined)
-            var onevent = "" + (event = to_string(event));
+            var onevent = (addOnPrefix ? "on" : "") + (event = to_string(event));
 
         // Makes own eventType object.
         if(onevent && !is_func(eventType)) {
@@ -157,8 +158,8 @@ utils.onlistener = function(eventHandler, event, eventType) {
         }
 
         if(onevent) _add_onevent(onevent, eventHandler, eventType);
-        _add_addEventListener(eventHandler, onevent);
-        _add_removeEventListener(eventHandler, onevent);
+        _add_addEventListener(eventHandler);
+        _add_removeEventListener(eventHandler);
 
         var result = {};
         if(onevent)
