@@ -85,6 +85,9 @@ function editor_create_element(html) {
             b.style.border = "1px solid #000";
             b.style.width = "2.1em";
             b.style.height = "2.1em";
+            b.style.margin = "auto auto";
+            b.style.padding = "0px";
+            b.style.textAlign = "center";
             
             b.innerText = BUTTON_RUN_CHAR;
         } else {
