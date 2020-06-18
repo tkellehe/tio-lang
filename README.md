@@ -77,16 +77,16 @@ For more info on these dependencies:
 ### Example
 
 ```javascript
-tio.onload = function() {
+tio.onload.add(function() {
     console.log("Number of languages: " + tio.utils.languages.length);
     tio.language("python3");
     tio.code("import sys\nprint(sys.argv)");
     tio.args.push('-t');
-    tio.onsetoutput = function() {
+    tio.onsetoutput.add(function() {
         console.log("Server output: " + tio.output());
-    }
+    });
     tio.run();
-};
+});
 tio.load();
 ```
 
@@ -95,10 +95,10 @@ tio.load();
 ```javascript
 tio.language("jelly")
 tio.code("“3ḅaė;œ»")
-tio.oncomplete = function() {
+tio.oncomplete.add(function() {
     tio.alert(tio.output());
     tio.alert(tio.debug());
-}
+});
 tio.run()
 ```
 
