@@ -545,9 +545,12 @@ function onload() {
         var output_div_elements = document.getElementsByClassName("tio-code");
 
         for(var i = output_div_elements.length; i--;) {
-            tio_apply_editor(output_div_elements[i]);
+            (function(html) {
+                // Make each parsing asynchronous.
+                setTimeout(function(){ tio_apply_editor(html) }, 0);
+            })(output_div_elements[i])
         }
-    })
+    }, false)
     tio.load(true)
 }
 
