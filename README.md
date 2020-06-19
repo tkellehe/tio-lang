@@ -94,6 +94,10 @@ and it will fill everything out as well as remove any child nodes. The class `ti
 
  > If provided, the editor created will not run __tio-lang__. Instead, it will execute a normal [_tio.js_](#tiojs) session.
 
+#### `attribute ?tio-editable`
+
+ > Makes all fields editable if [tio-js](#attribute-tiojs) is provided.
+
 #### `attribute ?tio-header`
 
  > Sets the header code for the session if [tio-js](#attribute-tiojs) is provided.

@@ -253,7 +253,8 @@ function count_bytes(string, encoding) {
     }
 }
 utils.count_bytes = count_bytes;
-utils.count_characters = function(code) { return count_bytes(code, "SBCS") };
+function count_characters(code) { return count_bytes(code, "SBCS") };
+utils.count_characters = count_characters;
 
 function clone(queryString) {
     return $(queryString).cloneNode(true)
