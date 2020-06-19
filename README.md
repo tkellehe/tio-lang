@@ -26,6 +26,12 @@ The current version available is [1.0](https://tkellehe.github.io/tio-lang/relea
 But, __tio-lang__ can be ran easily with a local HTML file and the released code. It also can be embedded into web-pages like here. Probably the more interesting feature
 of this release is [_editor.js_](#editorjs). This allows one to embed a small editor that communicates to the TIO server for any language not just __tio-lang__.
 
+```html
+<div class="tio-code" tio-language="c-gcc" tio-header="#include <stdio.h>\nint main() {\n" tio-code='printf("Hello, World!\\n")' tio-footer=";return 0;}" tio-hide-header tio-hide-footer tio-js tio-editable tio-runable tio-debug tio-animate-button></div>
+```
+
+<div class="tio-code" tio-language="c-gcc" tio-header="#include <stdio.h>\nint main() {\n" tio-code='printf("Hello, World!\\n")' tio-footer=";return 0;}" tio-hide-header tio-hide-footer tio-js tio-editable tio-runable tio-debug tio-animate-button></div>
+
 ---
 
 # Basics
