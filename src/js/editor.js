@@ -451,7 +451,7 @@ function onload() {
                         elem.tio_done();
                     });
                     session.oncomplete.add(function() {
-                        elem.tio_val(elem.tio_val() + session.output() + (elem.tio_has_debug ? "\n" + session.debug() : ""));
+                        elem.tio_val(elem.tio_val() + session.output() + (elem.tio_has_debug ? "\n------------------------------" + session.debug() : ""));
                         elem.tio_done();
                     });
                     elem.tio_run.add(function() {
@@ -493,7 +493,7 @@ function onload() {
                         elem.tio_done();
                     });
                     prgm.oncomplete.add(function() {
-                        elem.tio_val(elem.tio_val() + prgm.output() + (elem.tio_has_debug ? "\n" + prgm.debug() : ""));
+                        elem.tio_val(elem.tio_val() + prgm.output() + (elem.tio_has_debug ? "\n------------------------------" + prgm.debug() : ""));
                         elem.tio_debug(prgm.debug());
                         elem.tio_done();
                     });
