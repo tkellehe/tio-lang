@@ -159,47 +159,25 @@ function editor_create_element(html) {
         ei.contentEditable = "true";
         ei.style.outline = "0px solid transparent";
         ei.style.width = "100%";
-        // ei.style.display = "inline-block";
         eh.contentEditable = "true";
         eh.style.outline = "0px solid transparent";
         eh.style.width = "100%";
-        // eh.style.display = "inline-block";
         ec.contentEditable = "true";
         ec.style.outline = "0px solid transparent";
         ec.style.width = "100%";
-        // ec.style.display = "inline-block";
         ef.contentEditable = "true";
         ef.style.outline = "0px solid transparent";
         ef.style.width = "100%";
-        // ef.style.display = "inline-block";
         ea.contentEditable = "true";
         ea.style.outline = "0px solid transparent";
         ea.style.width = "100%";
-        // ea.style.display = "inline-block";
         ed.contentEditable = "true";
         ed.style.outline = "0px solid transparent";
         ed.style.width = "100%";
-        // ed.style.display = "inline-block";
         eo.contentEditable = "true";
         eo.style.outline = "0px solid transparent";
         eo.style.width = "100%";
 
-        // eo.style.display = "inline-block";
-
-        // var pei = document.createElement("pre"),
-        //     peh = document.createElement("pre"),
-        //     pec = document.createElement("pre"),
-        //     pef = document.createElement("pre"),
-        //     pea = document.createElement("pre"),
-        //     ped = document.createElement("pre"),
-        //     peo = document.createElement("pre");
-        // pei.className = "highlight";
-        // peh.className = "highlight";
-        // pec.className = "highlight";
-        // pef.className = "highlight";
-        // pea.className = "highlight";
-        // ped.className = "highlight";
-        // peo.className = "highlight";
         var dei = document.createElement("div"),
             deh = document.createElement("div"),
             dec = document.createElement("div"),
@@ -217,11 +195,8 @@ function editor_create_element(html) {
 
         // Add the logic for the footer.
         if(has_footer) {
-            // pef.appendChild(ef);
-            // o.prepend(pef);
             def.appendChild(ef);
             p.prepend(def);
-            // p.prepend(ef);
             o.tio_footer = function(content) {
                 if(content !== undefined) content = "[footer]\n" + (content || "\n");
                 var result = nbsRemove(textContent(ef, content));
@@ -231,13 +206,9 @@ function editor_create_element(html) {
             }
         }
         // Add the logic for the code.
-            // var tio_code_prefix = ((has_drivers || has_options || has_args || has_input || has_header) ? "\n" : "") + "[code]\n"
             var tio_code_prefix = "[code]\n"
-            // pec.appendChild(ec);
-            // o.prepend(pec);
             dec.appendChild(ec);
             p.prepend(dec);
-            // p.prepend(ec);
             o.tio_code = function(content) {
                 if(content !== undefined) content = tio_code_prefix + (content || "\n");
                 var result = nbsRemove(textContent(ec, content));
@@ -248,11 +219,8 @@ function editor_create_element(html) {
         // Add the logic for the header.
         if(has_header) {
             var tio_header_prefix = "[header]\n"
-            // peh.appendChild(eh);
-            // o.prepend(peh);
             deh.appendChild(eh);
             p.prepend(deh);
-            // p.prepend(eh);
             o.tio_header = function(content) {
                 if(content !== undefined) content = tio_header_prefix + (content || "\n");
                 var result = nbsRemove(textContent(eh, content));
@@ -264,11 +232,8 @@ function editor_create_element(html) {
         // Add the logic for the input.
         if(has_input) {
             var tio_input_prefix = "[input]\n"
-            // pei.appendChild(ei);
-            // o.prepend(pei);
             dei.appendChild(ei);
             p.prepend(dei);
-            // p.prepend(ei);
             o.tio_input = function(content) {
                 if(content !== undefined) content = tio_input_prefix + (content || "\n");
                 var result = nbsRemove(textContent(ei, content));
@@ -280,11 +245,8 @@ function editor_create_element(html) {
         // Add the logic for the args.
         if(has_args) {
             var tio_args_prefix = "[args]\n"
-            // pea.appendChild(ea);
-            // o.prepend(pea);
             dea.appendChild(ea);
             p.prepend(dea);
-            // p.prepend(ea);
             o.tio_args = function(content) {
                 if(content !== undefined) content = tio_args_prefix + (content || "\n");
                 var result = nbsRemove(textContent(ea, content));
@@ -296,11 +258,8 @@ function editor_create_element(html) {
         // Add the logic for the options.
         if(has_options) {
             var tio_options_prefix = "[options]\n"
-            // peo.appendChild(eo);
-            // o.prepend(peo);
             deo.appendChild(eo);
             p.prepend(deo);
-            // p.prepend(eo);
             o.tio_options = function(content) {
                 if(content !== undefined) content = tio_options_prefix + (content || "\n");
                 var result = nbsRemove(textContent(eo, content));
@@ -312,11 +271,8 @@ function editor_create_element(html) {
         // Add the logic for the drivers.
         if(has_drivers) {
             var tio_drivers_prefix = "[drivers]\n"
-            // ped.appendChild(ed);
-            // o.prepend(ped);
             ded.appendChild(ed);
             p.prepend(ded);
-            // p.prepend(ed);
             o.tio_drivers = function(content) {
                 if(content !== undefined) content = tio_drivers_prefix + (content || "\n");
                 var result = nbsRemove(textContent(ed, content));
