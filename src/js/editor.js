@@ -1,13 +1,16 @@
 (function(){
 
+//------------------------------------------------------------------------------------------------------------
 function editor_handle_string_attribute(text) {
     return eval("(function(){ return \"" + text.replace(/"/g, '\\"').replace(/\n/g, '\\n') + "\";})()");
 }
-    
+
+//------------------------------------------------------------------------------------------------------------
 function editor_handle_attribute(text) {
     return eval("(function(){ return " + text + ";})()");
 }
 
+//------------------------------------------------------------------------------------------------------------
 var nbs = String.fromCharCode(160),
     space = String.fromCharCode(32);
 var nbsRemoveRegex = new RegExp(nbs,"g");
@@ -23,6 +26,7 @@ function brRemove(string) {
     return string.replace(brRemoveRegex, lf);
 };
 
+//------------------------------------------------------------------------------------------------------------
 // Get the textContent safely to not lose line-feeds.
 function textContent(element, value) {
     if(value !== undefined) {
@@ -50,7 +54,8 @@ function textContent(element, value) {
 // Unicode characters for the buttons.
 var BUTTON_RUN_CHAR = "\u27A4",
     BUTTON_EDIT_CHAR = "\u2710";
-    
+
+//------------------------------------------------------------------------------------------------------------
 function editor_create_element(html) {
     var type = html.getAttribute("tio-type") || "code",
         runable_text = html.getAttribute("tio-runable"),
@@ -396,6 +401,119 @@ function editor_create_element(html) {
     return o;
 } 
 
+//------------------------------------------------------------------------------------------------------------
+function tio_apply_editor(html) {
+    var elem = editor_create_element(html);
+    if(elem.tio_js) {
+        // If tio_js is set, we need to create a tio.utils.session.
+        (function(session) {
+            elem.tio_reset.add(function() {
+                session.language(elem.tio_language());
+                var language = session.language();
+                if(session.utils._languages) {
+                    language = session.utils._languages[language];
+                    language = language ? language.name : session.language();
+                }
+                session.code(editor_handle_string_attribute(elem.tio_code()));
+                var bytes = session.byte_count();
+                var chars = session.character_count();
+                if(elem.tio_editable) {
+                    elem.tio_val(
+                        ("[language] " + language + "\n") +
+                        (bytes === undefined ? "" : ("[bytes] " + bytes + "\n")) +
+                        (chars === undefined ? "" : ("[chars] " + chars + "\n")) +
+                        ">>>\n"
+                    );
+                } else {
+                    elem.tio_val(
+                        (elem.tio_input() && ("[input]\n" + elem.tio_input() + "\n")) +
+                        "[code]\n" + session.code() +
+                        ("\n[language] " + language + "\n") +
+                        (bytes === undefined ? "" : ("[bytes] " + bytes + "\n")) +
+                        (chars === undefined ? "" : ("[chars] " + chars + "\n")) +
+                        ">>>\n"
+                    );
+                }
+            })
+            elem.tio_reset();
+            elem.tio_cancel.add(function(){
+                session.cancel();
+                elem.tio_reset();
+                elem.tio_done();
+            });
+            session.oncomplete.add(function() {
+                elem.tio_val(elem.tio_val() + session.output() + (elem.tio_has_debug ? "\n------------------------------" + session.debug() : ""));
+                elem.tio_done();
+            });
+            elem.tio_run.add(function() {
+                session.onload.add(function() {
+                    try {
+                        session.language(elem.tio_language());
+                        session.input(editor_handle_string_attribute(elem.tio_input()));
+                        session.header(editor_handle_string_attribute(elem.tio_header()));
+                        session.code(editor_handle_string_attribute(elem.tio_code()));
+                        session.footer(editor_handle_string_attribute(elem.tio_footer()));
+                        if(elem.tio_has_options) session.options = editor_handle_attribute(elem.tio_options())
+                        if(elem.tio_has_drivers) session.drivers = editor_handle_attribute(elem.tio_drivers())
+                        if(elem.tio_has_args) session.args = editor_handle_attribute(elem.tio_args())
+                        session.run()
+                    } catch(error) {
+                        elem.tio_val(error.stack + "\n" + error.name + "\n" + error.message);
+                        elem.tio_done();
+                    }
+                }, false);
+                elem.tio_start();
+                session.load(true);
+            });
+            elem.tio_ready();
+        })(tio.utils.session());
+    } else {
+        // If tio_js is not set, we need to create a tio_lang program.
+        (function(prgm) {
+            elem.tio_reset.add(function() {
+                elem.tio_val(
+                    (elem.tio_input() && ("[input]\n" + elem.tio_input() + "\n")) +
+                    "[code]\n" + elem.tio_display_code +
+                    "\n>>>\n"
+                );                
+            })
+            elem.tio_reset();
+            elem.tio_cancel.add(function(){
+                prgm.cancel();
+                elem.tio_reset();
+                elem.tio_done();
+            });
+            prgm.oncomplete.add(function() {
+                elem.tio_val(elem.tio_val() + prgm.output() + (elem.tio_has_debug ? "\n------------------------------" + prgm.debug() : ""));
+                elem.tio_debug(prgm.debug());
+                elem.tio_done();
+            });
+            prgm.onerror.add(function() {
+                var result = "";
+                tio.utils.iterate(prgm.TIO.messages, function(message){
+                    result += message.title + "(" + message.category + ")\n" + message.message + "\n\n";
+                });
+                elem.tio_val(result);
+                elem.tio_debug(prgm.debug());
+                elem.tio_done();
+            });
+            elem.tio_run.add(function() {
+                prgm.code = editor_handle_string_attribute(elem.tio_code())
+                prgm.input = editor_handle_string_attribute(elem.tio_input())
+                
+                elem.tio_start()
+                prgm.run()
+            });
+            elem.tio_ready();
+        })(tio_lang());
+    }
+
+    // Remove all children nodes and add the node containing the live code.
+    html.innerHTML = "";
+    html.appendChild(elem);
+}
+
+//------------------------------------------------------------------------------------------------------------
 function onload() {
     var head = document.getElementsByTagName("head")[0];
     var favicons = document.getElementsByClassName("tio-favicon");
@@ -412,118 +530,12 @@ function onload() {
     var output_div_elements = document.getElementsByClassName("tio-code");
 
     for(var i = output_div_elements.length; i--;) {
-        (function(html, elem){
-            if(elem.tio_js) {
-                // If tio_js is set, we need to create a tio.utils.session.
-                (function(session) {
-                    elem.tio_reset.add(function() {
-                        session.language(elem.tio_language());
-                        var language = session.language();
-                        if(session.utils._languages) {
-                            language = session.utils._languages[language];
-                            language = language ? language.name : session.language();
-                        }
-                        session.code(editor_handle_string_attribute(elem.tio_code()));
-                        var bytes = session.byte_count();
-                        var chars = session.character_count();
-                        if(elem.tio_editable) {
-                            elem.tio_val(
-                                ("[language] " + language + "\n") +
-                                (bytes === undefined ? "" : ("[bytes] " + bytes + "\n")) +
-                                (chars === undefined ? "" : ("[chars] " + chars + "\n")) +
-                                ">>>\n"
-                            );
-                        } else {
-                            elem.tio_val(
-                                (elem.tio_input() && ("[input]\n" + elem.tio_input() + "\n")) +
-                                "[code]\n" + session.code() +
-                                ("\n[language] " + language + "\n") +
-                                (bytes === undefined ? "" : ("[bytes] " + bytes + "\n")) +
-                                (chars === undefined ? "" : ("[chars] " + chars + "\n")) +
-                                ">>>\n"
-                            );
-                        }
-                    })
-                    elem.tio_reset();
-                    elem.tio_cancel.add(function(){
-                        session.cancel();
-                        elem.tio_reset();
-                        elem.tio_done();
-                    });
-                    session.oncomplete.add(function() {
-                        elem.tio_val(elem.tio_val() + session.output() + (elem.tio_has_debug ? "\n------------------------------" + session.debug() : ""));
-                        elem.tio_done();
-                    });
-                    elem.tio_run.add(function() {
-                        session.onload.add(function() {
-                            try {
-                                session.language(elem.tio_language());
-                                session.input(editor_handle_string_attribute(elem.tio_input()));
-                                session.header(editor_handle_string_attribute(elem.tio_header()));
-                                session.code(editor_handle_string_attribute(elem.tio_code()));
-                                session.footer(editor_handle_string_attribute(elem.tio_footer()));
-                                if(elem.tio_has_options) session.options = editor_handle_attribute(elem.tio_options())
-                                if(elem.tio_has_drivers) session.drivers = editor_handle_attribute(elem.tio_drivers())
-                                if(elem.tio_has_args) session.args = editor_handle_attribute(elem.tio_args())
-                                session.run()
-                            } catch(error) {
-                                elem.tio_val(error.stack + "\n" + error.name + "\n" + error.message);
-                                elem.tio_done();
-                            }
-                        }, false);
-                        elem.tio_start();
-                        session.load(true);
-                    });
-                    elem.tio_ready();
-                })(tio.utils.session());
-            } else {
-                // If tio_js is not set, we need to create a tio_lang program.
-                (function(prgm) {
-                    elem.tio_reset.add(function() {
-                        elem.tio_val(
-                            (elem.tio_input() && ("[input]\n" + elem.tio_input() + "\n")) +
-                            "[code]\n" + elem.tio_display_code +
-                            "\n>>>\n"
-                        );                
-                    })
-                    elem.tio_reset();
-                    elem.tio_cancel.add(function(){
-                        prgm.cancel();
-                        elem.tio_reset();
-                        elem.tio_done();
-                    });
-                    prgm.oncomplete.add(function() {
-                        elem.tio_val(elem.tio_val() + prgm.output() + (elem.tio_has_debug ? "\n------------------------------" + prgm.debug() : ""));
-                        elem.tio_debug(prgm.debug());
-                        elem.tio_done();
-                    });
-                    prgm.onerror.add(function() {
-                        var result = "";
-                        tio.utils.iterate(prgm.TIO.messages, function(message){
-                            result += message.title + "(" + message.category + ")\n" + message.message + "\n\n";
-                        });
-                        elem.tio_val(result);
-                        elem.tio_debug(prgm.debug());
-                        elem.tio_done();
-                    });
-                    elem.tio_run.add(function() {
-                        prgm.code = editor_handle_string_attribute(elem.tio_code())
-                        prgm.input = editor_handle_string_attribute(elem.tio_input())
-                        
-                        elem.tio_start()
-                        prgm.run()
-                    });
-                    elem.tio_ready();
-                })(tio_lang());
-            }
-
-            // Remove all children nodes and add the node containing the live code.
-            html.innerHTML = "";
-            html.appendChild(elem);
-        })(output_div_elements[i], editor_create_element(output_div_elements[i]));
+        tio_apply_editor(output_div_elements[i]);
     }
 }
 
 document.addEventListener("DOMContentLoaded", onload);
+this.tio_find_editors = onload;
+this.tio_apply_editor = tio_apply_editor;
 
 })()

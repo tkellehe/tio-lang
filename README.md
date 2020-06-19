@@ -51,7 +51,9 @@ Hello, World!
 ## editor.js
 
 This is a simple JavaScript library that will execute __tio-lang__ code using [_tio.js_](#tiojs) and _parser.js_. Merely place different attribute names into a `<div>` tag
-and it will fill everything out as well as remove any child nodes. The class `tio-code` is required for it to find the `<div>` tag.
+and it will fill everything out as well as remove any child nodes. The class `tio-code` is required for it to find the `<div>` tag. The function `tio_find_editors` can be
+called for it to search the DOM and process these elements. The function `tio_apply_editor` can be called while providing an HTML element with the appropriate attributes set
+and it will properly generate the HTML content for the editor in said element.
 
 ```html
 <div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line ("Yeah!");end Main;' tio-input="" tio-runable="I'm a goofy goober!" tio-display-code='with Ada.Text_IO;\nuse Ada.Text_IO;\nprocedure Main is\nbegin\n    Put_Line ("Yeah!");\nend Main;' tio-animate-button></div>
