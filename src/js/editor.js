@@ -1,12 +1,14 @@
 (function(){
 
 //------------------------------------------------------------------------------------------------------------
-function editor_handle_string_attribute(text) {
+// handle string attribute.
+function ehsa(text) {
     return eval("(function(){ return \"" + text.replace(/"/g, '\\"').replace(/\n/g, '\\n') + "\";})()");
 }
 
 //------------------------------------------------------------------------------------------------------------
-function editor_handle_attribute(text) {
+// handle any attribute and turn into a js object.
+function eha(text) {
     return eval("(function(){ return " + text + ";})()");
 }
 
@@ -52,8 +54,8 @@ function textContent(element, value) {
 }
 
 // Unicode characters for the buttons.
-var BUTTON_RUN_CHAR = "\u27A4",
-    BUTTON_EDIT_CHAR = "\u2710";
+var BRC = "\u27A4",
+    DS = "\n------------------------------\n";
 
 //------------------------------------------------------------------------------------------------------------
 function editor_create_element(html) {
@@ -71,7 +73,10 @@ function editor_create_element(html) {
         has_footer = html.getAttribute("tio-footer") !== null && html.getAttribute("tio-hide-footer") === null,
         has_args = html.getAttribute("tio-args") !== null && html.getAttribute("tio-hide-args") === null,
         has_options = html.getAttribute("tio-options") !== null && html.getAttribute("tio-hide-options") === null,
-        has_drivers = html.getAttribute("tio-drivers") !== null && html.getAttribute("tio-hide-drivers") === null;
+        has_drivers = html.getAttribute("tio-drivers") !== null && html.getAttribute("tio-hide-drivers") === null,
+        has_bytes = html.getAttribute("tio-hide-bytes") === null,
+        has_chars = html.getAttribute("tio-hide-chars") === null,
+        has_language = html.getAttribute("tio-hide-language") === null;
     
     // Make it work with GitHub markdown.
     html.className += " language-plaintext highlighter-rouge";
@@ -102,7 +107,7 @@ function editor_create_element(html) {
     });
 
     // If it is runable, add a button to control when the output gets put in.
-    var b = {innerText:BUTTON_RUN_CHAR};
+    var b = {innerText:BRC};
     if(is_runable) {
         var b = document.createElement("button");
         
@@ -123,7 +128,7 @@ function editor_create_element(html) {
             b.style.padding = "0px";
             b.style.textAlign = "center";
             
-            textContent(b, BUTTON_RUN_CHAR);
+            textContent(b, BRC);
 
             // The small button needs to be added to the <pre> tag.
             bd.style.margin = "0.5em auto";
@@ -215,8 +220,9 @@ function editor_create_element(html) {
                 if(content !== undefined) content = tio_footer_prefix + (content || "\n");
                 var result = nbsRemove(textContent(ef, content));
                 if(result !== undefined) {
+                    result = result.replace(tio_footer_prefix, '');
+                    return result === "\n" ? "" : result;
                 }
-                    return result.replace(tio_footer_prefix, '');
             }
         }
         // Add the logic for the code.
@@ -227,7 +233,8 @@ function editor_create_element(html) {
                 if(content !== undefined) content = tio_code_prefix + (content || "\n");
                 var result = nbsRemove(textContent(ec, content));
                 if(result !== undefined) {
-                    return result.replace(tio_code_prefix, '');
+                    result = result.replace(tio_code_prefix, '');
+                    return result === "\n" ? "" : result;
                 }
             }
         // Add the logic for the header.
@@ -239,7 +246,8 @@ function editor_create_element(html) {
                 if(content !== undefined) content = tio_header_prefix + (content || "\n");
                 var result = nbsRemove(textContent(eh, content));
                 if(result !== undefined) {
-                    return result.replace(tio_header_prefix, '');
+                    result = result.replace(tio_header_prefix, '');
+                    return result === "\n" ? "" : result;
                 }
             }
         }
@@ -252,7 +260,8 @@ function editor_create_element(html) {
                 if(content !== undefined) content = tio_input_prefix + (content || "\n");
                 var result = nbsRemove(textContent(ei, content));
                 if(result !== undefined) {
-                    return result.replace(tio_input_prefix, '');
+                    result = result.replace(tio_input_prefix, '');
+                    return result === "\n" ? "" : result;
                 }
             }
         }
@@ -265,7 +274,8 @@ function editor_create_element(html) {
                 if(content !== undefined) content = tio_args_prefix + (content || "\n");
                 var result = nbsRemove(textContent(ea, content));
                 if(result !== undefined) {
-                    return result.replace(tio_args_prefix, '');
+                    result = result.replace(tio_args_prefix, '');
+                    return result === "\n" ? "" : result;
                 }
             }
         }
@@ -278,7 +288,8 @@ function editor_create_element(html) {
                 if(content !== undefined) content = tio_options_prefix + (content || "\n");
                 var result = nbsRemove(textContent(eo, content));
                 if(result !== undefined) {
-                    return result.replace('[options]', '');
+                    result = result.replace(tio_options_prefix, '');
+                    return result === "\n" ? "" : result;
                 }
             }
         }
@@ -291,7 +302,8 @@ function editor_create_element(html) {
                 if(content !== undefined) content = tio_drivers_prefix + (content || "\n");
                 var result = nbsRemove(textContent(ed, content));
                 if(result !== undefined) {
-                    return result.replace('[drivers]', '');
+                    result = result.replace(tio_drivers_prefix, '');
+                    return result === "\n" ? "" : result;
                 }
             }
         }
@@ -378,25 +390,26 @@ function editor_create_element(html) {
     o.tio_has_args = !!has_args;
     o.tio_has_options = !!has_options;
     o.tio_has_drivers = !!has_drivers;
+    o.tio_has_bytes = !!has_bytes;
+    o.tio_has_chars = !!has_chars;
+    o.tio_has_language = !!has_language;
 
-    if(o.tio_input) o.tio_input(nbsRemove(html.getAttribute("tio-input") || ""))
+    if(o.tio_input) o.tio_input(ehsa(nbsRemove(html.getAttribute("tio-input")) || ""))
     else o.tio_input = function() { return nbsRemove(html.getAttribute("tio-input") || "") };
-    if(o.tio_code) o.tio_code(nbsRemove(html.getAttribute("tio-code") || ""))
+    if(o.tio_code) o.tio_code(ehsa(nbsRemove(html.getAttribute("tio-code")) || ""))
     else o.tio_code = function() { return nbsRemove(html.getAttribute("tio-code") || "") };
-    o.tio_display_code = html.getAttribute("tio-display-code");
-    o.tio_display_code = o.tio_display_code ? editor_handle_string_attribute(o.tio_display_code) : o.tio_code();
     
-    if(o.tio_language) o.tio_language(nbsRemove(html.getAttribute("tio-language") || "python3"))
+    if(o.tio_language) o.tio_language(ehsa(nbsRemove(html.getAttribute("tio-language")) || "python3"))
     else o.tio_language = function() { return nbsRemove(html.getAttribute("tio-language") || "python3") };
-    if(o.tio_header) o.tio_header(nbsRemove(html.getAttribute("tio-header") || ""))
+    if(o.tio_header) o.tio_header(ehsa(nbsRemove(html.getAttribute("tio-header")) || ""))
     else o.tio_header = function() { return nbsRemove(html.getAttribute("tio-header") || "") };
-    if(o.tio_footer) o.tio_footer(nbsRemove(html.getAttribute("tio-footer") || ""))
+    if(o.tio_footer) o.tio_footer(ehsa(nbsRemove(html.getAttribute("tio-footer")) || ""))
     else o.tio_footer = function() { return nbsRemove(html.getAttribute("tio-footer") || "") };
-    if(o.tio_options) o.tio_options(nbsRemove(html.getAttribute("tio-options") || "[]"))
+    if(o.tio_options) o.tio_options(ehsa(nbsRemove(html.getAttribute("tio-options")) || "[]"))
     else o.tio_options = function() { return nbsRemove(html.getAttribute("tio-options") || "[]") };
-    if(o.tio_drivers) o.tio_drivers(nbsRemove(html.getAttribute("tio-drivers") || "[]"))
+    if(o.tio_drivers) o.tio_drivers(ehsa(nbsRemove(html.getAttribute("tio-drivers")) || "[]"))
     else o.tio_drivers = function() { return nbsRemove(html.getAttribute("tio-drivers") || "[]") };
-    if(o.tio_args) o.tio_args(nbsRemove(html.getAttribute("tio-args") || "[]"))
+    if(o.tio_args) o.tio_args(ehsa(nbsRemove(html.getAttribute("tio-args")) || "[]"))
     else o.tio_args = function() { return nbsRemove(html.getAttribute("tio-args") || "[]") };
     return o;
 } 
@@ -414,7 +427,7 @@ function tio_apply_editor(html) {
                     language = session.utils._languages[language];
                     language = language ? language.name : session.language();
                 }
-                session.code(editor_handle_string_attribute(elem.tio_code()));
+                session.code(elem.tio_code());
                 var bytes = session.byte_count();
                 var chars = session.character_count();
                 if(elem.tio_editable) {
@@ -428,9 +441,10 @@ function tio_apply_editor(html) {
                     elem.tio_val(
                         (elem.tio_input() && ("[input]\n" + elem.tio_input() + "\n")) +
                         "[code]\n" + session.code() +
-                        ("\n[language] " + language + "\n") +
-                        (bytes === undefined ? "" : ("[bytes] " + bytes + "\n")) +
-                        (chars === undefined ? "" : ("[chars] " + chars + "\n")) +
+                        "\n" +
+                        (elem.tio_has_language ? ("[language] " + language + "\n") : "") +
+                        (elem.tio_has_bytes ? (bytes === undefined ? "" : ("[bytes] " + bytes + "\n")) : "") +
+                        (elem.tio_has_chars ? (chars === undefined ? "" : ("[chars] " + chars + "\n")) : "") +
                         ">>>\n"
                     );
                 }
@@ -442,20 +456,20 @@ function tio_apply_editor(html) {
                 elem.tio_done();
             });
             session.oncomplete.add(function() {
-                elem.tio_val(elem.tio_val() + session.output() + (elem.tio_has_debug ? "\n------------------------------" + session.debug() : ""));
+                elem.tio_val(elem.tio_val() + session.output() + (elem.tio_has_debug ? DS + session.debug() : ""));
                 elem.tio_done();
             });
             elem.tio_run.add(function() {
                 session.onload.add(function() {
                     try {
                         session.language(elem.tio_language());
-                        session.input(editor_handle_string_attribute(elem.tio_input()));
-                        session.header(editor_handle_string_attribute(elem.tio_header()));
-                        session.code(editor_handle_string_attribute(elem.tio_code()));
-                        session.footer(editor_handle_string_attribute(elem.tio_footer()));
-                        if(elem.tio_has_options) session.options = editor_handle_attribute(elem.tio_options())
-                        if(elem.tio_has_drivers) session.drivers = editor_handle_attribute(elem.tio_drivers())
-                        if(elem.tio_has_args) session.args = editor_handle_attribute(elem.tio_args())
+                        session.input(ehsa(elem.tio_input()));
+                        session.header(ehsa(elem.tio_header()));
+                        session.code(elem.tio_code());
+                        session.footer(ehsa(elem.tio_footer()));
+                        if(elem.tio_has_options) session.options = eha(elem.tio_options())
+                        if(elem.tio_has_drivers) session.drivers = eha(elem.tio_drivers())
+                        if(elem.tio_has_args) session.args = eha(elem.tio_args())
                         session.run()
                     } catch(error) {
                         elem.tio_val(error.stack + "\n" + error.name + "\n" + error.message);
@@ -473,7 +487,7 @@ function tio_apply_editor(html) {
             elem.tio_reset.add(function() {
                 elem.tio_val(
                     (elem.tio_input() && ("[input]\n" + elem.tio_input() + "\n")) +
-                    "[code]\n" + elem.tio_display_code +
+                    "[code]\n" + ehsa(elem.tio_code()) +
                     "\n>>>\n"
                 );                
             })
@@ -484,7 +498,7 @@ function tio_apply_editor(html) {
                 elem.tio_done();
             });
             prgm.oncomplete.add(function() {
-                elem.tio_val(elem.tio_val() + prgm.output() + (elem.tio_has_debug ? "\n------------------------------" + prgm.debug() : ""));
+                elem.tio_val(elem.tio_val() + prgm.output() + (elem.tio_has_debug ? DS + prgm.debug() : ""));
                 elem.tio_debug(prgm.debug());
                 elem.tio_done();
             });
@@ -498,8 +512,8 @@ function tio_apply_editor(html) {
                 elem.tio_done();
             });
             elem.tio_run.add(function() {
-                prgm.code = editor_handle_string_attribute(elem.tio_code())
-                prgm.input = editor_handle_string_attribute(elem.tio_input())
+                prgm.code = ehsa(elem.tio_code())
+                prgm.input = ehsa(elem.tio_input())
                 
                 elem.tio_start()
                 prgm.run()
@@ -515,23 +529,26 @@ function tio_apply_editor(html) {
 
 //------------------------------------------------------------------------------------------------------------
 function onload() {
-    var head = document.getElementsByTagName("head")[0];
-    var favicons = document.getElementsByClassName("tio-favicon");
+    tio.onload.add(function(){
+        var head = document.getElementsByTagName("head")[0];
+        var favicons = document.getElementsByClassName("tio-favicon");
 
-    tio.utils.iterate(favicons, function(favicon) {
-        var image = favicon.getAttribute("tio-image") || "tio.png";
-        var link = document.createElement('link');
-        link.rel = "icon";
-        link.type = "image/png";
-        link.href = image;
-        head.appendChild(link);
-    });
+        tio.utils.iterate(favicons, function(favicon) {
+            var image = favicon.getAttribute("tio-image") || "tio.png";
+            var link = document.createElement('link');
+            link.rel = "icon";
+            link.type = "image/png";
+            link.href = image;
+            head.appendChild(link);
+        });
 
-    var output_div_elements = document.getElementsByClassName("tio-code");
+        var output_div_elements = document.getElementsByClassName("tio-code");
 
-    for(var i = output_div_elements.length; i--;) {
-        tio_apply_editor(output_div_elements[i]);
-    }
+        for(var i = output_div_elements.length; i--;) {
+            tio_apply_editor(output_div_elements[i]);
+        }
+    })
+    tio.load(true)
 }
 
 document.addEventListener("DOMContentLoaded", onload);

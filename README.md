@@ -20,6 +20,14 @@ Hello, World!
 
 ---
 
+# Release
+
+The current version available is [1.0](https://tkellehe.github.io/tio-lang/release/tio_lang-1.0js). This version still does not have an editor for the __tio-lang__ itself.
+But, __tio-lang__ can be ran easily with a local HTML file and the released code. It also can be embedded into web-pages like here. Probably the more interesting feature
+of this release is [_editor.js_](#editorjs). This allows one to embed a small editor that communicates to the TIO server for any language not just __tio-lang__.
+
+---
+
 # Basics
 
 The __tio-lang__ starts by first reading the initial byte to determine how to interpret the rest of the program. The main three utilize the language identifiers
@@ -56,9 +64,9 @@ called for it to search the DOM and process these elements. The function `tio_ap
 and it will properly generate the HTML content for the editor in said element.
 
 ```html
-<div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line ("Yeah!");end Main;' tio-input="" tio-runable="I'm a goofy goober!" tio-display-code='with Ada.Text_IO;\nuse Ada.Text_IO;\nprocedure Main is\nbegin\n    Put_Line ("Yeah!");\nend Main;' tio-animate-button></div>
+<div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line ("Yeah!");end Main;' tio-input="" tio-runable="I'm a goofy goober!" tio-animate-button></div>
 ```
-<div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line ("Yeah!");end Main;' tio-input="" tio-runable="I'm a goofy goober!" tio-display-code='with Ada.Text_IO;\nuse Ada.Text_IO;\nprocedure Main is\nbegin\n    Put_Line ("Yeah!");\nend Main;' tio-animate-button></div>
+<div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line ("Yeah!");end Main;' tio-input="" tio-runable="I'm a goofy goober!" tio-animate-button></div>
 
 ---
 
@@ -69,10 +77,6 @@ and it will properly generate the HTML content for the editor in said element.
 #### `attribute ?tio-input`
 
  > Sets the input into the __tio-lang__ program to be executed.
-
-#### `attribute ?tio-display-code`
-
- > Sets the code should be displayed into the HTML elements generated. The default is the `tio-code` attribute.
 
 #### `attribute ?tio-type`
 
@@ -129,6 +133,11 @@ and it will properly generate the HTML content for the editor in said element.
 #### `attribute ?tio-drivers`
 
  > Sets the drivers list for the session if [`tio-js`](#attribute-tiojs) is provided. This must be a _JavaScript Array_ like object.
+ 
+#### `attribute ?tio-language`
+
+ > Sets the language for the session if [`tio-js`](#attribute-tiojs) is provided. This must be a [language identifier](#appendix).
+ > Once it has been confirmed to be a valid language id, it will change to printing the language name.
 
 #### `attribute ?tio-hide-input`
 
@@ -153,6 +162,18 @@ and it will properly generate the HTML content for the editor in said element.
 #### `attribute ?tio-hide-drivers`
 
  > Allows the [`tio-drivers`](#attribute-tiodrivers) to still be parsed, but it will not be displayed.
+ 
+#### `attribute ?tio-hide-language`
+
+ > Allows the [`tio-language`](#attribute-tiolanguage) to still be parsed, but it will not be displayed.
+ 
+#### `attribute ?tio-hide-bytes`
+
+ > Prevents the `[bytes]` from being displayed.
+ 
+#### `attribute ?tio-hide-chars`
+
+ > Prevents the `[chars]` from being displayed.
 
 ---
 ---
