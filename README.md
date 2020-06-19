@@ -53,7 +53,7 @@ Hello, World!
 This is a simple JavaScript library that will execute __tio-lang__ code using [_tio.js_](#tiojs) and _parser.js_. Merely place different attribute names into a `<div>` tag
 and it will fill everything out as well as remove any child nodes. The class `tio-code` is required for it to find the `<div>` tag.
 
-```
+```html
 <div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line ("Yeah!");end Main;' tio-input="" tio-runable="I'm a goofy goober!" tio-display-code='with Ada.Text_IO;\nuse Ada.Text_IO;\nprocedure Main is\nbegin\n    Put_Line ("Yeah!");\nend Main;' tio-animate-button></div>
 ```
 <div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line ("Yeah!");end Main;' tio-input="" tio-runable="I'm a goofy goober!" tio-display-code='with Ada.Text_IO;\nuse Ada.Text_IO;\nprocedure Main is\nbegin\n    Put_Line ("Yeah!");\nend Main;' tio-animate-button></div>
@@ -93,6 +93,12 @@ and it will fill everything out as well as remove any child nodes. The class `ti
 #### `attribute ?tio-js`
 
  > If provided, the editor created will not run __tio-lang__. Instead, it will execute a normal [_tio.js_](#tiojs) session.
+
+```html
+<div tio-language="python3" class="tio-code" tio-code='print(":)", sys.argv, sys.stdin.read())' tio-header="import sys;import time;time.sleep(2)" tio-footer="" tio-input="" tio-args="" tio-runable tio-animate-button tio-js tio-editable></div>
+```
+
+<div tio-language="python3" class="tio-code" tio-code='print(":)", sys.argv, sys.stdin.read())' tio-header="import sys;import time;time.sleep(2)" tio-footer="" tio-input="" tio-args="" tio-runable tio-animate-button tio-js tio-editable></div>
 
 #### `attribute ?tio-editable`
 
