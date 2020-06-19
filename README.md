@@ -102,7 +102,7 @@ and it will fill everything out as well as remove any child nodes. The class `ti
 
 #### `attribute ?tio-editable`
 
- > Makes all fields editable if [tio-js](#attribute-tiojs) is provided.
+ > Makes all fields editable if [tio-js](#attribute-tiojs) and [tio-runable](#attribute-tiorunable) are provided.
 
 #### `attribute ?tio-header`
 

@@ -108,16 +108,19 @@ function editor_create_element(html) {
             b.style.color = "black";
             b.style.textDecoration = "none";
             b.style.display = "inline-block";
-            b.style.fontSize = "0.9em";
+            b.style.fontSize = "1.3em";
             b.style.borderRadius = "5%";
             b.style.border = "1px solid #000";
-            b.style.width = "2.1em";
-            b.style.height = "2.1em";
-            b.style.margin = "auto auto";
+            b.style.width = "1.7em";
+            b.style.height = "1.7em";
+            b.style.margin = "0.5em auto";
             b.style.padding = "0px";
             b.style.textAlign = "center";
             
             textContent(b, BUTTON_RUN_CHAR);
+
+            // The small button needs to be added to the <pre> tag.
+            p.appendChild(b);
         } else {
             textContent(b, runable_text);
 
@@ -126,10 +129,12 @@ function editor_create_element(html) {
             b.style.outline = "none";
             b.style.color = "white";
             b.style.backgroundColor = "black";
+
+            // Normal button needs to be added to the div.
+            o.appendChild(b);
         }
 
-        // Add the button and set the onlick function to control running and cancellation.
-        o.appendChild(b);
+        // Set the onlick function to control running and cancellation.
 
         b.onclick = function() {
             if(o.tio_is_running) {
@@ -146,8 +151,8 @@ function editor_create_element(html) {
         });
     }
 
-    // Make it editable.
-    if(is_editable && is_tio_js) {
+    // Make it editable if everything checks out.
+    if(is_runable && is_editable && is_tio_js) {
         var ei = document.createElement(type),
             eh = document.createElement(type),
             ec = document.createElement(type),
@@ -185,13 +190,13 @@ function editor_create_element(html) {
             dea = document.createElement("div"),
             ded = document.createElement("div"),
             deo = document.createElement("div");
-        dei.style.margin = "0.7em 0px";
-        deh.style.margin = "0.7em 0px";
-        dec.style.margin = "0.7em 0px";
-        def.style.margin = "0.7em 0px";
-        dea.style.margin = "0.7em 0px";
-        ded.style.margin = "0.7em 0px";
-        deo.style.margin = "0.7em 0px";
+        dei.style.margin = "0.5em auto";
+        deh.style.margin = "0.5em auto";
+        dec.style.margin = "0.5em auto";
+        def.style.margin = "0.5em auto";
+        dea.style.margin = "0.5em auto";
+        ded.style.margin = "0.5em auto";
+        deo.style.margin = "0.5em auto";
 
         // Add the logic for the footer.
         if(has_footer) {
