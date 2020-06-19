@@ -22,7 +22,7 @@ Hello, World!
 
 # Release
 
-The current version available is [1.0](https://tkellehe.github.io/tio-lang/release/tio_lang-1.0js). This version still does not have an editor for the __tio-lang__ itself.
+The current version available is [1.0](https://tkellehe.github.io/tio-lang/release/tio_lang-1.0.js). This version still does not have an editor for the __tio-lang__ itself.
 But, __tio-lang__ can be ran easily with a local HTML file and the released code. It also can be embedded into web-pages like here. Probably the more interesting feature
 of this release is [_editor.js_](#editorjs). This allows one to embed a small editor that communicates to the TIO server for any language not just __tio-lang__.
 
