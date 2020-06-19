@@ -103,6 +103,7 @@ function editor_create_element(html) {
         
         // Style the button based on the text.
         if(runable_text === "{RUN}" || runable_text === "") {
+            var bd = document.createElement("div");
             b.style.fontFamily = "monospace";
             b.style.backgroundColor = "white";
             b.style.color = "black";
@@ -111,16 +112,18 @@ function editor_create_element(html) {
             b.style.fontSize = "1.3em";
             b.style.borderRadius = "5%";
             b.style.border = "1px solid #000";
+            b.style.margin = "auto auto";
             b.style.width = "1.7em";
             b.style.height = "1.7em";
-            b.style.margin = "0.5em auto";
             b.style.padding = "0px";
             b.style.textAlign = "center";
             
             textContent(b, BUTTON_RUN_CHAR);
 
             // The small button needs to be added to the <pre> tag.
-            p.appendChild(b);
+            bd.style.margin = "0.5em auto";
+            p.appendChild(bd);
+            bd.appendChild(b);
         } else {
             textContent(b, runable_text);
 
@@ -200,14 +203,15 @@ function editor_create_element(html) {
 
         // Add the logic for the footer.
         if(has_footer) {
+            var tio_footer_prefix = "[footer]\n"
             def.appendChild(ef);
             p.prepend(def);
             o.tio_footer = function(content) {
-                if(content !== undefined) content = "[footer]\n" + (content || "\n");
+                if(content !== undefined) content = tio_footer_prefix + (content || "\n");
                 var result = nbsRemove(textContent(ef, content));
                 if(result !== undefined) {
-                    return result.replace("\n[footer]\n", '');
                 }
+                    return result.replace(tio_footer_prefix, '');
             }
         }
         // Add the logic for the code.
@@ -447,8 +451,7 @@ function onload() {
                         elem.tio_done();
                     });
                     session.oncomplete.add(function() {
-                        elem.tio_val(elem.tio_val() + session.output());
-                        elem.tio_debug(session.debug());
+                        elem.tio_val(elem.tio_val() + session.output() + (elem.tio_has_debug ? "\n" + session.debug() : ""));
                         elem.tio_done();
                     });
                     elem.tio_run.add(function() {
@@ -490,7 +493,7 @@ function onload() {
                         elem.tio_done();
                     });
                     prgm.oncomplete.add(function() {
-                        elem.tio_val(elem.tio_val() + prgm.output());
+                        elem.tio_val(elem.tio_val() + prgm.output() + (elem.tio_has_debug ? "\n" + prgm.debug() : ""));
                         elem.tio_debug(prgm.debug());
                         elem.tio_done();
                     });

@@ -76,6 +76,10 @@ and it will fill everything out as well as remove any child nodes. The class `ti
 
  > Sets the type of HTML to be generated. The default is current "code" and the only type that has been tested.
 
+#### `attribute ?tio-debug`
+
+ > If provided, it will add the debug output from the TIO servers to the end of the output.
+
 #### `attribute ?tio-runable`
 
  > Adds a button to the HTML elements that will execute the code. If not provided, the code will begin executing immediately.
@@ -95,10 +99,10 @@ and it will fill everything out as well as remove any child nodes. The class `ti
  > If provided, the editor created will not run __tio-lang__. Instead, it will execute a normal [_tio.js_](#tiojs) session.
 
 ```html
-<div tio-language="python3" class="tio-code" tio-code='print(":)", sys.argv, sys.stdin.read())' tio-header="import sys;import time;time.sleep(2)" tio-footer="" tio-input="" tio-args="" tio-runable tio-animate-button tio-js tio-editable></div>
+<div tio-language="python3" class="tio-code" tio-code='print(":)", sys.argv, sys.stdin.read())' tio-header="import sys;import time;time.sleep(2)" tio-footer="" tio-input="" tio-args="" tio-runable tio-animate-button tio-js tio-editable tio-debug></div>
 ```
 
-<div tio-language="python3" class="tio-code" tio-code='print(":)", sys.argv, sys.stdin.read())' tio-header="import sys;import time;time.sleep(2)" tio-footer="" tio-input="" tio-args="" tio-runable tio-animate-button tio-js tio-editable></div>
+<div tio-language="python3" class="tio-code" tio-code='print(":)", sys.argv, sys.stdin.read())' tio-header="import sys;import time;time.sleep(2)" tio-footer="" tio-input="" tio-args="" tio-runable tio-animate-button tio-js tio-editable tio-debug></div>
 
 #### `attribute ?tio-editable`
 
