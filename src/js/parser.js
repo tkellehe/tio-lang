@@ -10,9 +10,11 @@ function Parser(code, input) {
     tio_lang_self.TIO = TIO;
     tio.utils.onlistener(tio_lang_self, "oncomplete");
     tio.utils.onlistener(tio_lang_self, "onerror");
+    tio.utils.onlistener(tio_lang_self, "oncancel");
     tio_lang_self.output = function() { return TIO.output(); }
     tio_lang_self.debug = function() { return tio_lang_self.debug_result; }
     tio_lang_self._kill = false;
+    tio_lang_self._is_running = false;
 
     tio_lang_self.use_shortcuts = false;
     tio_lang_self.use_grab_till_end = false;
@@ -131,9 +133,21 @@ function Parser(code, input) {
     }
 
     //********************************************************************************************************
+    tio_lang_self.cancel = function() {
+        if(tio_lang_self._is_running) {
+            tio_lang_self._kill = true;
+            TIO.cancel();
+            tio_lang_self.oncancel();
+            tio_lang_self._is_running = false;
+        }
+    };
+
+    //********************************************************************************************************
     tio_lang_self.run = function() {
+        tio_lang_self.cancel();
         TIO.clear();
         tio_lang_self._kill = false;
+        tio_lang_self._is_running = true;
         TIO.onload.add(function() {
             var code = tio_lang_self.code || "";
             var input = tio_lang_self.input || "";
@@ -184,6 +198,8 @@ function Parser(code, input) {
                         input = undefined;
                         TIO.run();
                     } else {
+                        // Indicate that we are no longer running.
+                        tio_lang_self._is_running = false;
                         if(!tio_lang_self._kill) tio_lang_self.oncomplete();
                     }
                 }
@@ -196,8 +212,11 @@ function Parser(code, input) {
                 });
                 execute();
             } else {
+                // Indicate that we are no longer running.
+                tio_lang_self._is_running = false;
                 if(!tio_lang_self._kill) tio_lang_self.oncomplete();
             }
+            
         }, false);
         TIO.load(true);
     }

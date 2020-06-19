@@ -340,7 +340,7 @@ function Session() {
     utils.onlistener(self, "onrun");
     utils.onlistener(self, "onerror");
     utils.onlistener(self, "onload");
-    utils.onlistener(self, "onquit");
+    utils.onlistener(self, "oncancel");
     utils.onlistener(self, "oncomplete");
 
     utils.onlistener(self, "onsetoutput");
@@ -571,13 +571,7 @@ function Session() {
 
     //--------------------------------------------------------------------------------------------------------
     self.run = function() {
-        if (self.runRequest) {
-            var quitRequest = new XMLHttpRequest;
-            quitRequest.open("GET", self.utils.tioURL + self.utils.quitURL + "/" + self.token);
-            self.onquit(quitRequest);
-            quitRequest.send();
-            return;
-        }
+        self.cancel();
         self.clear_results();
         self.token = getRandomBits(128);
         self.runRequest = new XMLHttpRequest;
@@ -586,6 +580,17 @@ function Session() {
         self.runRequest.onreadystatechange = runRequestOnReadyState;
         self.runRequest.send(deflate(self.state()));
         self.onrun();
+    }
+
+    //--------------------------------------------------------------------------------------------------------
+    self.cancel = function() {
+        if (self.runRequest) {
+            var quitRequest = new XMLHttpRequest;
+            quitRequest.open("GET", self.utils.tioURL + self.utils.quitURL + "/" + self.token);
+            self.oncancel(quitRequest);
+            quitRequest.send();
+            return;
+        }
     }
 
     //--------------------------------------------------------------------------------------------------------

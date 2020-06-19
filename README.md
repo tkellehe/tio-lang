@@ -34,11 +34,11 @@ Once the language identifiers have been paired with the code, it will execute th
 The first is the null character `\0` which will take the longest possible language identifier immediately following that byte. Then the rest of the code is assumed
 to go with that language identifier and runs it.
 
-<div class="tio-code" tio-code='\0valapublic static int main(string[]args){stdout.printf(\"Hello, World!\n\");return 0;}' tio-input="" tio-runable="Try It Here!" tio-animate>
+<div class="tio-code" tio-code='\0valapublic static int main(string[]args){stdout.printf("Hello, World!\n");return 0;}' tio-input="" tio-runable="Try It Here!" tio-animate>
 
 ```
 code:
-\0valapublic static int main(string[]args){stdout.printf(\"Hello, World!\n\");return 0;}
+\0valapublic static int main(string[]args){stdout.printf("Hello, World!\n");return 0;}
 >>>
 Hello, World!
 ```
@@ -54,9 +54,9 @@ This is a simple JavaScript library that will execute __tio-lang__ code using [_
 and it will fill everything out as well as remove any child nodes. The class `tio-code` is required for it to find the `<div>` tag.
 
 ```
-<div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line (\"Yeah!\");end Main;' tio-input="" tio-runable="I'm a goofy goober!" tio-display-code='with Ada.Text_IO;\nuse Ada.Text_IO;\nprocedure Main is\nbegin\n    Put_Line (\"Yeah!\");\nend Main;' tio-animate-button></div>
+<div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line ("Yeah!");end Main;' tio-input="" tio-runable="I'm a goofy goober!" tio-display-code='with Ada.Text_IO;\nuse Ada.Text_IO;\nprocedure Main is\nbegin\n    Put_Line ("Yeah!");\nend Main;' tio-animate-button></div>
 ```
-<div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line (\"Yeah!\");end Main;' tio-input="" tio-runable="I'm a goofy goober!" tio-display-code='with Ada.Text_IO;\nuse Ada.Text_IO;\nprocedure Main is\nbegin\n    Put_Line (\"Yeah!\");\nend Main;' tio-animate-button></div>
+<div class="tio-code" tio-code='\0ada-gnatwith Ada.Text_IO;use Ada.Text_IO;procedure Main is begin Put_Line ("Yeah!");end Main;' tio-input="" tio-runable="I'm a goofy goober!" tio-display-code='with Ada.Text_IO;\nuse Ada.Text_IO;\nprocedure Main is\nbegin\n    Put_Line ("Yeah!");\nend Main;' tio-animate-button></div>
 
 ---
 
@@ -212,6 +212,34 @@ tio.run()
  > `tio.utils.count_bytes(code, "SBCS")`.
 
 ---
+### `tio.utils.onlistener(eventHandler, ?event, ?eventType)`
+
+ > Takes the `eventHandler` object provided and adds the functions `addEventListener` and `removeEventListener`.
+ > These functions can take in an event already added, and either add a function or remove a function. Note that the name
+ > utilize for the event will have the prefix `"on"` added. Also, `addEventListener` can be provided an additional argument
+ > that if provided `false` will remove added function after is has be activated once for that event. If the `event` name is provided,
+ > it will add an extra attribute to the `eventHandler` as the string value provided. This new attribute is the event function
+ > that when invoked, will take the optional `event_instance` and pass it to all of the functions that have been added. This function also
+ > has the attributes `add` and `remove` which work the same as `addEventListener` and `removeEventListener` except that it defaults the
+ > the event name to be this attributes name.
+ > 
+ > The function also returns an object created with the appropriate attributes added with an extra of `onevent` that will immediately
+ > invoke the event. It also has an attribute of `eventType` set to auto-generated `eventType` or the one provided.
+ > 
+ > The `eventType` can be provided which will be auto-generated if not provided. This is used to construct the `event_instance` passed
+ > to all of the event functions registered. The default auto-generated function caches all arguments provided upon construction into
+ > the `args` attribute of the instance.
+
+```javascript
+var obj = {};
+tio.utils.onlistener(obj, "myevent");
+function f(e){console.log(e)}
+obj.myevent.add(f);
+obj.myevent();
+obj.myevent.remove(f);
+```
+
+---
 ### `tio.utils.session()`
 
  > Create a new `Session` instance that can communicate and run code. Also, `tio` is a `Session` instance.
@@ -298,8 +326,13 @@ tio.run()
 ---
 ### `Session.run(?arguments...)`
 
- > Packages up the code and options to be sent to the TIO servers.
- > The callbacks that can be used to access this: `onrun`, `onquit`, `oncomplete`
+ > Packages up the code and options to be sent to the TIO servers. If invoked again, it will cancel the previous run and start a new one.
+ > The callbacks that can be used to access this: `onrun`, `oncancel`, `oncomplete`
+
+---
+### `Session.cancel()`
+
+ > Cancels a previous request made to the TIO servers to execute some code. Will invoke the callback `oncancel` if cancellation occurred.
 
 ---
 ### `Session.byte_count()`

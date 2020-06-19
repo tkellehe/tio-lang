@@ -1,7 +1,7 @@
 (function(){
 
 function editor_handle_string_attribute(text) {
-    return eval("(function(){ return \"" + text + "\";})()");
+    return eval("(function(){ return \"" + text.replace(/"/g, '\\"') + "\";})()");
 }
     
 function editor_handle_attribute(text) {
@@ -25,15 +25,21 @@ function brRemove(string) {
 
 function textContent(element, value) {
     if(value !== undefined) {
-        element.innerText = value;element.textContent = value;
+        element.innerText = value; element.textContent = value;
     } else {
         var text = "";
         var nodes = element.childNodes;
-        for(var i = nodes.length; i--;) {
-            switch(nodes[i].nodeName) {
-                case '#text'    : text = nodes[i].nodeValue + text;   break;
-                case 'BR'       : text = '\n' + text;                 break;
+        if(nodes !== undefined) {
+            for(var i = nodes.length; i--;) {
+                switch(nodes[i].nodeName) {
+                    case '#text'    : text = nodes[i].nodeValue + text;   break;
+                    case 'BR'       : text = '\n' + text;                 break;
+                }
             }
+        } else if(element.textContent !== undefined) {
+            text = element.textContent;
+        } else if(element.innerText !== undefined) {
+            text = element.innerText;
         }
         return text;
     }
@@ -64,10 +70,18 @@ function editor_create_element(html) {
     o.appendChild(p);
     
     tio.utils.onlistener(o, "tio_done");
+    tio.utils.onlistener(o, "tio_cancel");
     tio.utils.onlistener(o, "tio_start");
     tio.utils.onlistener(o, "tio_reset");
     tio.utils.onlistener(o, "tio_run");
     tio.utils.onlistener(o, "tio_ready");
+
+    o.tio_run.add(function(){
+        o.tio_is_running = true;
+    });
+    o.tio_done.add(function(){
+        o.tio_is_running = false;
+    });
 
     // If it is runable, add a button to control when the output gets put in.
     var b = {innerText:BUTTON_RUN_CHAR};
@@ -89,9 +103,10 @@ function editor_create_element(html) {
             b.style.padding = "0px";
             b.style.textAlign = "center";
             
-            b.innerText = BUTTON_RUN_CHAR;
+            textContent(b, BUTTON_RUN_CHAR);
         } else {
-            b.innerText = runable_text;
+            textContent(b, runable_text);
+
             b.style.width = "100%"
             b.style.fontFamily = "monospace";
             b.style.outline = "none";
@@ -102,8 +117,12 @@ function editor_create_element(html) {
         o.appendChild(b);
 
         b.onclick = function() {
-            o.tio_reset();
-            o.tio_run();
+            if(o.tio_is_running) {
+                o.tio_cancel();
+            } else {
+                o.tio_reset();
+                o.tio_run();
+            }
         }
     } else {
         o.tio_ready.add(function() {
@@ -125,7 +144,6 @@ function editor_create_element(html) {
     }
 
     if(is_animate || is_animate_button) {
-        var tio_animate_is_done = false;
         var tio_animate_frame = 0;
         var tio_animate_frames = [
             "/", "/", "/", "/", "/", "/", "/", "/", "/", "/",
@@ -136,8 +154,7 @@ function editor_create_element(html) {
         var tio_animate_frame_pos = -1;
         var tio_animate_button_cache = ""
         o.tio_start.add(function() {
-            tio_animate_button_cache = b.innerText;
-            tio_animate_is_done = false;
+            tio_animate_button_cache = textContent(b);
             tio_animate_frame_pos = -1;
             (function animate() {
                 var current = o.tio_val();
@@ -145,20 +162,17 @@ function editor_create_element(html) {
                     current = tio.utils.string_splice(current, tio_animate_frame_pos, tio_animate_frames[tio_animate_frame].length, "");
                 }
 
-                if(tio_animate_is_done) {
-                    if(is_animate) o.tio_val(current);
-                    if(is_animate_button) b.innerText = tio_animate_button_cache;
-                } else {
+                if(o.tio_is_running) {
                     tio_animate_frame = (tio_animate_frame + 1) % tio_animate_frames.length;
                     tio_animate_frame_pos = current.length;
                     if(is_animate) o.tio_val(current + tio_animate_frames[tio_animate_frame]);
-                    if(is_animate_button) b.innerText = tio_animate_frames[tio_animate_frame];
+                    if(is_animate_button) textContent(b, tio_animate_frames[tio_animate_frame]);
                     setTimeout(animate, 10);
+                } else {
+                    if(is_animate) o.tio_val(current);
+                    if(is_animate_button) textContent(b, tio_animate_button_cache);
                 }
             })()
-        });
-        o.tio_done.add(function() {
-            tio_animate_is_done = true;
         });
     }
 
@@ -166,6 +180,7 @@ function editor_create_element(html) {
         if(output === undefined) return ""
     }
 
+    o.tio_is_running = false;
     o.tio_js = !!is_tio_js;
     o.tio_type = type;
     o.tio_runable = !!is_runable;
@@ -249,6 +264,11 @@ function onload() {
                         );                
                     })
                     elem.tio_reset();
+                    elem.tio_cancel.add(function(){
+                        session.cancel();
+                        elem.tio_reset();
+                        elem.tio_done();
+                    });
                     session.oncomplete.add(function() {
                         elem.tio_val(elem.tio_val() + session.output());
                         elem.tio_debug(session.debug());
@@ -282,6 +302,11 @@ function onload() {
                         );                
                     })
                     elem.tio_reset();
+                    elem.tio_cancel.add(function(){
+                        prgm.cancel();
+                        elem.tio_reset();
+                        elem.tio_done();
+                    });
                     prgm.oncomplete.add(function() {
                         elem.tio_val(elem.tio_val() + prgm.output());
                         elem.tio_debug(prgm.debug());
