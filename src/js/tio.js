@@ -564,7 +564,7 @@ function Session() {
     //--------------------------------------------------------------------------------------------------------
     self.load = function(force) {
         if(self.utils._languages) {
-            if(force) self.onload();
+            if(force) setTimeout(self.onload, 0);
             return;
         }
         self.fetch();
