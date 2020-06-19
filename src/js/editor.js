@@ -487,7 +487,7 @@ function tio_apply_editor(html) {
             elem.tio_reset.add(function() {
                 elem.tio_val(
                     (elem.tio_input() && ("[input]\n" + elem.tio_input() + "\n")) +
-                    "[code]\n" + ehsa(elem.tio_code()) +
+                    "[code]\n" + elem.tio_code() +
                     "\n>>>\n"
                 );                
             })
