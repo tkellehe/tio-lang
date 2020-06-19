@@ -106,27 +106,51 @@ and it will fill everything out as well as remove any child nodes. The class `ti
 
 #### `attribute ?tio-editable`
 
- > Makes all fields editable if [tio-js](#attribute-tiojs) and [tio-runable](#attribute-tiorunable) are provided.
+ > Makes all fields editable if [`tio-js`](#attribute-tiojs) and [`tio-runable`](#attribute-tiorunable) are provided.
 
 #### `attribute ?tio-header`
 
- > Sets the header code for the session if [tio-js](#attribute-tiojs) is provided.
+ > Sets the header code for the session if [`tio-js`](#attribute-tiojs) is provided.
 
 #### `attribute ?tio-footer`
 
- > Sets the footer code for the session if [tio-js](#attribute-tiojs) is provided.
+ > Sets the footer code for the session if [`tio-js`](#attribute-tiojs) is provided.
  
 #### `attribute ?tio-args`
 
- > Sets the args list for the session if [tio-js](#attribute-tiojs) is provided. This must be a _JavaScript Array_ like object.
+ > Sets the args list for the session if [`tio-js`](#attribute-tiojs) is provided. This must be a _JavaScript Array_ like object.
  
 #### `attribute ?tio-options`
 
- > Sets the options list for the session if [tio-js](#attribute-tiojs) is provided. This must be a _JavaScript Array_ like object.
+ > Sets the options list for the session if [`tio-js`](#attribute-tiojs) is provided. This must be a _JavaScript Array_ like object.
  
 #### `attribute ?tio-drivers`
 
- > Sets the drivers list for the session if [tio-js](#attribute-tiojs) is provided. This must be a _JavaScript Array_ like object.
+ > Sets the drivers list for the session if [`tio-js`](#attribute-tiojs) is provided. This must be a _JavaScript Array_ like object.
+
+#### `attribute ?tio-hide-input`
+
+ > Allows the [`tio-input`](#attribute-tioinput) to still be parsed, but it will not be displayed.
+
+#### `attribute ?tio-hide-header`
+
+ > Allows the [`tio-header`](#attribute-tioheader) to still be parsed, but it will not be displayed.
+
+#### `attribute ?tio-hide-footer`
+
+ > Allows the [`tio-footer`](#attribute-tiofooter) to still be parsed, but it will not be displayed.
+ 
+#### `attribute ?tio-hide-args`
+
+ > Allows the [`tio-args`](#attribute-tioargs) to still be parsed, but it will not be displayed.
+ 
+#### `attribute ?tio-hide-options`
+
+ > Allows the [`tio-options`](#attribute-tiooptions) to still be parsed, but it will not be displayed.
+ 
+#### `attribute ?tio-hide-drivers`
+
+ > Allows the [`tio-drivers`](#attribute-tiodrivers) to still be parsed, but it will not be displayed.
 
 ---
 ---

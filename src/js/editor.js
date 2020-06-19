@@ -61,12 +61,12 @@ function editor_create_element(html) {
         is_animate = html.getAttribute("tio-animate") !== null,
         is_animate_button = html.getAttribute("tio-animate-button") !== null,
         has_debug = html.getAttribute("tio-debug") !== null,
-        has_input = html.getAttribute("tio-input") !== null,
-        has_header = html.getAttribute("tio-header") !== null,
-        has_footer = html.getAttribute("tio-footer") !== null,
-        has_args = html.getAttribute("tio-args") !== null,
-        has_options = html.getAttribute("tio-options") !== null,
-        has_drivers = html.getAttribute("tio-drivers") !== null;
+        has_input = html.getAttribute("tio-input") !== null && html.getAttribute("tio-hide-input") === null,
+        has_header = html.getAttribute("tio-header") !== null && html.getAttribute("tio-hide-header") === null,
+        has_footer = html.getAttribute("tio-footer") !== null && html.getAttribute("tio-hide-footer") === null,
+        has_args = html.getAttribute("tio-args") !== null && html.getAttribute("tio-hide-args") === null,
+        has_options = html.getAttribute("tio-options") !== null && html.getAttribute("tio-hide-options") === null,
+        has_drivers = html.getAttribute("tio-drivers") !== null && html.getAttribute("tio-hide-drivers") === null;
     
     // Make it work with GitHub markdown.
     html.className += " language-plaintext highlighter-rouge";
