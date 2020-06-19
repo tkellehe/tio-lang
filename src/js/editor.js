@@ -384,7 +384,7 @@ function editor_create_element(html) {
     if(o.tio_code) o.tio_code(nbsRemove(html.getAttribute("tio-code") || ""))
     else o.tio_code = function() { return nbsRemove(html.getAttribute("tio-code") || "") };
     o.tio_display_code = html.getAttribute("tio-display-code");
-    o.tio_display_code = o.tio_display_code ? editor_handle_string_attribute(o.tio_display_code) : o.tio_code;
+    o.tio_display_code = o.tio_display_code ? editor_handle_string_attribute(o.tio_display_code) : o.tio_code();
     
     if(o.tio_language) o.tio_language(nbsRemove(html.getAttribute("tio-language") || "python3"))
     else o.tio_language = function() { return nbsRemove(html.getAttribute("tio-language") || "python3") };
