@@ -432,9 +432,9 @@ function tio_apply_editor(html) {
                 var chars = session.character_count();
                 if(elem.tio_editable) {
                     elem.tio_val(
-                        ("[language] " + language + "\n") +
-                        (bytes === undefined ? "" : ("[bytes] " + bytes + "\n")) +
-                        (chars === undefined ? "" : ("[chars] " + chars + "\n")) +
+                        elem.tio_has_language ? ("[language] " + language + "\n") : "") +
+                        (elem.tio_has_bytes ? (bytes === undefined ? "" : ("[bytes] " + bytes + "\n")) : "") +
+                        (elem.tio_has_chars ? (chars === undefined ? "" : ("[chars] " + chars + "\n")) : "") +
                         ">>>\n"
                     );
                 } else {
