@@ -214,104 +214,125 @@ function editor_create_element(html) {
         // Add the logic for the footer.
         if(has_footer) {
             var tio_footer_prefix = "[footer]\n",
-                tio_footer_prefix_cur = tio_footer_prefix;
+                tio_footer_postfix = "";
             def.appendChild(ef);
             p.prepend(def);
             o.tio_footer = function(content) {
                 if(content !== undefined) {
-                    tio_footer_prefix_cur = tio_footer_prefix + (content ? "" : "\n")
-                    content = tio_footer_prefix_cur + content
+                    tio_footer_postfix = content ? "" : "\n"
+                    content = tio_footer_prefix + content + tio_footer_postfix
                 }
                 var result = textContent(ef, content);
-                if(result !== undefined) return nbsRemove(result).replace(tio_footer_prefix_cur, '')
+                if(result !== undefined) {
+                    result = nbsRemove(result).replace(tio_footer_prefix, '')
+                    return tio_footer_postfix ? result.slice(0, -1) : result;
+                }
             }
         }
         // Add the logic for the code.
             var tio_code_prefix = "[code]\n",
-                tio_code_prefix_cur = tio_code_prefix;
+                tio_code_postfix = "";
             dec.appendChild(ec);
             p.prepend(dec);
             o.tio_code = function(content) {
                 if(content !== undefined) {
-                    tio_code_prefix_cur = tio_code_prefix + (content ? "" : "\n")
-                    content = tio_code_prefix_cur + content
+                    tio_code_postfix = content ? "" : "\n"
+                    content = tio_code_prefix + content + tio_code_postfix
                 }
                 var result = textContent(ec, content);
-                if(result !== undefined) return nbsRemove(result).replace(tio_code_prefix_cur, '')
+                if(result !== undefined) {
+                    result = nbsRemove(result).replace(tio_code_prefix, '')
+                    return tio_code_postfix ? result.slice(0, -1) : result;
+                }
             }
         // Add the logic for the header.
         if(has_header) {
             var tio_header_prefix = "[header]\n",
-                tio_header_prefix_cur = tio_header_prefix;
+                tio_header_postfix = "";
             deh.appendChild(eh);
             p.prepend(deh);
             o.tio_header = function(content) {
                 if(content !== undefined) {
-                    tio_header_prefix_cur = tio_header_prefix + (content ? "" : "\n")
-                    content = tio_header_prefix_cur + content
+                    tio_header_postfix = content ? "" : "\n"
+                    content = tio_header_prefix + content + tio_header_postfix
                 }
                 var result = textContent(eh, content);
-                if(result !== undefined) return nbsRemove(result).replace(tio_header_prefix_cur, '')
+                if(result !== undefined) {
+                    result = nbsRemove(result).replace(tio_header_prefix, '')
+                    return tio_header_postfix ? result.slice(0, -1) : result;
+                }
             }
         }
         // Add the logic for the input.
         if(has_input) {
             var tio_input_prefix = "[input]\n",
-                tio_input_prefix_cur = tio_input_prefix;
+                tio_input_postfix = "";
             dei.appendChild(ei);
             p.prepend(dei);
             o.tio_input = function(content) {
                 if(content !== undefined) {
-                    tio_input_prefix_cur = tio_input_prefix + (content ? "" : "\n")
-                    content = tio_input_prefix_cur + content
+                    tio_input_postfix = content ? "" : "\n"
+                    content = tio_input_prefix + content + tio_input_postfix
                 }
                 var result = textContent(ei, content);
-                if(result !== undefined) return nbsRemove(result).replace(tio_input_prefix_cur, '')
+                if(result !== undefined) {
+                    result = nbsRemove(result).replace(tio_input_prefix, '')
+                    return tio_input_postfix ? result.slice(0, -1) : result;
+                }
             }
         }
         // Add the logic for the args.
         if(has_args) {
             var tio_args_prefix = "[args]\n",
-                tio_args_prefix_cur = tio_args_prefix;
+                tio_args_postfix = "";
             dea.appendChild(ea);
             p.prepend(dea);
             o.tio_args = function(content) {
                 if(content !== undefined) {
-                    tio_args_prefix_cur = tio_args_prefix + (content ? "" : "\n")
-                    content = tio_args_prefix_cur + content
+                    tio_args_postfix = content ? "" : "\n"
+                    content = tio_args_prefix + content + tio_args_postfix
                 }
                 var result = textContent(ea, content);
-                if(result !== undefined) return nbsRemove(result).replace(tio_args_prefix_cur, '')
+                if(result !== undefined) {
+                    result = nbsRemove(result).replace(tio_args_prefix, '')
+                    return tio_args_postfix ? result.slice(0, -1) : result;
+                }
             }
         }
         // Add the logic for the options.
         if(has_options) {
             var tio_options_prefix = "[options]\n",
-                tio_options_prefix_cur = tio_options_prefix;
+                tio_options_postfix = "";
             deo.appendChild(eo);
             p.prepend(deo);
             o.tio_options = function(content) {
                 if(content !== undefined) {
-                    tio_options_prefix_cur = tio_options_prefix + (content ? "" : "\n")
-                    content = tio_options_prefix_cur + content
+                    tio_options_postfix = content ? "" : "\n"
+                    content = tio_options_prefix + content + tio_options_postfix
                 }
                 var result = textContent(eo, content);
-                if(result !== undefined) return nbsRemove(result).replace(tio_options_prefix_cur, '')
+                if(result !== undefined) {
+                    result = nbsRemove(result).replace(tio_options_prefix, '')
+                    return tio_options_postfix ? result.slice(0, -1) : result;
+                }
             }
         }
         // Add the logic for the drivers.
         if(has_drivers) {
             var tio_drivers_prefix = "[drivers]\n",
-                tio_drivers_prefix_cur = tio_drivers_prefix;
+                tio_drivers_postfix = "";
             ded.appendChild(ed);
             p.prepend(ded);
             o.tio_drivers = function(content) {
                 if(content !== undefined) {
-                    tio_drivers_prefix_cur = tio_drivers_prefix + (content ? "" : "\n")
-                    content = tio_drivers_prefix_cur + content
+                    tio_drivers_postfix = content ? "" : "\n"
+                    content = tio_drivers_prefix + content + tio_drivers_postfix
                 }
                 var result = textContent(ed, content);
-                if(result !== undefined) return nbsRemove(result).replace(tio_drivers_prefix_cur, '')
+                if(result !== undefined) {
+                    result = nbsRemove(result).replace(tio_drivers_prefix, '')
+                    return tio_drivers_postfix ? result.slice(0, -1) : result;
+                }
             }
         }
     }
