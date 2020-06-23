@@ -224,7 +224,9 @@ function editor_create_element(html) {
                 }
                 var result = textContent(ef, content);
                 if(result !== undefined) {
-                    result = nbsRemove(result).replace(tio_footer_prefix, '')
+                    result = nbsRemove(result)
+                    if(result === "[footer]\n\n") return "";
+                    result = result.replace(tio_footer_prefix, '')
                     return tio_footer_postfix ? result.slice(0, -1) : result;
                 }
             }
@@ -241,7 +243,9 @@ function editor_create_element(html) {
                 }
                 var result = textContent(ec, content);
                 if(result !== undefined) {
-                    result = nbsRemove(result).replace(tio_code_prefix, '')
+                    result = nbsRemove(result)
+                    if(result === "[code]\n\n") return "";
+                    result = result.replace(tio_code_prefix, '')
                     return tio_code_postfix ? result.slice(0, -1) : result;
                 }
             }
@@ -258,7 +262,9 @@ function editor_create_element(html) {
                 }
                 var result = textContent(eh, content);
                 if(result !== undefined) {
-                    result = nbsRemove(result).replace(tio_header_prefix, '')
+                    result = nbsRemove(result)
+                    if(result === "[header]\n\n") return "";
+                    result = result.replace(tio_header_prefix, '')
                     return tio_header_postfix ? result.slice(0, -1) : result;
                 }
             }
@@ -276,7 +282,9 @@ function editor_create_element(html) {
                 }
                 var result = textContent(ei, content);
                 if(result !== undefined) {
-                    result = nbsRemove(result).replace(tio_input_prefix, '')
+                    result = nbsRemove(result)
+                    if(result === "[input]\n\n") return "";
+                    result = result.replace(tio_input_prefix, '')
                     return tio_input_postfix ? result.slice(0, -1) : result;
                 }
             }
@@ -294,7 +302,9 @@ function editor_create_element(html) {
                 }
                 var result = textContent(ea, content);
                 if(result !== undefined) {
-                    result = nbsRemove(result).replace(tio_args_prefix, '')
+                    result = nbsRemove(result)
+                    if(result === "[args]\n\n") return "";
+                    result = result.replace(tio_args_prefix, '')
                     return tio_args_postfix ? result.slice(0, -1) : result;
                 }
             }
@@ -312,7 +322,9 @@ function editor_create_element(html) {
                 }
                 var result = textContent(eo, content);
                 if(result !== undefined) {
-                    result = nbsRemove(result).replace(tio_options_prefix, '')
+                    result = nbsRemove(result)
+                    if(result === "[options]\n\n") return "";
+                    result = result.replace(tio_options_prefix, '')
                     return tio_options_postfix ? result.slice(0, -1) : result;
                 }
             }
@@ -330,7 +342,9 @@ function editor_create_element(html) {
                 }
                 var result = textContent(ed, content);
                 if(result !== undefined) {
-                    result = nbsRemove(result).replace(tio_drivers_prefix, '')
+                    result = nbsRemove(result)
+                    if(result === "[drivers]\n\n") return "";
+                    result = result.replace(tio_drivers_prefix, '')
                     return tio_drivers_postfix ? result.slice(0, -1) : result;
                 }
             }
