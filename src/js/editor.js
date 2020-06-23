@@ -41,6 +41,7 @@ function textContent(element, value) {
             for(var i = nodes.length; i--;) {
                 switch(nodes[i].nodeName) {
                     case '#text'    : text = nodes[i].nodeValue + text;   break;
+                    case 'SPAN'     : textContent(nodes[i]);              break;
                     case 'BR'       : text = '\n' + text;                 break;
                 }
             }
