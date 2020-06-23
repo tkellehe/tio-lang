@@ -42,7 +42,7 @@ function textContent(element, value) {
                 switch(nodes[i].nodeName) {
                     case '#text'    : text = nodes[i].nodeValue + text;   break;
                     case 'BR'       : text = '\n' + text;                 break;
-                    default         : textContent(nodes[i]);              break;
+                    default         : text = textContent(nodes[i]) + text;break;
                 }
             }
         } else if(element.textContent !== undefined) {
