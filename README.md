@@ -267,7 +267,7 @@ tio.run()
  > Decompress byte array from TIO servers.
 
 ---
-### `tio.utils.count_bytes(code, encoring)`
+### `tio.utils.count_bytes(code, encoding)`
 
  > Counts the bytes based on the encoding provided.
  > The different options are: `SBCS`, `UTF-8`, `nibbles`, `xxd`
